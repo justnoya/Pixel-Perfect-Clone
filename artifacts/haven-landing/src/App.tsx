@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Menu, X } from "lucide-react";
 
-const NAV_LINKS = ["Home", "How It Works", "Philosophy", "Use Cases"];
+const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
 
 function StarBox({ filled, partial }: { filled: boolean; partial?: boolean }) {
   return (
@@ -108,7 +108,7 @@ export default function App() {
             flexShrink: 0,
           }}
         >
-          AETHERA
+          NothingHide
         </span>
 
         {/* Center pill */}
@@ -226,7 +226,7 @@ export default function App() {
             letterSpacing: "0.22em",
           }}
         >
-          AETHERA
+          NothingHide
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <button
@@ -353,8 +353,8 @@ export default function App() {
             whiteSpace: "normal",
           }}
         >
-          A New Kind of Intelligence
-          <br />– Human at Heart
+          Nothing to hide.
+          <br />Everything to trust.
         </h1>
 
         {/* Subtext */}
@@ -369,9 +369,8 @@ export default function App() {
             maxWidth: "min(400px, 86vw)",
           }}
         >
-          Aethera is a collaborative AI designed to elevate thought, co-create
-          ideas, and build with empathy. It's in sync with how you think and
-          feel.
+          A transparent platform built for clarity, accountability, and real
+          trust. We believe honesty is the foundation of every great product.
         </p>
 
         {/* CTA button */}
@@ -397,7 +396,7 @@ export default function App() {
             ((e.currentTarget as HTMLButtonElement).style.opacity = "1")
           }
         >
-          See How It Works
+          Get Started
         </button>
       </div>
 
@@ -425,7 +424,7 @@ export default function App() {
             whiteSpace: "nowrap",
           }}
         >
-          Reviews 1,042
+          Trusted by 50,000+
         </span>
         <StarRating />
         <span
@@ -436,7 +435,7 @@ export default function App() {
             whiteSpace: "nowrap",
           }}
         >
-          Excellent Score
+          Verified Platform
         </span>
       </div>
     </div>
