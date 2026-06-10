@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Search, Menu, X } from "lucide-react";
 
 const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
+const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
+const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
 function StarBox({ filled, partial }: { filled: boolean; partial?: boolean }) {
   return (
@@ -10,14 +12,18 @@ function StarBox({ filled, partial }: { filled: boolean; partial?: boolean }) {
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: 30,
-        height: 30,
-        borderRadius: 6,
-        background: filled ? "#f97316" : partial ? "rgba(249,115,22,0.5)" : "rgba(249,115,22,0.18)",
+        width: 28,
+        height: 28,
+        borderRadius: 5,
+        background: filled
+          ? "#f97316"
+          : partial
+          ? "rgba(249,115,22,0.5)"
+          : "rgba(249,115,22,0.18)",
         flexShrink: 0,
       }}
     >
-      <svg viewBox="0 0 20 20" width={16} height={16} style={{ flexShrink: 0 }}>
+      <svg viewBox="0 0 20 20" width={14} height={14} style={{ flexShrink: 0 }}>
         <path
           d="M10 1.5l2.47 5 5.53.8-4 3.9.94 5.5L10 14.1 5.06 16.7 6 11.2l-4-3.9 5.53-.8z"
           fill="white"
@@ -49,8 +55,8 @@ export default function App() {
         width: "100vw",
         height: "100vh",
         overflow: "hidden",
-        background: "#0a0a0a",
-        fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+        background: "#080808",
+        fontFamily: SANS,
       }}
     >
       {/* ── Background image ── */}
@@ -64,19 +70,43 @@ export default function App() {
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          objectPosition: "center center",
+          objectPosition: "center 30%",
           pointerEvents: "none",
           userSelect: "none",
         }}
       />
 
-      {/* ── Gradient overlays ── */}
+      {/* ── Top gradient — navbar legibility ── */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 28%, transparent 50%, rgba(0,0,0,0.2) 100%)",
+            "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 22%, transparent 45%)",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
+      {/* ── Bottom gradient — text legibility ── */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(0deg, rgba(4,4,4,0.92) 0%, rgba(4,4,4,0.65) 22%, rgba(4,4,4,0.1) 45%, transparent 65%)",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
+      {/* ── Left edge gradient — text contrast ── */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(90deg, rgba(0,0,0,0.28) 0%, transparent 55%)",
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -137,7 +167,9 @@ export default function App() {
                   letterSpacing: "0.01em",
                   transition: "color 0.15s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "white")
+                }
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.color = "rgba(255,255,255,0.88)")
                 }
@@ -224,6 +256,7 @@ export default function App() {
             fontSize: 13,
             fontWeight: 400,
             letterSpacing: "0.22em",
+            textTransform: "uppercase",
           }}
         >
           NothingHide
@@ -289,7 +322,7 @@ export default function App() {
                 textDecoration: "none",
                 letterSpacing: "0.02em",
                 padding: "10px 0",
-                fontFamily: "'Courier Prime', monospace",
+                fontFamily: COURIER,
               }}
             >
               {link}
@@ -300,8 +333,6 @@ export default function App() {
               display: "flex",
               gap: 24,
               marginTop: 32,
-              color: "rgba(255,255,255,0.45)",
-              fontSize: 13,
             }}
           >
             <button
@@ -323,119 +354,154 @@ export default function App() {
         </div>
       )}
 
-      {/* ══ HERO CONTENT ══ */}
+      {/* ══ HERO CONTENT — bottom-left anchored ══ */}
       <div
+        className="hero-content"
         style={{
           position: "absolute",
-          inset: 0,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          textAlign: "center",
-          paddingTop: "clamp(90px, 12vh, 130px)",
-          paddingLeft: "clamp(20px, 5vw, 60px)",
-          paddingRight: "clamp(20px, 5vw, 60px)",
+          left: "clamp(32px, 6vw, 90px)",
+          bottom: "clamp(36px, 5.5vh, 68px)",
           zIndex: 10,
+          maxWidth: "min(580px, calc(100vw - 64px))",
         }}
       >
+        {/* Decorative hairline rule */}
+        <div
+          style={{
+            width: 42,
+            height: 1,
+            background: "rgba(255,255,255,0.42)",
+            marginBottom: 20,
+          }}
+        />
+
         {/* Headline */}
         <h1
           style={{
-            fontFamily: "'Courier Prime', 'Courier New', Courier, monospace",
-            fontSize: "clamp(26px, 3.7vw, 48px)",
+            fontFamily: COURIER,
+            fontSize: "clamp(34px, 4.8vw, 62px)",
             fontWeight: 400,
             color: "white",
-            lineHeight: 1.22,
-            letterSpacing: "0em",
-            margin: "0 0 20px 0",
-            maxWidth: "min(820px, 90vw)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.01em",
+            margin: "0 0 clamp(14px, 1.8vh, 22px)",
             whiteSpace: "normal",
           }}
         >
           Nothing to hide.
-          <br />Everything to trust.
+          <br />
+          Everything to trust.
         </h1>
 
         {/* Subtext */}
         <p
           style={{
-            fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
-            fontSize: "clamp(13px, 1.1vw, 15px)",
+            fontFamily: SANS,
+            fontSize: "clamp(13px, 1vw, 15px)",
             fontWeight: 300,
-            color: "rgba(255,255,255,0.75)",
+            color: "rgba(255,255,255,0.65)",
             lineHeight: 1.75,
-            margin: "0 0 34px 0",
-            maxWidth: "min(400px, 86vw)",
+            margin: "0 0 clamp(22px, 2.8vh, 34px)",
+            maxWidth: "min(360px, 80vw)",
           }}
         >
           A transparent platform built for clarity, accountability, and real
           trust. We believe honesty is the foundation of every great product.
         </p>
 
-        {/* CTA button */}
-        <button
+        {/* CTA + Stars inline */}
+        <div
           style={{
-            fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
-            background: "white",
-            color: "#0a0a0a",
-            border: "none",
-            borderRadius: 9999,
-            padding: "15px 38px",
-            fontSize: 14,
-            fontWeight: 500,
-            cursor: "pointer",
-            letterSpacing: "0.01em",
-            whiteSpace: "nowrap",
-            transition: "opacity 0.15s",
+            display: "flex",
+            alignItems: "center",
+            gap: "clamp(16px, 3vw, 32px)",
+            flexWrap: "wrap",
           }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLButtonElement).style.opacity = "0.88")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLButtonElement).style.opacity = "1")
-          }
         >
-          Get Started
-        </button>
+          <button
+            style={{
+              fontFamily: SANS,
+              background: "white",
+              color: "#080808",
+              border: "none",
+              borderRadius: 9999,
+              padding: "14px 36px",
+              fontSize: 14,
+              fontWeight: 500,
+              cursor: "pointer",
+              letterSpacing: "0.01em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+              transition: "opacity 0.15s",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLButtonElement).style.opacity = "0.88")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLButtonElement).style.opacity = "1")
+            }
+          >
+            Get Started
+          </button>
+
+          {/* Inline review block */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+            }}
+          >
+            <StarRating />
+            <span
+              style={{
+                color: "rgba(255,255,255,0.42)",
+                fontSize: 11,
+                fontFamily: SANS,
+                letterSpacing: "0.04em",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Trusted by 50,000+ · Verified Platform
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* ══ BOTTOM REVIEW BAR ══ */}
+      {/* ══ SCROLL INDICATOR — bottom-right ══ */}
       <div
+        className="scroll-indicator"
         style={{
           position: "absolute",
-          bottom: "clamp(16px, 3vh, 32px)",
-          left: 0,
-          right: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 12,
+          right: "clamp(28px, 4vw, 56px)",
+          bottom: "clamp(36px, 5.5vh, 68px)",
           zIndex: 10,
-          flexWrap: "wrap",
-          padding: "0 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 10,
         }}
       >
+        <div
+          style={{
+            width: 1,
+            height: 40,
+            background:
+              "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.28) 100%)",
+          }}
+        />
         <span
           style={{
-            color: "rgba(255,255,255,0.6)",
-            fontSize: 13,
-            fontWeight: 300,
-            whiteSpace: "nowrap",
+            color: "rgba(255,255,255,0.28)",
+            fontSize: 9,
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
+            fontFamily: SANS,
+            writingMode: "vertical-lr",
+            transform: "rotate(180deg)",
           }}
         >
-          Trusted by 50,000+
-        </span>
-        <StarRating />
-        <span
-          style={{
-            color: "rgba(255,255,255,0.6)",
-            fontSize: 13,
-            fontWeight: 300,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Verified Platform
+          Scroll
         </span>
       </div>
     </div>
