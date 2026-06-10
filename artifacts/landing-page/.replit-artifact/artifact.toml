@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/"
+previewPath = "/video-demo/"
 title = "Video Background Landing Page"
 version = "1.0.0"
 id = "artifacts/landing-page"
@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/" ]
+paths = [ "/video-demo/" ]
 localPort = 18083
 
 [services.development]
@@ -28,4 +28,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "18083"
-BASE_PATH = "/"
+BASE_PATH = "/video-demo/"

@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/haven/"
+previewPath = "/"
 title = "Haven Landing Page"
 version = "1.0.0"
 id = "artifacts/haven-landing"
@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/haven/" ]
+paths = [ "/" ]
 localPort = 24557
 
 [services.development]
@@ -28,4 +28,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "24557"
-BASE_PATH = "/haven/"
+BASE_PATH = "/"
