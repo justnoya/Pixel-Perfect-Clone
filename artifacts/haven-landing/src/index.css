@@ -12,6 +12,42 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
   .nav-mob  { display: flex  !important; }
 }
 
+/* Background image — desktop positioning */
+.hero-bg {
+  object-position: center 30%;
+}
+
+/*
+  On mobile portrait a landscape image scaled with object-fit:cover fills
+  the full height and shows the whole image top-to-bottom (no vertical crop).
+  object-position Y has no effect. We fix this with a nature-tinted overlay
+  that masks the pale sky and makes the upper area feel rich and grounded.
+*/
+.mobile-sky-fix {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    170deg,
+    rgba(88, 130, 80, 0.72)  0%,
+    rgba(110, 150, 95, 0.52) 22%,
+    rgba(130, 160, 100, 0.3) 42%,
+    rgba(140, 165, 105, 0.1) 60%,
+    transparent              78%
+  );
+}
+@media (max-width: 767px) {
+  .mobile-sky-fix { display: block; }
+
+  /* let content scroll on very small/short phones */
+  .hero-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* Ambient floating orbs */
 @keyframes orb1 {
   0%,100% { transform: translate(0px, 0px) scale(1); }

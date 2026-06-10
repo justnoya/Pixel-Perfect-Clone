@@ -142,9 +142,13 @@ export default function App() {
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
         <motion.img
           src="/hero-bg.jpg" alt="" draggable={false}
-          style={{ position: "absolute", top: "-5%", left: "-5%", width: "110%", height: "110%", objectFit: "cover", objectPosition: "center", userSelect: "none", pointerEvents: "none", x: bgX, y: bgY }}
+          className="hero-bg"
+          style={{ position: "absolute", top: "-5%", left: "-5%", width: "110%", height: "110%", objectFit: "cover", userSelect: "none", pointerEvents: "none", x: bgX, y: bgY }}
         />
       </div>
+
+      {/* ── Mobile sky fix overlay (green gradient masks pale sky on portrait) ── */}
+      <div className="mobile-sky-fix" />
 
       {/* ── Ambient orbs ── */}
       <div className="orb orb1" style={{ zIndex: 1 }} />
@@ -238,7 +242,7 @@ export default function App() {
       </div>
 
       {/* ══ HERO CONTENT ══ */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", textAlign: "center", paddingTop: "clamp(72px, 11vh, 110px)", paddingLeft: 20, paddingRight: 20, zIndex: 5 }}>
+      <div className="hero-content" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", textAlign: "center", paddingTop: "clamp(72px, 11vh, 110px)", paddingLeft: 20, paddingRight: 20, zIndex: 5 }}>
 
         {/* Badge */}
         <motion.div
