@@ -1,65 +1,46 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 
 const NAV_LINKS = ["Home", "How It Works", "Philosophy", "Use Cases"];
 
+function StarBox({ filled, partial }: { filled: boolean; partial?: boolean }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 30,
+        height: 30,
+        borderRadius: 6,
+        background: filled ? "#f97316" : partial ? "rgba(249,115,22,0.5)" : "rgba(249,115,22,0.18)",
+        flexShrink: 0,
+      }}
+    >
+      <svg viewBox="0 0 20 20" width={16} height={16} style={{ flexShrink: 0 }}>
+        <path
+          d="M10 1.5l2.47 5 5.53.8-4 3.9.94 5.5L10 14.1 5.06 16.7 6 11.2l-4-3.9 5.53-.8z"
+          fill="white"
+        />
+      </svg>
+    </span>
+  );
+}
+
 function StarRating() {
   return (
-    <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
-      {[0, 1, 2, 3, 4].map((i) => (
-        <span
-          key={i}
-          style={{
-            display: "inline-block",
-            width: 28,
-            height: 28,
-            borderRadius: 5,
-            background: i < 4 ? "#f97316" : "transparent",
-            border: i < 4 ? "none" : "2px solid #f97316",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            width="100%"
-            height="100%"
-            style={{ display: "block" }}
-          >
-            {i < 4 ? (
-              <path
-                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                fill="white"
-              />
-            ) : (
-              <>
-                <defs>
-                  <clipPath id="half">
-                    <rect x="0" y="0" width="12" height="24" />
-                  </clipPath>
-                </defs>
-                <path
-                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  fill="#f97316"
-                  clipPath="url(#half)"
-                />
-                <path
-                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  fill="none"
-                  stroke="#f97316"
-                  strokeWidth="1.5"
-                />
-              </>
-            )}
-          </svg>
-        </span>
-      ))}
+    <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+      <StarBox filled={true} />
+      <StarBox filled={true} />
+      <StarBox filled={true} />
+      <StarBox filled={true} />
+      <StarBox filled={false} partial={true} />
     </div>
   );
 }
 
 export default function App() {
-  const [langOpen, setLangOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div
@@ -89,20 +70,21 @@ export default function App() {
         }}
       />
 
-      {/* ── Subtle top-fade so nav is readable ── */}
+      {/* ── Gradient overlays ── */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 30%, transparent 55%, rgba(0,0,0,0.25) 100%)",
+            "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 28%, transparent 50%, rgba(0,0,0,0.2) 100%)",
           pointerEvents: "none",
           zIndex: 1,
         }}
       />
 
-      {/* ══ NAVBAR ══ */}
+      {/* ══ DESKTOP NAVBAR ══ */}
       <nav
+        className="desktop-nav"
         style={{
           position: "fixed",
           top: 0,
@@ -112,7 +94,7 @@ export default function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "22px 36px",
+          padding: "22px 40px",
         }}
       >
         {/* Logo */}
@@ -123,6 +105,7 @@ export default function App() {
             fontWeight: 400,
             letterSpacing: "0.22em",
             textTransform: "uppercase",
+            flexShrink: 0,
           }}
         >
           AETHERA
@@ -131,11 +114,11 @@ export default function App() {
         {/* Center pill */}
         <div
           style={{
-            background: "rgba(18,18,18,0.82)",
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
+            background: "rgba(15,15,15,0.85)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
             borderRadius: 9999,
-            padding: "11px 6px",
+            padding: "10px 4px",
             display: "flex",
             alignItems: "center",
           }}
@@ -145,20 +128,18 @@ export default function App() {
               <a
                 href="#"
                 style={{
-                  color: "rgba(255,255,255,0.92)",
+                  color: "rgba(255,255,255,0.88)",
                   fontSize: 13.5,
                   fontWeight: 400,
                   textDecoration: "none",
                   whiteSpace: "nowrap",
-                  padding: "2px 18px",
+                  padding: "3px 20px",
                   letterSpacing: "0.01em",
                   transition: "color 0.15s",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "white")
-                }
+                onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "rgba(255,255,255,0.92)")
+                  (e.currentTarget.style.color = "rgba(255,255,255,0.88)")
                 }
               >
                 {link}
@@ -166,7 +147,7 @@ export default function App() {
               {i < NAV_LINKS.length - 1 && (
                 <span
                   style={{
-                    color: "rgba(255,255,255,0.35)",
+                    color: "rgba(255,255,255,0.3)",
                     fontSize: 5,
                     lineHeight: 1,
                     flexShrink: 0,
@@ -180,11 +161,17 @@ export default function App() {
         </div>
 
         {/* Right controls */}
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 20,
+            flexShrink: 0,
+          }}
+        >
           <button
-            onClick={() => setLangOpen((v) => !v)}
             style={{
-              color: "rgba(255,255,255,0.88)",
+              color: "rgba(255,255,255,0.85)",
               background: "none",
               border: "none",
               cursor: "pointer",
@@ -202,7 +189,7 @@ export default function App() {
           </button>
           <button
             style={{
-              color: "rgba(255,255,255,0.88)",
+              color: "rgba(255,255,255,0.85)",
               background: "none",
               border: "none",
               cursor: "pointer",
@@ -216,6 +203,126 @@ export default function App() {
         </div>
       </nav>
 
+      {/* ══ MOBILE NAVBAR ══ */}
+      <nav
+        className="mobile-nav"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          display: "none",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "18px 20px",
+        }}
+      >
+        <span
+          style={{
+            color: "white",
+            fontSize: 13,
+            fontWeight: 400,
+            letterSpacing: "0.22em",
+          }}
+        >
+          AETHERA
+        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <button
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              display: "flex",
+            }}
+          >
+            <Search size={18} strokeWidth={1.6} />
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen((v) => !v)}
+            style={{
+              color: "white",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              display: "flex",
+            }}
+          >
+            {mobileMenuOpen ? (
+              <X size={22} strokeWidth={1.5} />
+            ) : (
+              <Menu size={22} strokeWidth={1.5} />
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* ══ MOBILE MENU OVERLAY ══ */}
+      {mobileMenuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 40,
+            background: "rgba(5,5,5,0.97)",
+            backdropFilter: "blur(20px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+          }}
+        >
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link}
+              href="#"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                color: "white",
+                fontSize: 26,
+                fontWeight: 300,
+                textDecoration: "none",
+                letterSpacing: "0.02em",
+                padding: "10px 0",
+                fontFamily: "'Courier Prime', monospace",
+              }}
+            >
+              {link}
+            </a>
+          ))}
+          <div
+            style={{
+              display: "flex",
+              gap: 24,
+              marginTop: 32,
+              color: "rgba(255,255,255,0.45)",
+              fontSize: 13,
+            }}
+          >
+            <button
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: 13,
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              EN ▾
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ══ HERO CONTENT ══ */}
       <div
         style={{
@@ -226,9 +333,9 @@ export default function App() {
           alignItems: "center",
           justifyContent: "flex-start",
           textAlign: "center",
-          paddingTop: "clamp(100px, 13vh, 140px)",
-          paddingLeft: 24,
-          paddingRight: 24,
+          paddingTop: "clamp(90px, 12vh, 130px)",
+          paddingLeft: "clamp(20px, 5vw, 60px)",
+          paddingRight: "clamp(20px, 5vw, 60px)",
           zIndex: 10,
         }}
       >
@@ -236,13 +343,14 @@ export default function App() {
         <h1
           style={{
             fontFamily: "'Courier Prime', 'Courier New', Courier, monospace",
-            fontSize: "clamp(30px, 4.2vw, 58px)",
+            fontSize: "clamp(26px, 3.7vw, 48px)",
             fontWeight: 400,
             color: "white",
             lineHeight: 1.22,
             letterSpacing: "0em",
-            margin: "0 0 22px 0",
-            maxWidth: 680,
+            margin: "0 0 20px 0",
+            maxWidth: "min(820px, 90vw)",
+            whiteSpace: "normal",
           }}
         >
           A New Kind of Intelligence
@@ -253,12 +361,12 @@ export default function App() {
         <p
           style={{
             fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
-            fontSize: "clamp(13px, 1.05vw, 15px)",
+            fontSize: "clamp(13px, 1.1vw, 15px)",
             fontWeight: 300,
-            color: "rgba(255,255,255,0.78)",
-            lineHeight: 1.72,
-            margin: "0 0 36px 0",
-            maxWidth: 390,
+            color: "rgba(255,255,255,0.75)",
+            lineHeight: 1.75,
+            margin: "0 0 34px 0",
+            maxWidth: "min(400px, 86vw)",
           }}
         >
           Aethera is a collaborative AI designed to elevate thought, co-create
@@ -274,20 +382,20 @@ export default function App() {
             color: "#0a0a0a",
             border: "none",
             borderRadius: 9999,
-            padding: "15px 36px",
+            padding: "15px 38px",
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer",
             letterSpacing: "0.01em",
-            transition: "background 0.15s, transform 0.1s",
+            whiteSpace: "nowrap",
+            transition: "opacity 0.15s",
           }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.background =
-              "rgba(255,255,255,0.9)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.background = "white";
-          }}
+          onMouseEnter={(e) =>
+            ((e.currentTarget as HTMLButtonElement).style.opacity = "0.88")
+          }
+          onMouseLeave={(e) =>
+            ((e.currentTarget as HTMLButtonElement).style.opacity = "1")
+          }
         >
           See How It Works
         </button>
@@ -297,21 +405,24 @@ export default function App() {
       <div
         style={{
           position: "absolute",
-          bottom: 30,
+          bottom: "clamp(16px, 3vh, 32px)",
           left: 0,
           right: 0,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 14,
+          gap: 12,
           zIndex: 10,
+          flexWrap: "wrap",
+          padding: "0 20px",
         }}
       >
         <span
           style={{
-            color: "rgba(255,255,255,0.65)",
+            color: "rgba(255,255,255,0.6)",
             fontSize: 13,
             fontWeight: 300,
+            whiteSpace: "nowrap",
           }}
         >
           Reviews 1,042
@@ -319,9 +430,10 @@ export default function App() {
         <StarRating />
         <span
           style={{
-            color: "rgba(255,255,255,0.65)",
+            color: "rgba(255,255,255,0.6)",
             fontSize: 13,
             fontWeight: 300,
+            whiteSpace: "nowrap",
           }}
         >
           Excellent Score
