@@ -36,13 +36,9 @@ const inter = "'Inter', sans-serif";
 function Logo() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 9, flexShrink: 0 }}>
-      {/* NothingHide diamond chevron icon */}
-      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="26" height="26" rx="7" fill="#0f172a"/>
-        <path d="M7 13L13 7L19 13L13 19L7 13Z" fill="white" opacity="0.15"/>
-        <path d="M7 13L13 8.5L16 11.5L13 15L7 13Z" fill="white" opacity="0.9"/>
-        <path d="M19 13L13 17.5L10 14.5L13 11L19 13Z" fill="white" opacity="0.55"/>
-      </svg>
+      <div style={{ width: 34, height: 34, borderRadius: 9, background: "#0f172a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <img src="/logo.png" alt="NothingHide" style={{ width: 26, height: 26, objectFit: "contain", display: "block" }} />
+      </div>
       <span style={{ fontFamily: inter, fontWeight: 640, fontSize: 15, color: "#0f172a", letterSpacing: "-0.02em" }}>NothingHide</span>
     </div>
   );
