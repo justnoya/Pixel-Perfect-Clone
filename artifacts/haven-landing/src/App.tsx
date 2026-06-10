@@ -157,30 +157,6 @@ export default function App() {
       {/* ══ BOTTOM SECTION — static wrapper, motion only for fade-in ══ */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: "clamp(6px, 1vh, 12px)", gap: "clamp(6px, 1vh, 10px)" }}>
 
-        {/* Feature strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.58, ease, delay: 0.4 }}
-          style={{ width: "min(880px, calc(100vw - 28px))" }}
-        >
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.38)", borderRadius: 16, boxShadow: "0 4px 36px rgba(0,0,0,0.09)", overflow: "hidden" }}>
-            {FEATURES.map(({ icon: Icon, title, desc }, i) => (
-              <motion.div key={title}
-                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease, delay: 0.46 + i * 0.065 }}
-                style={{ display: "flex", alignItems: "flex-start", gap: 11, padding: "13px 14px", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.3)" : "none" }}>
-                <div style={{ width: 33, height: 33, borderRadius: "50%", background: "rgba(255,255,255,0.44)", border: "1px solid rgba(255,255,255,0.58)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Icon size={14} strokeWidth={1.75} color="#0f172a" />
-                </div>
-                <div style={{ minWidth: 0 }}>
-                  <p style={{ fontFamily: inter, fontSize: 12, fontWeight: 660, color: "#0f172a", margin: "0 0 2px 0", lineHeight: 1.3 }}>{title}</p>
-                  <p style={{ fontFamily: inter, fontSize: 10.5, fontWeight: 400, color: "rgba(15,23,42,0.58)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
         {/* Logo bar */}
         <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
