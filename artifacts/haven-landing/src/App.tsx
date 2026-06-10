@@ -123,12 +123,12 @@ export default function App() {
         </motion.div>
 
         <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.56, ease, delay: 0.17 }}
-          style={{ fontFamily: inter, fontWeight: 860, fontSize: "clamp(38px, 5.2vw, 62px)", color: "#0f172a", lineHeight: 1.07, letterSpacing: "-0.034em", margin: "0 0 12px 0", maxWidth: 600 }}>
-          Design with ease.<br />Everything in flow.
+          style={{ fontFamily: inter, fontWeight: 860, fontSize: "clamp(38px, 5.2vw, 62px)", color: "#0f172a", lineHeight: 1.07, letterSpacing: "-0.034em", margin: "0 0 12px 0", maxWidth: 640 }}>
+          Nothing to hide.<br />Everything to trust.
         </motion.h1>
 
         <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease, delay: 0.24 }}
-          style={{ fontFamily: inter, fontSize: "clamp(13px, 1.3vw, 16px)", fontWeight: 400, color: "rgba(15,23,42,0.72)", lineHeight: 1.65, margin: "0 0 22px 0", maxWidth: 360 }}>
+          style={{ fontFamily: inter, fontSize: "clamp(13px, 1.3vw, 16px)", fontWeight: 400, color: "rgba(15,23,42,0.72)", lineHeight: 1.65, margin: "0 0 22px 0", maxWidth: 380 }}>
           A transparent platform built for clarity,<br />accountability, and real trust.
         </motion.p>
 
