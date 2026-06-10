@@ -1,378 +1,339 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-function HavenLogo() {
+const navLinks = ["Home", "Usecases", "Pricing", "Careers", "Contact"];
+
+/* ─── Logo ─────────────────────────────────────────── */
+function Logo() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-      <div
-        style={{
-          width: "28px",
-          height: "28px",
-          borderRadius: "50%",
-          background: "#e53e3e",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-        }}
-      >
-        <div
-          style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#fff" }}
-        />
+    <div style={{ display: "flex", alignItems: "center", gap: "7px", flexShrink: 0 }}>
+      {/* Red circle with inner white dot */}
+      <div style={{
+        width: "22px", height: "22px", borderRadius: "50%",
+        background: "#dc2626",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#fff" }} />
       </div>
-      <span
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 500,
-          fontSize: "1.05rem",
-          letterSpacing: "-0.01em",
-          color: "#1a1a1a",
-        }}
-      >
+      <span style={{
+        fontFamily: "'Inter', sans-serif",
+        fontWeight: 500,
+        fontSize: "15px",
+        letterSpacing: "-0.01em",
+        color: "#1a1a1a",
+      }}>
         Haven
       </span>
     </div>
   );
 }
 
-const navLinks = ["Home", "Usecases", "Pricing", "Careers", "Contact"];
+/* ─── Frosted pill shell ─────────────────────────────── */
+const pill: React.CSSProperties = {
+  background: "rgba(255,255,255,0.62)",
+  backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
+  border: "1px solid rgba(255,255,255,0.45)",
+  borderRadius: "9999px",
+  boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+};
 
 export default function App() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-      }}
-    >
-      {/* ── Background Image ── */}
+    <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+
+      {/* ── Background ───────────────────────────────── */}
       <img
         src="/hero-bg.jpg"
-        alt="Alpine meadow"
+        alt=""
+        draggable={false}
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center",
-          display: "block",
+          position: "absolute", inset: 0,
+          width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center",
           zIndex: 0,
         }}
-        draggable={false}
       />
 
-      {/* ── Navbar ── */}
-      <nav
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "10px 40px",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-        }}
-      >
-        <HavenLogo />
+      {/* ── Navbar — compact centered pill ───────────── */}
+      <header style={{
+        position: "fixed", top: "14px", left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 100,
+        width: "max-content",
+        maxWidth: "calc(100vw - 32px)",
+      }}>
 
-        {/* Desktop nav */}
-        <ul
+        {/* Desktop pill */}
+        <nav
+          className="nav-desktop"
           style={{
-            display: "flex",
+            ...pill,
             alignItems: "center",
-            gap: "24px",
-            listStyle: "none",
-            margin: 0,
-            padding: 0,
+            padding: "6px 6px 6px 14px",
+            gap: 0,
           }}
-          className="hide-mobile"
         >
-          {navLinks.map((link) => (
-            <li key={link}>
-              <a
-                href="#"
-                style={{
+          {/* Logo */}
+          <Logo />
+
+          {/* Divider */}
+          <div style={{ width: "1px", height: "16px", background: "rgba(0,0,0,0.12)", margin: "0 18px" }} />
+
+          {/* Nav links */}
+          <ul style={{ display: "flex", alignItems: "center", gap: "4px", listStyle: "none", margin: 0, padding: 0 }}>
+            {navLinks.map((link) => (
+              <li key={link}>
+                <a href="#" style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontSize: "14px",
+                  fontSize: "13px",
                   fontWeight: 400,
                   color: "#1a1a1a",
                   textDecoration: "none",
+                  padding: "5px 10px",
+                  borderRadius: "9999px",
+                  display: "block",
+                  transition: "background 0.15s",
                 }}
-              >
-                {link}
-              </a>
-            </li>
-          ))}
-        </ul>
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.05)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        {/* Desktop Login */}
-        <button
-          className="hide-mobile"
-          style={{
+          {/* Login button — dark pill embedded in the right end */}
+          <button style={{
+            marginLeft: "10px",
             fontFamily: "'Inter', sans-serif",
-            fontSize: "14px",
+            fontSize: "13px",
             fontWeight: 500,
             color: "#fff",
             background: "#0f172a",
             border: "none",
             borderRadius: "9999px",
-            padding: "9px 22px",
+            padding: "8px 20px",
             cursor: "pointer",
-            transition: "transform 0.15s, box-shadow 0.15s",
+            transition: "opacity 0.15s",
+            whiteSpace: "nowrap",
           }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.2)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
-          }}
-        >
-          Login
-        </button>
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            Login
+          </button>
+        </nav>
 
-        {/* Mobile hamburger */}
-        <button
-          className="show-mobile"
+        {/* Mobile pill */}
+        <nav
+          className="nav-mobile"
           style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#1a1a1a",
-            display: "none",
-            padding: "4px",
+            ...pill,
+            alignItems: "center",
+            padding: "8px 8px 8px 14px",
+            gap: "10px",
           }}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </nav>
+          <Logo />
+          <button
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#1a1a1a", display: "flex", padding: "4px" }}
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </nav>
+      </header>
 
       {/* Mobile dropdown */}
-      {mobileMenuOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: "56px",
-            left: 0,
-            right: 0,
-            zIndex: 99,
-            padding: "16px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            background: "rgba(255,255,255,0.88)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            borderBottom: "1px solid rgba(255,255,255,0.3)",
-          }}
-        >
+      {open && (
+        <div style={{
+          position: "fixed", top: "62px", left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 99,
+          width: "calc(100vw - 32px)",
+          maxWidth: "360px",
+          ...pill,
+          borderRadius: "20px",
+          padding: "16px 20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "4px",
+        }}>
           {navLinks.map((link) => (
-            <a
-              key={link}
-              href="#"
+            <a key={link} href="#"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: "15px",
-                fontWeight: 500,
+                fontSize: "14px",
+                fontWeight: 400,
                 color: "#1a1a1a",
                 textDecoration: "none",
+                padding: "9px 12px",
+                borderRadius: "12px",
+                transition: "background 0.15s",
               }}
-              onClick={() => setMobileMenuOpen(false)}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.05)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              onClick={() => setOpen(false)}
             >
               {link}
             </a>
           ))}
-          <button
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "14px",
-              fontWeight: 500,
-              color: "#fff",
-              background: "#0f172a",
-              border: "none",
-              borderRadius: "9999px",
-              padding: "10px 22px",
-              cursor: "pointer",
-              alignSelf: "flex-start",
-            }}
-          >
+          <button style={{
+            marginTop: "8px",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "13px",
+            fontWeight: 500,
+            color: "#fff",
+            background: "#0f172a",
+            border: "none",
+            borderRadius: "9999px",
+            padding: "10px 20px",
+            cursor: "pointer",
+            alignSelf: "flex-start",
+          }}>
             Login
           </button>
         </div>
       )}
 
-      {/* ── Hero Content ── */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 1,
-          display: "flex",
-          flexDirection: "column",
+      {/* ── Hero Content ─────────────────────────────── */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        paddingTop: "22vh",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        textAlign: "center",
+      }}>
+
+        {/* Announcement badge */}
+        <div style={{
+          ...pill,
+          display: "inline-flex",
           alignItems: "center",
-          justifyContent: "flex-start",
-          paddingTop: "28vh",
-          paddingLeft: "16px",
-          paddingRight: "16px",
-          textAlign: "center",
-        }}
-      >
-        {/* Announcement Badge */}
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
-            padding: "6px 16px",
-            marginBottom: "20px",
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "13px",
-            fontWeight: 400,
-            color: "#1a1a1a",
-            background: "rgba(255,255,255,0.75)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            border: "1px solid rgba(255,255,255,0.35)",
-            borderRadius: "9999px",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-          }}
-        >
+          padding: "5px 14px",
+          marginBottom: "18px",
+          fontFamily: "'Inter', sans-serif",
+          fontSize: "12.5px",
+          fontWeight: 400,
+          color: "#1a1a1a",
+          whiteSpace: "nowrap",
+        }}>
           We just raised 20M 🚀
         </div>
 
-        {/* Headline */}
-        <h1
-          style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "clamp(40px, 6.5vw, 78px)",
-            fontWeight: 800,
-            color: "#1a1a1a",
-            lineHeight: 1.08,
-            letterSpacing: "-0.02em",
-            margin: "0 0 16px 0",
-            maxWidth: "700px",
-          }}
-        >
+        {/* Headline — Cormorant Garamond, high-contrast editorial serif */}
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+          fontSize: "clamp(42px, 7vw, 82px)",
+          fontWeight: 600,
+          fontStyle: "normal",
+          color: "#1a1a1a",
+          lineHeight: 1.05,
+          letterSpacing: "-0.01em",
+          margin: "0 0 14px 0",
+          maxWidth: "720px",
+        }}>
           Design with ease.
         </h1>
 
         {/* Subheadline */}
-        <p
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(15px, 1.6vw, 18px)",
-            fontWeight: 400,
-            color: "#1a1a1a",
-            lineHeight: 1.65,
-            margin: "0 0 32px 0",
-            maxWidth: "480px",
-          }}
-        >
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: "clamp(14px, 1.5vw, 17px)",
+          fontWeight: 400,
+          color: "#1a1a1a",
+          lineHeight: 1.7,
+          margin: "0 0 30px 0",
+          maxWidth: "440px",
+          opacity: 0.9,
+        }}>
           Design smarter with AI that understands you.
           <br />
           So you can take a breath.
         </p>
 
-        {/* CTA Buttons */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "12px",
+        {/* CTA — joined pill: [Get Started →] | [Watch Demo] */}
+        <div style={{
+          display: "inline-flex",
+          alignItems: "center",
+          ...pill,
+          padding: "5px",
+          gap: 0,
+        }}>
+          <button style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "14px",
+            fontWeight: 500,
+            color: "#1a1a1a",
+            background: "#fff",
+            border: "none",
+            borderRadius: "9999px",
+            padding: "10px 22px",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+            transition: "transform 0.15s, box-shadow 0.15s",
           }}
-        >
-          <button
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "15px",
-              fontWeight: 500,
-              color: "#1a1a1a",
-              background: "#ffffff",
-              border: "1px solid rgba(0,0,0,0.08)",
-              borderRadius: "9999px",
-              padding: "13px 28px",
-              cursor: "pointer",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.09)",
-              transition: "transform 0.15s, box-shadow 0.15s",
-            }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)";
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.14)";
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 3px 12px rgba(0,0,0,0.15)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-              (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 2px 8px rgba(0,0,0,0.09)";
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.1)";
             }}
           >
             Get Started →
           </button>
-          <button
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "15px",
-              fontWeight: 500,
-              color: "#1a1a1a",
-              background: "transparent",
-              border: "1px solid rgba(0,0,0,0.18)",
-              borderRadius: "9999px",
-              padding: "13px 28px",
-              cursor: "pointer",
-              transition: "transform 0.15s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.02)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-            }}
+
+          <button style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "14px",
+            fontWeight: 400,
+            color: "#1a1a1a",
+            background: "transparent",
+            border: "none",
+            borderRadius: "9999px",
+            padding: "10px 20px",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+            transition: "opacity 0.15s",
+          }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
             Watch Demo
           </button>
         </div>
       </div>
 
-      {/* ── Scroll Indicator ── */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "28px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 50,
-          padding: "7px 20px",
-          fontFamily: "'Inter', sans-serif",
-          fontSize: "11px",
-          fontWeight: 500,
-          letterSpacing: "0.18em",
-          color: "#1a1a1a",
-          textTransform: "uppercase",
-          background: "rgba(255,255,255,0.6)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-          border: "1px solid rgba(255,255,255,0.35)",
-          borderRadius: "9999px",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-          whiteSpace: "nowrap",
-        }}
-      >
+      {/* ── Scroll indicator ─────────────────────────── */}
+      <div style={{
+        position: "fixed",
+        bottom: "24px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 50,
+        ...pill,
+        padding: "6px 18px",
+        fontFamily: "'Inter', sans-serif",
+        fontSize: "10.5px",
+        fontWeight: 500,
+        letterSpacing: "0.2em",
+        color: "#1a1a1a",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+      }}>
         SCROLL ↓
       </div>
     </div>
