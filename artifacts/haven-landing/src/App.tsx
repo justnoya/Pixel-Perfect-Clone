@@ -138,24 +138,17 @@ export default function App() {
       onMouseMove={handleMouseMove}
       style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}
     >
-      {/* ── Background (parallax video) ── */}
+      {/* ── Background (parallax) ── */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}>
-        <motion.div
-          style={{ position: "absolute", top: "-5%", left: "-5%", width: "110%", height: "110%", x: bgX, y: bgY }}
-        >
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            disablePictureInPicture
-            style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none", userSelect: "none", display: "block" }}
-          >
-            <source src="/bg-video.mp4" type="video/mp4" />
-          </video>
-        </motion.div>
+        <motion.img
+          src="/hero-bg.jpg" alt="" draggable={false}
+          className="hero-bg"
+          style={{ position: "absolute", top: "-5%", left: "-5%", width: "110%", height: "110%", objectFit: "cover", userSelect: "none", pointerEvents: "none", x: bgX, y: bgY }}
+        />
       </div>
+
+      {/* ── Mobile sky fix overlay ── */}
+      <div className="mobile-sky-fix" />
 
       {/* ── Ambient orbs ── */}
       <div className="orb orb1" style={{ zIndex: 1 }} />

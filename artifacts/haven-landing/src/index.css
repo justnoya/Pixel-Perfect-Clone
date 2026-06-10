@@ -14,15 +14,10 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 
 /* Background image — desktop positioning */
 .hero-bg {
-  object-position: center 30%;
+  object-position: center center;
 }
 
-/*
-  On mobile portrait a landscape image scaled with object-fit:cover fills
-  the full height and shows the whole image top-to-bottom (no vertical crop).
-  object-position Y has no effect. We fix this with a nature-tinted overlay
-  that masks the pale sky and makes the upper area feel rich and grounded.
-*/
+/* Mobile: subtle dark top-fade to keep nav readable */
 .mobile-sky-fix {
   display: none;
   position: absolute;
@@ -30,12 +25,10 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
   pointer-events: none;
   z-index: 2;
   background: linear-gradient(
-    170deg,
-    rgba(88, 130, 80, 0.72)  0%,
-    rgba(110, 150, 95, 0.52) 22%,
-    rgba(130, 160, 100, 0.3) 42%,
-    rgba(140, 165, 105, 0.1) 60%,
-    transparent              78%
+    180deg,
+    rgba(5, 10, 20, 0.55)  0%,
+    rgba(5, 10, 20, 0.25) 30%,
+    transparent            55%
   );
 }
 @media (max-width: 767px) {
