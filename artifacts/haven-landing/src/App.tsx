@@ -520,215 +520,271 @@ export default function App() {
           <section
             style={{
               width: "100%", height: "100%",
-              background: "#08080a",
+              background: "#090909",
               display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "0 clamp(32px, 8vw, 120px)",
+              padding: "0 clamp(20px, 6vw, 100px)",
               overflow: "hidden",
             }}
           >
-            <div style={{
+            <div className="fair-buy-grid" style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1.1fr",
-              gap: "clamp(48px, 7vw, 100px)",
-              maxWidth: 1060,
+              gridTemplateColumns: "1fr 1.15fr",
+              gap: "clamp(36px, 5vw, 80px)",
+              maxWidth: 1040,
               width: "100%",
               alignItems: "center",
             }}>
 
-              {/* ── LEFT: Holographic Golden Ticket Card ── */}
+              {/* ── LEFT: Holographic Golden Ticket ── */}
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <div style={{
-                  width: "clamp(230px, 27vw, 320px)",
-                  height: "clamp(310px, 37vw, 440px)",
-                  borderRadius: 20,
-                  position: "relative",
-                  transform: "perspective(900px) rotateY(-7deg) rotateX(2.5deg)",
-                  boxShadow: "0 32px 90px rgba(120,40,210,0.5), 0 0 60px rgba(236,72,153,0.22), inset 0 0 0 1px rgba(255,255,255,0.18)",
-                  overflow: "hidden",
-                  flexShrink: 0,
-                }}>
-                  {/* Holographic gradient base */}
+                {/* Outer wrapper keeps badge visible outside card */}
+                <div style={{ position: "relative", display: "inline-block" }}>
+
+                  {/* ── The card itself ── */}
                   <div style={{
-                    position: "absolute", inset: 0,
-                    background: `
-                      radial-gradient(ellipse at 22% 28%, rgba(147,51,234,0.95) 0%, transparent 58%),
-                      radial-gradient(ellipse at 78% 72%, rgba(245,158,11,0.82) 0%, transparent 48%),
-                      radial-gradient(ellipse at 68% 18%, rgba(236,72,153,0.78) 0%, transparent 44%),
-                      radial-gradient(ellipse at 28% 88%, rgba(20,184,166,0.68) 0%, transparent 38%),
-                      radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.45) 0%, transparent 65%),
-                      linear-gradient(155deg, #110720 0%, #1f0840 55%, #090a1e 100%)
-                    `,
-                  }} />
-                  {/* Shimmer highlight overlay */}
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: "linear-gradient(135deg, rgba(255,255,255,0.26) 0%, transparent 32%, rgba(255,255,255,0.06) 58%, transparent 100%)",
-                  }} />
-                  {/* Subtle grid texture */}
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(255,255,255,0.02) 28px, rgba(255,255,255,0.02) 29px), repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(255,255,255,0.02) 28px, rgba(255,255,255,0.02) 29px)",
-                  }} />
+                    width: "clamp(240px, 28vw, 330px)",
+                    borderRadius: 18,
+                    position: "relative",
+                    overflow: "hidden",
+                    transform: "perspective(1000px) rotateY(-4deg) rotateX(1.5deg)",
+                    boxShadow: "0 28px 80px rgba(90,20,200,0.55), 0 8px 30px rgba(130,60,255,0.25), inset 0 0 0 1px rgba(255,255,255,0.14)",
+                  }}>
+                    {/* ── Holographic gradient — silver-purple foil ── */}
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: `
+                        radial-gradient(ellipse at 68% 12%, rgba(242,234,255,0.92) 0%, transparent 38%),
+                        radial-gradient(ellipse at 28% 46%, rgba(118,40,230,0.98) 0%, transparent 50%),
+                        radial-gradient(ellipse at 82% 58%, rgba(172,120,255,0.70) 0%, transparent 38%),
+                        radial-gradient(ellipse at 18% 88%, rgba(190,130,30,0.38) 0%, transparent 32%),
+                        radial-gradient(ellipse at 55% 75%, rgba(90,30,190,0.65) 0%, transparent 42%),
+                        linear-gradient(148deg, #0b001c 0%, #1e0752 48%, #0d0028 100%)
+                      `,
+                    }} />
+                    {/* Diagonal shimmer streak */}
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: "linear-gradient(118deg, rgba(255,255,255,0.32) 0%, transparent 24%, rgba(200,170,255,0.14) 48%, transparent 68%, rgba(255,255,255,0.10) 86%, transparent 100%)",
+                    }} />
 
-                  {/* Card content */}
-                  <div style={{ position: "relative", zIndex: 2, height: "100%", padding: "16px 16px 16px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    {/* ── Content ── */}
+                    <div style={{ position: "relative", zIndex: 2, padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 12 }}>
 
-                    {/* Top row: avatar + GOLDEN TICKET badge */}
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <div style={{
-                        width: 34, height: 34, borderRadius: "50%",
-                        border: "2px solid rgba(255,255,255,0.35)",
-                        background: "linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #92400e 100%)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: 15, flexShrink: 0,
-                        boxShadow: "0 0 12px rgba(245,158,11,0.5)",
-                      }}>
-                        🌟
-                      </div>
-                      <div style={{
-                        background: "rgba(0,0,0,0.55)",
-                        border: "1px solid rgba(255,215,0,0.45)",
-                        borderRadius: 9999,
-                        padding: "4px 10px",
-                        display: "flex", alignItems: "center", gap: 5,
-                      }}>
-                        <span style={{ color: "#FFD700", fontSize: 8.5, letterSpacing: "0.18em", fontWeight: 700, fontFamily: SANS }}>✦ GOLDEN TICKET</span>
-                      </div>
-                      <div style={{ width: 34 }} />
-                    </div>
-
-                    {/* Main title + stats */}
-                    <div>
-                      <div style={{
-                        fontFamily: SANS,
-                        fontSize: "clamp(18px, 2vw, 24px)",
-                        fontWeight: 800,
-                        color: "white",
-                        lineHeight: 1.18,
-                        letterSpacing: "-0.01em",
-                        textShadow: "0 2px 14px rgba(0,0,0,0.65)",
-                      }}>
-                        EARLY TOKEN
-                        <br />ALLOCATION
-                        <br />DRAW
+                      {/* Row 1: avatar left + GOLDEN TICKET badge center-right */}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        {/* Avatar circle */}
+                        <div style={{
+                          width: 30, height: 30, borderRadius: "50%",
+                          border: "1.5px solid rgba(255,255,255,0.3)",
+                          overflow: "hidden", flexShrink: 0,
+                          background: "linear-gradient(135deg,#a855f7,#7c3aed)",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: 13,
+                        }}>
+                          <span>👤</span>
+                        </div>
+                        {/* Badge */}
+                        <div style={{
+                          display: "flex", alignItems: "center", gap: 5,
+                          border: "1px solid rgba(255,255,255,0.22)",
+                          borderRadius: 9999,
+                          padding: "3px 11px",
+                          background: "rgba(0,0,0,0.30)",
+                          backdropFilter: "blur(6px)",
+                        }}>
+                          <span style={{ color: "rgba(255,255,255,0.88)", fontSize: 8, letterSpacing: "0.16em", fontWeight: 700, fontFamily: SANS }}>▲ GOLDEN TICKET ▲</span>
+                        </div>
+                        <div style={{ width: 30 }} />
                       </div>
 
-                      {/* Stats row */}
-                      <div style={{ display: "flex", marginTop: 16, borderTop: "1px solid rgba(255,255,255,0.14)", paddingTop: 11 }}>
-                        {[
-                          { label: "TOKEN", value: "TTOKN" },
-                          { label: "AMOUNT", value: "345 POPUF" },
-                          { label: "CLOSES", value: "18:00 Jun 25" },
-                        ].map((stat, idx) => (
-                          <div key={stat.label} style={{ flex: 1, paddingRight: idx < 2 ? 8 : 0, paddingLeft: idx > 0 ? 8 : 0, borderRight: idx < 2 ? "1px solid rgba(255,255,255,0.13)" : "none" }}>
-                            <div style={{ fontSize: 7.5, color: "rgba(255,255,255,0.42)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 3, fontFamily: SANS }}>{stat.label}</div>
-                            <div style={{ fontSize: 9.5, color: "white", fontWeight: 600, fontFamily: SANS, letterSpacing: "0.02em" }}>{stat.value}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Coin icons */}
-                      <div style={{ display: "flex", gap: 7, marginTop: 13 }}>
-                        {["◈", "◉"].map((icon, idx) => (
-                          <div key={idx} style={{
-                            width: 32, height: 32, borderRadius: "50%",
-                            background: "rgba(0,0,0,0.48)",
-                            border: "1px solid rgba(255,255,255,0.22)",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: 15, color: "rgba(255,255,255,0.9)",
-                            boxShadow: "inset 0 0 8px rgba(255,255,255,0.05)",
-                          }}>{icon}</div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Bottom: branding + avatars */}
-                    <div>
-                      <div style={{ padding: "10px 10px", background: "rgba(0,0,0,0.38)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)" }}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                          <div>
-                            <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 800, color: "white", letterSpacing: "0.08em", marginBottom: 5 }}>
-                              POPUP.FUND
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                              <div style={{ display: "flex" }}>
-                                {[0,1,2,3].map((j) => (
-                                  <div key={j} style={{ width: 16, height: 16, borderRadius: "50%", background: `hsl(${j * 55 + 190}, 65%, 52%)`, border: "1.5px solid rgba(0,0,0,0.55)", marginLeft: j > 0 ? -5 : 0 }} />
-                                ))}
-                              </div>
-                              <span style={{ fontSize: 8.5, color: "rgba(255,255,255,0.5)", fontFamily: SANS }}>James and 200 others</span>
-                            </div>
-                          </div>
-                          <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <span style={{ color: "white", fontSize: 11, fontWeight: 700, fontFamily: SANS }}>C</span>
-                          </div>
+                      {/* Row 2: Title */}
+                      <div>
+                        <div style={{
+                          fontFamily: SANS,
+                          fontSize: "clamp(19px, 2.1vw, 26px)",
+                          fontWeight: 900,
+                          color: "white",
+                          lineHeight: 1.13,
+                          letterSpacing: "0.01em",
+                          textTransform: "uppercase",
+                          textShadow: "0 2px 18px rgba(0,0,0,0.7)",
+                        }}>
+                          EARLY TOKEN<br />ALLOCATION<br />DRAW
                         </div>
                       </div>
-                    </div>
 
+                      {/* Row 3: Stats */}
+                      <div style={{ display: "flex", borderTop: "1px solid rgba(255,255,255,0.13)", paddingTop: 9 }}>
+                        {[
+                          { val: "TTOYH" },
+                          { val: "345 POPUP" },
+                          { val: "18:00 Jun 20" },
+                        ].map((s, idx) => (
+                          <div key={idx} style={{
+                            flex: 1,
+                            paddingLeft: idx > 0 ? 8 : 0,
+                            paddingRight: idx < 2 ? 8 : 0,
+                            borderRight: idx < 2 ? "1px solid rgba(255,255,255,0.13)" : "none",
+                          }}>
+                            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", fontFamily: SANS, fontWeight: 500, letterSpacing: "0.03em" }}>{s.val}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Row 4: Dice */}
+                      <div style={{ display: "flex", gap: 10, paddingTop: 2 }}>
+                        {([
+                          [[28,28],[72,28],[28,50],[72,50],[28,72],[72,72]],
+                          [[28,28],[72,28],[50,50],[28,72],[72,72]],
+                        ] as number[][][]).map((dots, di) => (
+                          <div key={di} style={{
+                            width: "clamp(46px,5.5vw,62px)", height: "clamp(46px,5.5vw,62px)",
+                            borderRadius: 9,
+                            background: "linear-gradient(145deg, #1c1c1c 0%, #0d0d0d 100%)",
+                            border: "1px solid rgba(255,255,255,0.10)",
+                            position: "relative",
+                            boxShadow: "3px 4px 12px rgba(0,0,0,0.85), -1px -1px 4px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
+                            flexShrink: 0,
+                          }}>
+                            {dots.map(([cx,cy], pi) => (
+                              <div key={pi} style={{
+                                position: "absolute",
+                                width: "13%", height: "13%",
+                                borderRadius: "50%",
+                                background: "rgba(255,255,255,0.92)",
+                                left: `${cx}%`, top: `${cy}%`,
+                                transform: "translate(-50%,-50%)",
+                                boxShadow: "0 0 3px rgba(255,255,255,0.4)",
+                              }} />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Row 5: POPUP.FUND footer */}
+                      <div style={{
+                        background: "rgba(0,0,0,0.40)",
+                        borderRadius: 10,
+                        padding: "9px 11px",
+                        border: "1px solid rgba(255,255,255,0.07)",
+                        marginTop: 2,
+                      }}>
+                        <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 900, color: "white", letterSpacing: "0.07em", marginBottom: 3 }}>
+                          POPUP.FUND
+                        </div>
+                        <div style={{ fontSize: 9, color: "rgba(255,255,255,0.42)", fontFamily: SANS, lineHeight: 1.45 }}>
+                          Your Creative Work, Trading<br />on a Tokenized Market
+                        </div>
+                      </div>
+
+                    </div>
                   </div>
+
+                  {/* ── WINNERS badge — floats bottom-left outside card ── */}
+                  <div style={{
+                    position: "absolute",
+                    bottom: -14,
+                    left: -10,
+                    display: "flex", alignItems: "center", gap: 7,
+                    background: "linear-gradient(90deg, #d97706 0%, #f59e0b 100%)",
+                    borderRadius: 9999,
+                    padding: "5px 11px 5px 5px",
+                    boxShadow: "0 4px 18px rgba(217,119,6,0.45)",
+                    zIndex: 10,
+                  }}>
+                    <div style={{
+                      width: 24, height: 24, borderRadius: "50%",
+                      background: "#92400e",
+                      border: "2px solid rgba(255,255,255,0.45)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: 12, flexShrink: 0,
+                    }}>
+                      <span>👤</span>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 7.5, fontWeight: 800, color: "#1c0700", letterSpacing: "0.12em", textTransform: "uppercase", lineHeight: 1 }}>WINNERS</div>
+                      <div style={{ fontSize: 8.5, color: "rgba(28,7,0,0.7)", lineHeight: 1.3, marginTop: 1 }}>James and 200 others</div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
               {/* ── RIGHT: Text content ── */}
               <div>
-                <div style={{ fontSize: 10.5, color: "rgba(255,255,255,0.3)", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 22, fontFamily: SANS }}>
-                  — STEP 2
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.24em", textTransform: "uppercase", marginBottom: 18, fontFamily: SANS }}>
+                  — STEP 2 —
                 </div>
 
                 <h2 style={{
                   fontFamily: SANS,
-                  fontSize: "clamp(28px, 3.6vw, 50px)",
-                  fontWeight: 600,
+                  fontSize: "clamp(30px, 4vw, 56px)",
+                  fontWeight: 700,
                   color: "white",
-                  lineHeight: 1.1,
-                  margin: "0 0 26px",
-                  letterSpacing: "-0.02em",
+                  lineHeight: 1.06,
+                  margin: "0 0 28px",
+                  letterSpacing: "-0.025em",
                 }}>
-                  Community fair
-                  <br />
+                  Community fair<br />
                   buy –{" "}
-                  <span style={{ color: "#F59E0B", fontStyle: "italic" }}>in raffle</span>
+                  <em style={{ color: "#F59E0B", fontStyle: "italic", fontWeight: 700 }}>in raffle</em>
                 </h2>
 
-                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 26px", display: "flex", flexDirection: "column", gap: 9 }}>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 26px", display: "flex", flexDirection: "column", gap: 10 }}>
                   {[
                     "60-minute ticket draw for early access",
                     "Tickets cheaper the earlier you join",
                     "Winners picked via VRF Oracle",
                     "Full refunds if you're not drawn",
                   ].map((item) => (
-                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
-                      <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12, marginTop: 3, flexShrink: 0 }}>•</span>
-                      <span style={{ fontFamily: SANS, fontSize: "clamp(13px, 0.95vw, 14px)", color: "rgba(255,255,255,0.58)", lineHeight: 1.65 }}>{item}</span>
+                    <li key={item} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <span style={{ color: "rgba(255,255,255,0.32)", fontSize: 13, lineHeight: "22px", flexShrink: 0 }}>•</span>
+                      <span style={{ fontFamily: SANS, fontSize: "clamp(13px, 1vw, 14.5px)", color: "rgba(255,255,255,0.58)", lineHeight: 1.65 }}>{item}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* Pill badges */}
-                <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
+                {/* Tag pills — rectangular, matches reference */}
+                <div style={{ display: "flex", gap: 7, marginBottom: 22, flexWrap: "wrap" }}>
                   {[
-                    { label: "No Code", dot: "rgba(34,197,94,0.9)" },
-                    { label: "No VC",   dot: "rgba(239,68,68,0.9)" },
-                    { label: "No BS",   dot: "rgba(168,85,247,0.9)" },
-                  ].map((pill) => (
-                    <div key={pill.label} style={{ display: "flex", alignItems: "center", gap: 6, background: "#111", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 9999, padding: "5px 12px" }}>
-                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: pill.dot, flexShrink: 0 }} />
-                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.72)", fontFamily: SANS }}>{pill.label}</span>
+                    { label: "No Code", dot: "#22c55e" },
+                    { label: "No VC",   dot: "#ef4444" },
+                    { label: "No BS",   dot: "#a855f7" },
+                  ].map((t) => (
+                    <div key={t.label} style={{
+                      display: "flex", alignItems: "center", gap: 6,
+                      background: "#111213",
+                      border: "1px solid rgba(255,255,255,0.10)",
+                      borderRadius: 7,
+                      padding: "5px 11px",
+                    }}>
+                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: t.dot, flexShrink: 0 }} />
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.70)", fontFamily: SANS, fontWeight: 500 }}>{t.label}</span>
                     </div>
                   ))}
                 </div>
 
-                {/* Insight text */}
-                <p style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.32)", lineHeight: 1.65, margin: "0 0 26px" }}>
+                <p style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.32)", lineHeight: 1.65, margin: "0 0 28px", letterSpacing: "0.005em" }}>
                   Insight: No gas wars. No whale snipes. Fair for everyone.
                 </p>
 
-                {/* CTA */}
                 <button
-                  style={{ fontFamily: SANS, background: "#0f0f0f", color: "rgba(255,255,255,0.82)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 9999, padding: "11px 22px", fontSize: 13.5, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: 7, letterSpacing: "0.01em", transition: "border-color 0.2s, background 0.2s" }}
-                  onMouseEnter={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "#1a1a1a"; b.style.borderColor = "rgba(255,255,255,0.28)"; }}
-                  onMouseLeave={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "#0f0f0f"; b.style.borderColor = "rgba(255,255,255,0.14)"; }}
+                  style={{
+                    fontFamily: SANS,
+                    background: "#111213",
+                    color: "rgba(255,255,255,0.80)",
+                    border: "1px solid rgba(255,255,255,0.13)",
+                    borderRadius: 8,
+                    padding: "10px 20px",
+                    fontSize: 13.5,
+                    fontWeight: 500,
+                    cursor: "pointer",
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                    letterSpacing: "0.005em",
+                    transition: "background 0.18s, border-color 0.18s",
+                  }}
+                  onMouseEnter={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "#1c1e20"; b.style.borderColor = "rgba(255,255,255,0.24)"; }}
+                  onMouseLeave={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "#111213"; b.style.borderColor = "rgba(255,255,255,0.13)"; }}
                 >
                   + Create My Project Now
                 </button>
