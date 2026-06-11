@@ -5,42 +5,52 @@ const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
 const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
 const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
-function StarBox({ filled, partial }: { filled: boolean; partial?: boolean }) {
+function StarIcon({ state, id }: { state: "full" | "half" | "empty"; id?: string }) {
   return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 28,
-        height: 28,
-        borderRadius: 5,
-        background: filled
-          ? "#f97316"
-          : partial
-          ? "rgba(249,115,22,0.5)"
-          : "rgba(249,115,22,0.18)",
-        flexShrink: 0,
-      }}
-    >
-      <svg viewBox="0 0 20 20" width={14} height={14} style={{ flexShrink: 0 }}>
-        <path
-          d="M10 1.5l2.47 5 5.53.8-4 3.9.94 5.5L10 14.1 5.06 16.7 6 11.2l-4-3.9 5.53-.8z"
-          fill="white"
-        />
-      </svg>
-    </span>
+    <svg viewBox="0 0 24 24" width={18} height={18} style={{ flexShrink: 0 }}>
+      {state === "half" && id && (
+        <defs>
+          <linearGradient id={id} x1="0" x2="1" y1="0" y2="0">
+            <stop offset="50%" stopColor="white" stopOpacity="0.88" />
+            <stop offset="50%" stopColor="white" stopOpacity="0.14" />
+          </linearGradient>
+        </defs>
+      )}
+      <path
+        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+        fill={
+          state === "full"
+            ? "rgba(255,255,255,0.88)"
+            : state === "half"
+            ? `url(#${id})`
+            : "rgba(255,255,255,0.13)"
+        }
+      />
+    </svg>
   );
 }
 
 function StarRating() {
   return (
-    <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-      <StarBox filled={true} />
-      <StarBox filled={true} />
-      <StarBox filled={true} />
-      <StarBox filled={true} />
-      <StarBox filled={false} partial={true} />
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div style={{ display: "flex", gap: 3 }}>
+        <StarIcon state="full" />
+        <StarIcon state="full" />
+        <StarIcon state="full" />
+        <StarIcon state="full" />
+        <StarIcon state="half" id="star-half" />
+      </div>
+      <span
+        style={{
+          color: "rgba(255,255,255,0.7)",
+          fontSize: 13,
+          fontFamily: SANS,
+          fontWeight: 400,
+          letterSpacing: "0.01em",
+        }}
+      >
+        4.8
+      </span>
     </div>
   );
 }
