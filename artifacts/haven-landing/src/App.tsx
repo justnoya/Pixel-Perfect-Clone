@@ -73,17 +73,20 @@ export default function App() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(blankSectionRef.current, {
-        opacity: 0,
-        y: 60,
-        duration: 1.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: blankSectionRef.current,
-          start: "top 88%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      gsap.fromTo(
+        blankSectionRef.current,
+        { borderTopColor: "rgba(255,255,255,0)" },
+        {
+          borderTopColor: "rgba(255,255,255,0.12)",
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: blankSectionRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     });
     return () => ctx.revert();
   }, []);
