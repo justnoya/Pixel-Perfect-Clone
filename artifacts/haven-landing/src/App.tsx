@@ -1,5 +1,12 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
+
+const FADE_UP = (delay: number) => ({
+  initial: { opacity: 0, y: 22 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.72, ease: [0.16, 1, 0.3, 1], delay },
+});
 
 const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
 const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
@@ -378,7 +385,8 @@ export default function App() {
         }}
       >
         {/* Decorative hairline rule */}
-        <div
+        <motion.div
+          {...FADE_UP(0.1)}
           style={{
             width: 42,
             height: 1,
@@ -388,7 +396,8 @@ export default function App() {
         />
 
         {/* Headline */}
-        <h1
+        <motion.h1
+          {...FADE_UP(0.22)}
           style={{
             fontFamily: COURIER,
             fontSize: "clamp(34px, 4.8vw, 62px)",
@@ -403,10 +412,11 @@ export default function App() {
           Nothing to hide.
           <br />
           Everything to trust.
-        </h1>
+        </motion.h1>
 
         {/* Subtext */}
-        <p
+        <motion.p
+          {...FADE_UP(0.42)}
           style={{
             fontFamily: SANS,
             fontSize: "clamp(13px, 1vw, 15px)",
@@ -419,10 +429,11 @@ export default function App() {
         >
           A transparent platform built for clarity, accountability, and real
           trust. We believe honesty is the foundation of every great product.
-        </p>
+        </motion.p>
 
         {/* CTA + Stars inline */}
-        <div
+        <motion.div
+          {...FADE_UP(0.58)}
           style={{
             display: "flex",
             alignItems: "center",
@@ -464,6 +475,7 @@ export default function App() {
               gap: 6,
             }}
           >
+
             <StarRating />
             <span
               style={{
@@ -477,12 +489,15 @@ export default function App() {
               Trusted by 50,000+ · Verified Platform
             </span>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* ══ SCROLL INDICATOR — bottom-right ══ */}
-      <div
+      <motion.div
         className="scroll-indicator"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut", delay: 1.0 }}
         style={{
           position: "absolute",
           right: "clamp(28px, 4vw, 56px)",
@@ -515,7 +530,7 @@ export default function App() {
         >
           Scroll
         </span>
-      </div>
+      </motion.div>
     </div>
   );
 }
