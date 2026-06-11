@@ -8,11 +8,6 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidde
 .desktop-nav { display: flex !important; }
 .mobile-nav  { display: none  !important; }
 
-/* Hero feature strip */
-.hero-features {
-  display: flex !important;
-}
-
 /* Grids */
 .how-it-works-grid {
   grid-template-columns: repeat(3, 1fr) !important;
@@ -63,23 +58,6 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidde
     top: 50% !important;
     transform: translateY(-50%) !important;
     margin-top: 24px !important;
-  }
-
-  /* Hero feature strip: 2 cols on mobile */
-  .hero-features {
-    flex-wrap: wrap !important;
-  }
-  .hero-features > div {
-    flex: 0 0 50% !important;
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
-    padding: 16px 18px !important;
-  }
-  .hero-features > div:nth-child(odd) {
-    border-right: 1px solid rgba(255,255,255,0.07) !important;
-  }
-  .hero-features > div:nth-last-child(-n+2) {
-    border-bottom: none !important;
   }
 
   .how-it-works-grid {

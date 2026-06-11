@@ -39,17 +39,6 @@ const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
 const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
 const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
-const HERO_FEATURES = [
-  { icon: Eye, label: "Full Visibility", desc: "See everything that matters." },
-  { icon: Shield, label: "Built for Trust", desc: "Verified, secure and always reliable." },
-  { icon: Sparkles, label: "Total Transparency", desc: "No hidden data. No fine print." },
-  { icon: Lock, label: "Enterprise Security", desc: "Industry-grade security to protect you." },
-];
-
-const TRUSTED_LOGOS = [
-  "Acme Corp", "EchoLab", "Cloudify", "VisionFlow", "HexaTech", "Meridian",
-];
-
 const HOW_IT_WORKS = [
   {
     step: "01",
@@ -430,84 +419,17 @@ export default function App() {
           </motion.div>
         </div>
 
-        {/* Bottom feature strip */}
-        <motion.div
-          {...FADE_UP(0.75)}
-          className="hero-features"
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 10,
-            display: "flex",
-            alignItems: "stretch",
-            borderTop: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(8,8,8,0.55)",
-            backdropFilter: "blur(18px)",
-          }}
-        >
-          {HERO_FEATURES.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <div
-                key={f.label}
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 14,
-                  padding: "20px 28px",
-                  borderRight: i < HERO_FEATURES.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
-                }}
-              >
-                <Icon size={18} color="rgba(255,255,255,0.55)" strokeWidth={1.5} style={{ flexShrink: 0 }} />
-                <div>
-                  <div style={{ color: "rgba(255,255,255,0.88)", fontSize: 13, fontWeight: 500, marginBottom: 2, fontFamily: SANS }}>
-                    {f.label}
-                  </div>
-                  <div style={{ color: "rgba(255,255,255,0.42)", fontSize: 12, fontFamily: SANS, lineHeight: 1.4 }}>
-                    {f.desc}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </motion.div>
-
         {/* Scroll indicator */}
         <motion.div
           className="scroll-indicator"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.2 }}
-          style={{ position: "absolute", right: "clamp(24px, 4vw, 52px)", bottom: "clamp(100px, 16vh, 130px)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
+          style={{ position: "absolute", right: "clamp(24px, 4vw, 52px)", bottom: "clamp(36px, 5.5vh, 68px)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
         >
           <div style={{ width: 1, height: 40, background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.25) 100%)" }} />
           <span style={{ color: "rgba(255,255,255,0.25)", fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", fontFamily: SANS, writingMode: "vertical-lr", transform: "rotate(180deg)" }}>Scroll</span>
         </motion.div>
       </section>
 
-      {/* ══════════════════════════════════════════ */}
-      {/* TRUSTED BY LOGOS                          */}
-      {/* ══════════════════════════════════════════ */}
-      <section style={{ width: "100%", padding: "56px 40px", background: "#080808", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <FadeSection>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.28)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", fontFamily: SANS, marginBottom: 36 }}>
-            Trusted by companies you know
-          </p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(28px, 5vw, 72px)", flexWrap: "wrap" }}>
-            {TRUSTED_LOGOS.map((logo) => (
-              <span
-                key={logo}
-                style={{ color: "rgba(255,255,255,0.3)", fontSize: 14, fontWeight: 500, letterSpacing: "0.06em", fontFamily: SANS, transition: "color 0.2s", cursor: "default" }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLSpanElement).style.color = "rgba(255,255,255,0.65)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLSpanElement).style.color = "rgba(255,255,255,0.3)")}
-              >
-                {logo}
-              </span>
-            ))}
-          </div>
-        </FadeSection>
-      </section>
 
       {/* ══════════════════════════════════════════ */}
       {/* ANIMATED TEXT SECTION                     */}
