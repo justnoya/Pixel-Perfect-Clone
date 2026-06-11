@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FADE_UP = (delay: number) => ({
   initial: { opacity: 0, y: 22 },
@@ -64,18 +68,43 @@ function StarRating() {
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const blankSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(blankSectionRef.current, {
+        opacity: 0,
+        y: 60,
+        duration: 1.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: blankSectionRef.current,
+          start: "top 88%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    });
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div
+    <main
       style={{
-        position: "relative",
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
         background: "#080808",
         fontFamily: SANS,
+        overflowX: "hidden",
       }}
     >
+      {/* ══ SECTION: HERO ══ */}
+      <section
+        id="hero"
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100vh",
+          overflow: "hidden",
+        }}
+      >
       {/* ── Background image ── */}
       <img
         src="/hero-bg.jpg"
@@ -531,6 +560,34 @@ export default function App() {
           Scroll
         </span>
       </motion.div>
-    </div>
+      </section>
+
+      {/* ══ SECTION: BLANK (GSAP scroll) ══ */}
+      <section
+        ref={blankSectionRef}
+        id="section-02"
+        style={{
+          width: "100%",
+          height: "100vh",
+          background: "#0c0c0c",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <span
+          style={{
+            color: "rgba(255,255,255,0.12)",
+            fontSize: 11,
+            letterSpacing: "0.35em",
+            textTransform: "uppercase",
+            fontFamily: SANS,
+          }}
+        >
+          — section 02 —
+        </span>
+      </section>
+    </main>
   );
 }
