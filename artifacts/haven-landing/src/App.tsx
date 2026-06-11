@@ -96,7 +96,6 @@ export default function App() {
       style={{
         background: "#080808",
         fontFamily: SANS,
-        overflowX: "hidden",
       }}
     >
       {/* ══ SECTION: HERO ══ */}

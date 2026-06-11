@@ -9,6 +9,8 @@ interface AnimatedTextProps extends React.HTMLAttributes<HTMLDivElement> {
   underlinePath?: string;
   underlineHoverPath?: string;
   underlineDuration?: number;
+  /** Fallback delay (ms) before animation plays if scroll never triggers */
+  fallbackDelay?: number;
 }
 
 const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
@@ -20,6 +22,7 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
       underlinePath = "M 0,10 Q 75,0 150,10 Q 225,20 300,10",
       underlineHoverPath = "M 0,10 Q 75,20 150,10 Q 225,0 300,10",
       underlineDuration = 1.2,
+      fallbackDelay = 2800,
       className,
       style,
       ...props
@@ -28,52 +31,56 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const lineControls = useAnimation();
-    const textControls = useAnimation();
-    const [triggered, setTriggered] = React.useState(false);
+    const [played, setPlayed] = React.useState(false);
 
-    // Scroll-position polling — reliable in all iframe/preview contexts
     React.useEffect(() => {
-      const check = () => {
-        const el = containerRef.current;
-        if (!el || triggered) return;
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.88) {
-          setTriggered(true);
-        }
+      if (played) return;
+
+      // Fallback timer — plays regardless of scroll detection
+      const fallback = setTimeout(() => setPlayed(true), fallbackDelay);
+
+      // IntersectionObserver — fires as soon as 1px is visible
+      let observer: IntersectionObserver | null = null;
+      if (containerRef.current) {
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              clearTimeout(fallback);
+              setPlayed(true);
+            }
+          },
+          { threshold: 0, rootMargin: "0px" }
+        );
+        observer.observe(containerRef.current);
+      }
+
+      return () => {
+        clearTimeout(fallback);
+        observer?.disconnect();
       };
-      check();
-      window.addEventListener("scroll", check, { passive: true });
-      return () => window.removeEventListener("scroll", check);
-    }, [triggered]);
+    }, [played, fallbackDelay]);
 
-    // Sequence: text fade-up → line draws → line swings forever
+    // Sequence: draw line → swing forever
     React.useEffect(() => {
-      if (!triggered) return;
-
+      if (!played) return;
       const run = async () => {
-        // 1. Fade text up
-        await textControls.start({
-          y: 0,
-          opacity: 1,
-          transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
-        });
-
-        // 2. Draw the underline
         await lineControls.start({
           pathLength: 1,
           opacity: 1,
-          transition: { duration: underlineDuration, ease: "easeInOut" },
+          transition: { duration: underlineDuration, ease: "easeInOut", delay: 0.1 },
         });
-
-        // 3. Swing forever
         lineControls.start({
           d: underlineHoverPath,
-          transition: { duration: 0.9, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" },
+          transition: {
+            duration: 0.85,
+            repeat: Infinity,
+            repeatType: "mirror",
+            ease: "easeInOut",
+          },
         });
       };
-
       run();
-    }, [triggered, lineControls, textControls, underlineDuration, underlineHoverPath]);
+    }, [played]);
 
     return (
       <div
@@ -89,17 +96,15 @@ const AnimatedText = React.forwardRef<HTMLDivElement, AnimatedTextProps>(
       >
         <div style={{ position: "relative", display: "inline-block", paddingBottom: 28 }}>
 
-          {/* Text */}
-          <motion.h2
+          {/* Text — always visible, no opacity or transform gate */}
+          <h2
             className={cn("font-bold text-center", textClassName)}
-            style={{ margin: 0 }}
-            animate={textControls}
-            initial={{ y: 14, opacity: 0 }}
+            style={{ margin: 0, color: "white" }}
           >
             {text}
-          </motion.h2>
+          </h2>
 
-          {/* Underline — draws then swings */}
+          {/* Underline — draws on scroll into view (or after fallbackDelay), then swings */}
           <svg
             width="100%"
             height="20"
