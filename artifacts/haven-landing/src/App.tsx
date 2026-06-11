@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatedText } from "@/components/ui/animated-underline-text-one";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -562,7 +563,7 @@ export default function App() {
       </motion.div>
       </section>
 
-      {/* ══ SECTION: BLANK (GSAP scroll) ══ */}
+      {/* ══ SECTION 02 — animated underline text ══ */}
       <section
         ref={blankSectionRef}
         id="section-02"
@@ -576,17 +577,17 @@ export default function App() {
           borderTop: "1px solid rgba(255,255,255,0.05)",
         }}
       >
-        <span
+        <AnimatedText
+          text="Nothing to hide."
+          textClassName="text-5xl font-normal"
+          underlineDuration={1.8}
+          underlinePath="M 0,10 Q 75,0 150,10 Q 225,20 300,10"
+          underlineHoverPath="M 0,10 Q 75,20 150,10 Q 225,0 300,10"
           style={{
-            color: "rgba(255,255,255,0.12)",
-            fontSize: 11,
-            letterSpacing: "0.35em",
-            textTransform: "uppercase",
-            fontFamily: SANS,
+            fontFamily: COURIER,
+            color: "white",
           }}
-        >
-          — section 02 —
-        </span>
+        />
       </section>
     </main>
   );
