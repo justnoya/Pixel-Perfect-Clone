@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import type { Transition } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import type { MotionValue, Transition } from "framer-motion";
 import {
   Search,
   Menu,
@@ -15,12 +15,14 @@ import {
   Check,
   Star,
 } from "lucide-react";
+import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedText } from "@/components/ui/animated-underline-text-one";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ─── constants ──────────────────────────────────────────────── */
 const CUSTOM_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const FADE_UP = (delay: number) => ({
@@ -39,6 +41,7 @@ const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
 const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
 const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
+/* ─── data ───────────────────────────────────────────────────── */
 const HOW_IT_WORKS = [
   {
     step: "01",
@@ -141,16 +144,12 @@ const TESTIMONIALS = [
   },
 ];
 
+/* ─── small components ───────────────────────────────────────── */
 function StarRating({ count = 5 }: { count?: number }) {
   return (
     <div style={{ display: "flex", gap: 3 }}>
       {Array.from({ length: count }).map((_, i) => (
-        <Star
-          key={i}
-          size={14}
-          fill="rgba(255,255,255,0.85)"
-          stroke="none"
-        />
+        <Star key={i} size={14} fill="rgba(255,255,255,0.85)" stroke="none" />
       ))}
     </div>
   );
@@ -195,11 +194,11 @@ function FadeSection({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 28 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
       style={style}
@@ -210,37 +209,114 @@ function FadeSection({
   );
 }
 
+/* ─── PERSPECTIVE CARD (Olivier Larose technique) ────────────── */
+/*
+ * Each card is position:sticky / top:0 / height:100vh.
+ * A shared scrollYProgress (0→1 over the full N×100vh container)
+ * drives scale + rotate on a per-card basis:
+ *   card i exits during progress [i/N, (i+1)/N]
+ *   → scale  1 → 0.85
+ *   → rotate 0 → −3°
+ *   → borderRadius 0 → 16px  (the "card pulling away" feel)
+ * The last card receives no transform (it's the destination).
+ */
+function PerspectiveCard({
+  children,
+  i,
+  total,
+  progress,
+}: {
+  children: React.ReactNode;
+  i: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  /*
+   * Total scroll distance for the container = (N × 100vh) − 100vh = (N−1) × 100vh
+   * Card i stacks at scroll = i × 100vh → progress = i / (N−1)
+   * So each card's "exit window" is [i/(N-1), (i+1)/(N-1)]
+   */
+  const segments = total - 1; // N-1 transitions for N cards
+  const start = i / segments;
+  const end = Math.min(1, (i + 1) / segments);
+
+  const scale = useTransform(progress, [start, end], [1, 0.85]);
+  const rotate = useTransform(progress, [start, end], [0, -3]);
+  const borderRadius = useTransform(progress, [start, end], [0, 16]);
+
+  const isLast = i === total - 1;
+
+  return (
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        height: "100vh",
+        zIndex: i + 1,
+      }}
+    >
+      <motion.div
+        style={
+          isLast
+            ? { width: "100%", height: "100%", overflow: "hidden" }
+            : {
+                scale,
+                rotate,
+                borderRadius,
+                transformOrigin: "top center",
+                width: "100%",
+                height: "100%",
+                overflow: "hidden",
+                willChange: "transform",
+              }
+        }
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ─── APP ─────────────────────────────────────────────────────── */
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const blankSectionRef = useRef<HTMLElement>(null);
 
+  /* perspective container ref + scroll progress */
+  const perspContainerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: perspProgress } = useScroll({
+    target: perspContainerRef,
+    offset: ["start start", "end end"],
+  });
+
+  /* nav transparency on scroll */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* Lenis smooth scroll — keeps Framer Motion useScroll in sync */
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      if (!blankSectionRef.current) return;
-      gsap.fromTo(
-        blankSectionRef.current,
-        { borderTopColor: "rgba(255,255,255,0)" },
-        {
-          borderTopColor: "rgba(255,255,255,0.10)",
-          duration: 1.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: blankSectionRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    } as ConstructorParameters<typeof Lenis>[0]);
+
+    lenis.on("scroll", () => ScrollTrigger.update());
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
   }, []);
+
+  const N_CARDS = 4;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -253,7 +329,7 @@ export default function App() {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 50,
+          zIndex: 100,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -270,7 +346,9 @@ export default function App() {
         <div style={{ background: "rgba(15,15,15,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: 9999, padding: "10px 4px", display: "flex", alignItems: "center", border: "1px solid rgba(255,255,255,0.07)" }}>
           {NAV_LINKS.map((link, i) => (
             <span key={link} style={{ display: "flex", alignItems: "center" }}>
-              <a href="#" style={{ color: "rgba(255,255,255,0.82)", fontSize: 13.5, fontWeight: 400, textDecoration: "none", whiteSpace: "nowrap", padding: "3px 20px", letterSpacing: "0.01em", transition: "color 0.15s" }}
+              <a
+                href="#"
+                style={{ color: "rgba(255,255,255,0.82)", fontSize: 13.5, fontWeight: 400, textDecoration: "none", whiteSpace: "nowrap", padding: "3px 20px", letterSpacing: "0.01em", transition: "color 0.15s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.82)")}
               >
@@ -290,7 +368,9 @@ export default function App() {
           <button style={{ color: "rgba(255,255,255,0.8)", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center" }}>
             <Search size={17} strokeWidth={1.6} />
           </button>
-          <a href="#" style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "9px 22px", fontSize: 13, fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em", transition: "opacity 0.15s" }}
+          <a
+            href="#"
+            style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "9px 22px", fontSize: 13, fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em", transition: "opacity 0.15s" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.88")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
           >
@@ -300,11 +380,11 @@ export default function App() {
       </nav>
 
       {/* ══ MOBILE NAV ══ */}
-      <nav className="mobile-nav" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, display: "none", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", background: scrolled ? "rgba(8,8,8,0.9)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", transition: "background 0.3s" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <img src="/logo.png" alt="NothingHide" style={{ width: 28, height: 28, objectFit: "contain" }} />
-          <span style={{ color: "white", fontSize: 14, fontWeight: 500, letterSpacing: "0.04em" }}>NothingHide</span>
-        </div>
+      <nav
+        className="mobile-nav"
+        style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "none", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", background: scrolled ? "rgba(8,8,8,0.9)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", transition: "background 0.3s" }}
+      >
+        <span style={{ color: "white", fontSize: 14, fontWeight: 500, letterSpacing: "0.04em" }}>NothingHide</span>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <button style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}>
             <Search size={18} strokeWidth={1.6} />
@@ -315,224 +395,247 @@ export default function App() {
         </div>
       </nav>
 
-      {/* ══ MOBILE MENU ══ */}
       {mobileMenuOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 40, background: "rgba(5,5,5,0.97)", backdropFilter: "blur(20px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "rgba(5,5,5,0.97)", backdropFilter: "blur(20px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
           {NAV_LINKS.map((link) => (
             <a key={link} href="#" onClick={() => setMobileMenuOpen(false)} style={{ color: "white", fontSize: 28, fontWeight: 300, textDecoration: "none", letterSpacing: "0.02em", padding: "10px 0", fontFamily: COURIER }}>
               {link}
             </a>
           ))}
-          <div style={{ marginTop: 32, display: "flex", gap: 16 }}>
+          <div style={{ marginTop: 32 }}>
             <a href="#" style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "12px 32px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>Login</a>
           </div>
         </div>
       )}
 
-      {/* ══════════════════════════════════════════ */}
-      {/* HERO SECTION                               */}
-      {/* ══════════════════════════════════════════ */}
-      <section id="hero" style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", minHeight: 600 }}>
-        <img src="/hero-bg.jpg" alt="" draggable={false} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", pointerEvents: "none", userSelect: "none" }} />
-
-        {/* Gradients */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 22%, transparent 45%)", pointerEvents: "none", zIndex: 1 }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(4,4,4,0.96) 0%, rgba(4,4,4,0.7) 18%, rgba(4,4,4,0.1) 42%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.25) 0%, transparent 55%)", pointerEvents: "none", zIndex: 1 }} />
-
-        {/* Trust badge */}
-        <motion.div
-          {...FADE_IN(0.5)}
-          style={{
-            position: "absolute",
-            top: "clamp(80px, 14vh, 110px)",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 10,
-            background: "rgba(255,255,255,0.1)",
-            backdropFilter: "blur(12px)",
-            border: "1px solid rgba(255,255,255,0.18)",
-            borderRadius: 9999,
-            padding: "7px 16px",
-            display: "flex",
-            alignItems: "center",
-            gap: 7,
-            whiteSpace: "nowrap",
-          }}
-        >
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: SANS, letterSpacing: "0.02em" }}>
-            Trusted by 50,000+ users worldwide
-          </span>
-          <span style={{ fontSize: 14 }}>❤️</span>
-        </motion.div>
-
-        {/* Hero content */}
-        <div
-          className="hero-content"
-          style={{
-            position: "absolute",
-            left: "clamp(28px, 6vw, 90px)",
-            top: "50%",
-            transform: "translateY(-50%)",
-            marginTop: "16px",
-            zIndex: 10,
-            maxWidth: "min(600px, calc(100vw - 56px))",
-          }}
-        >
-          <motion.div {...FADE_UP(0.08)} style={{ width: 42, height: 1, background: "rgba(255,255,255,0.4)", marginBottom: 20 }} />
-
-          <motion.h1
-            {...FADE_UP(0.2)}
-            style={{ fontFamily: COURIER, fontSize: "clamp(34px, 4.8vw, 64px)", fontWeight: 400, color: "white", lineHeight: 1.08, letterSpacing: "-0.01em", margin: "0 0 clamp(14px, 2vh, 24px)" }}
-          >
-            Nothing to hide.
-            <br />
-            Everything to trust.
-          </motion.h1>
-
-          <motion.p
-            {...FADE_UP(0.38)}
-            style={{ fontFamily: SANS, fontSize: "clamp(13px, 1.1vw, 15.5px)", fontWeight: 300, color: "rgba(255,255,255,0.62)", lineHeight: 1.8, margin: "0 0 clamp(22px, 3vh, 36px)", maxWidth: "min(380px, 82vw)" }}
-          >
-            A transparent platform built for clarity, accountability, and real trust. We believe honesty is the foundation of every great product.
-          </motion.p>
-
-          <motion.div
-            {...FADE_UP(0.54)}
-            style={{ display: "flex", alignItems: "center", gap: "clamp(12px, 2.5vw, 24px)", flexWrap: "wrap" }}
-          >
-            <button
-              style={{ fontFamily: SANS, background: "#0f0f0f", color: "white", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 9999, padding: "14px 36px", fontSize: 14, fontWeight: 500, cursor: "pointer", letterSpacing: "0.01em", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 8, transition: "border-color 0.2s, background 0.2s" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.35)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#0f0f0f"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.2)"; }}
-            >
-              Get Started <ArrowRight size={14} />
-            </button>
-            <button
-              style={{ fontFamily: SANS, background: "transparent", color: "rgba(255,255,255,0.75)", border: "none", padding: "14px 0", fontSize: 14, fontWeight: 400, cursor: "pointer", display: "flex", alignItems: "center", gap: 9 }}
-            >
-              <span style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <Play size={12} fill="white" stroke="none" style={{ marginLeft: 2 }} />
-              </span>
-              Watch Demo
-            </button>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="scroll-indicator"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.2 }}
-          style={{ position: "absolute", right: "clamp(24px, 4vw, 52px)", bottom: "clamp(36px, 5.5vh, 68px)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
-        >
-          <div style={{ width: 1, height: 40, background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.25) 100%)" }} />
-          <span style={{ color: "rgba(255,255,255,0.25)", fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", fontFamily: SANS, writingMode: "vertical-lr", transform: "rotate(180deg)" }}>Scroll</span>
-        </motion.div>
-      </section>
-
-
-      {/* ══════════════════════════════════════════ */}
-      {/* ANIMATED TEXT SECTION                     */}
-      {/* ══════════════════════════════════════════ */}
-      <section
-        ref={blankSectionRef}
-        id="section-02"
-        style={{ width: "100%", minHeight: "70vh", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 40px", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+      {/* ══════════════════════════════════════════════════════════
+          PERSPECTIVE TRANSITION CONTAINER
+          — Olivier Larose technique —
+          4 sticky cards × 100vh = 400vh total scroll space.
+          Each card "recedes" as the next one slides over it.
+      ══════════════════════════════════════════════════════════ */}
+      <div
+        ref={perspContainerRef}
+        style={{ position: "relative", height: `${N_CARDS * 100}vh` }}
       >
-        <FadeSection style={{ textAlign: "center", marginBottom: 64, maxWidth: 640 }}>
-          <SectionLabel>Our Promise</SectionLabel>
-          <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 400, color: "white", margin: "0 0 20px", lineHeight: 1.2 }}>
-            Honesty isn't a feature.
-            <br />
-            It's the whole product.
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.48)", fontSize: 15, fontFamily: SANS, lineHeight: 1.8, margin: 0 }}>
-            We built NothingHide because we believe transparency shouldn't be optional — it should be the default.
-          </p>
-        </FadeSection>
-        <AnimatedText
-          text="Nothing to hide."
-          textClassName="text-5xl font-normal"
-          underlineDuration={1.8}
-          underlinePath="M 0,10 Q 75,0 150,10 Q 225,20 300,10"
-          underlineHoverPath="M 0,10 Q 75,20 150,10 Q 225,0 300,10"
-          style={{ fontFamily: COURIER, color: "white" }}
-        />
-      </section>
 
-      {/* ══════════════════════════════════════════ */}
-      {/* HOW IT WORKS                              */}
-      {/* ══════════════════════════════════════════ */}
-      <section id="how-it-works" style={{ width: "100%", padding: "clamp(64px, 10vh, 120px) clamp(24px, 6vw, 80px)", background: "#080808" }}>
-        <FadeSection style={{ textAlign: "center", marginBottom: 72 }}>
-          <SectionLabel>How It Works</SectionLabel>
-          <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 50px)", fontWeight: 400, color: "white", margin: "0 auto", lineHeight: 1.15, maxWidth: 600 }}>
-            Clarity in three simple steps
-          </h2>
-        </FadeSection>
+        {/* ── CARD 0 · HERO ─────────────────────────────────── */}
+        <PerspectiveCard i={0} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="hero"
+            style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "#080808" }}
+          >
+            <img
+              src="/hero-bg.jpg"
+              alt=""
+              draggable={false}
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", pointerEvents: "none", userSelect: "none" }}
+            />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 22%, transparent 45%)", pointerEvents: "none", zIndex: 1 }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(4,4,4,0.96) 0%, rgba(4,4,4,0.7) 18%, rgba(4,4,4,0.1) 42%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.25) 0%, transparent 55%)", pointerEvents: "none", zIndex: 1 }} />
 
-        <div className="how-it-works-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, maxWidth: 1100, margin: "0 auto", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, overflow: "hidden" }}>
-          {HOW_IT_WORKS.map((item, i) => (
-            <FadeSection key={item.step} style={{ padding: "clamp(28px, 4vw, 52px)", background: "#0c0c0c", borderRight: i < HOW_IT_WORKS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none", position: "relative" }}>
-              <div style={{ fontFamily: COURIER, fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 400, color: "rgba(255,255,255,0.06)", lineHeight: 1, marginBottom: 24 }}>
-                {item.step}
-              </div>
-              <h3 style={{ fontFamily: SANS, fontSize: "clamp(15px, 1.2vw, 18px)", fontWeight: 500, color: "white", margin: "0 0 14px" }}>
-                {item.title}
-              </h3>
-              <p style={{ fontFamily: SANS, fontSize: "clamp(13px, 0.9vw, 14.5px)", color: "rgba(255,255,255,0.45)", lineHeight: 1.75, margin: 0 }}>
-                {item.desc}
-              </p>
-              <div style={{ marginTop: 32 }}>
-                <ChevronRight size={16} color="rgba(255,255,255,0.25)" />
-              </div>
-            </FadeSection>
-          ))}
-        </div>
-      </section>
+            {/* Trust badge */}
+            <motion.div
+              {...FADE_IN(0.5)}
+              style={{
+                position: "absolute",
+                top: "clamp(80px, 14vh, 110px)",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 10,
+                background: "rgba(255,255,255,0.1)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.18)",
+                borderRadius: 9999,
+                padding: "7px 16px",
+                display: "flex",
+                alignItems: "center",
+                gap: 7,
+                whiteSpace: "nowrap",
+              }}
+            >
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: SANS, letterSpacing: "0.02em" }}>
+                Trusted by 50,000+ users worldwide
+              </span>
+              <span style={{ fontSize: 14 }}>❤️</span>
+            </motion.div>
 
-      {/* ══════════════════════════════════════════ */}
-      {/* FEATURES GRID                             */}
-      {/* ══════════════════════════════════════════ */}
-      <section id="features" style={{ width: "100%", padding: "clamp(64px, 10vh, 120px) clamp(24px, 6vw, 80px)", background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <FadeSection style={{ textAlign: "center", marginBottom: 64 }}>
-          <SectionLabel>Features</SectionLabel>
-          <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 50px)", fontWeight: 400, color: "white", margin: "0 auto 16px", lineHeight: 1.15, maxWidth: 600 }}>
-            Everything you need to build trust
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.42)", fontSize: 15, fontFamily: SANS, maxWidth: 500, margin: "0 auto", lineHeight: 1.75 }}>
-            One platform, total transparency. From compliance to culture.
-          </p>
-        </FadeSection>
-
-        <div className="features-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, maxWidth: 1100, margin: "0 auto", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16, overflow: "hidden" }}>
-          {FEATURES.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <FadeSection
-                key={f.title}
-                style={{
-                  padding: "clamp(24px, 3vw, 44px)",
-                  background: "#0c0c0c",
-                  borderRight: i % 3 < 2 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                  borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                  transition: "background 0.2s",
-                }}
+            {/* Hero content */}
+            <div
+              className="hero-content"
+              style={{ position: "absolute", left: "clamp(28px, 6vw, 90px)", top: "50%", transform: "translateY(-50%)", marginTop: "16px", zIndex: 10, maxWidth: "min(600px, calc(100vw - 56px))" }}
+            >
+              <motion.div {...FADE_UP(0.08)} style={{ width: 42, height: 1, background: "rgba(255,255,255,0.4)", marginBottom: 20 }} />
+              <motion.h1
+                {...FADE_UP(0.2)}
+                style={{ fontFamily: COURIER, fontSize: "clamp(34px, 4.8vw, 64px)", fontWeight: 400, color: "white", lineHeight: 1.08, letterSpacing: "-0.01em", margin: "0 0 clamp(14px, 2vh, 24px)" }}
               >
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                  <Icon size={18} color="rgba(255,255,255,0.65)" strokeWidth={1.5} />
-                </div>
-                <h3 style={{ fontFamily: SANS, fontSize: "clamp(14px, 1.1vw, 16px)", fontWeight: 500, color: "white", margin: "0 0 10px" }}>
-                  {f.title}
-                </h3>
-                <p style={{ fontFamily: SANS, fontSize: "clamp(12.5px, 0.85vw, 14px)", color: "rgba(255,255,255,0.42)", lineHeight: 1.75, margin: 0 }}>
-                  {f.desc}
-                </p>
-              </FadeSection>
-            );
-          })}
-        </div>
-      </section>
+                Nothing to hide.
+                <br />
+                Everything to trust.
+              </motion.h1>
+              <motion.p
+                {...FADE_UP(0.38)}
+                style={{ fontFamily: SANS, fontSize: "clamp(13px, 1.1vw, 15.5px)", fontWeight: 300, color: "rgba(255,255,255,0.62)", lineHeight: 1.8, margin: "0 0 clamp(22px, 3vh, 36px)", maxWidth: "min(380px, 82vw)" }}
+              >
+                A transparent platform built for clarity, accountability, and real trust. We believe honesty is the foundation of every great product.
+              </motion.p>
+              <motion.div
+                {...FADE_UP(0.54)}
+                style={{ display: "flex", alignItems: "center", gap: "clamp(12px, 2.5vw, 24px)", flexWrap: "wrap" }}
+              >
+                <button
+                  style={{ fontFamily: SANS, background: "#0f0f0f", color: "white", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 9999, padding: "14px 36px", fontSize: 14, fontWeight: 500, cursor: "pointer", letterSpacing: "0.01em", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 8, transition: "border-color 0.2s, background 0.2s" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.35)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#0f0f0f"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.2)"; }}
+                >
+                  Get Started <ArrowRight size={14} />
+                </button>
+                <button
+                  style={{ fontFamily: SANS, background: "transparent", color: "rgba(255,255,255,0.75)", border: "none", padding: "14px 0", fontSize: 14, fontWeight: 400, cursor: "pointer", display: "flex", alignItems: "center", gap: 9 }}
+                >
+                  <span style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Play size={12} fill="white" stroke="none" style={{ marginLeft: 2 }} />
+                  </span>
+                  Watch Demo
+                </button>
+              </motion.div>
+            </div>
+
+            {/* Scroll indicator */}
+            <motion.div
+              className="scroll-indicator"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.4 }}
+              style={{ position: "absolute", right: "clamp(24px, 4vw, 52px)", bottom: "clamp(36px, 5.5vh, 68px)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
+            >
+              <div style={{ width: 1, height: 40, background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.25) 100%)" }} />
+              <span style={{ color: "rgba(255,255,255,0.25)", fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", fontFamily: SANS, writingMode: "vertical-lr", transform: "rotate(180deg)" }}>Scroll</span>
+            </motion.div>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 1 · OUR PROMISE ──────────────────────────── */}
+        <PerspectiveCard i={1} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="section-02"
+            style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 40px", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <FadeSection style={{ textAlign: "center", marginBottom: 52, maxWidth: 640 }}>
+              <SectionLabel>Our Promise</SectionLabel>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 400, color: "white", margin: "0 0 20px", lineHeight: 1.2 }}>
+                Honesty isn't a feature.
+                <br />
+                It's the whole product.
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.48)", fontSize: 15, fontFamily: SANS, lineHeight: 1.8, margin: 0 }}>
+                We built NothingHide because we believe transparency shouldn't be optional — it should be the default.
+              </p>
+            </FadeSection>
+            <FadeSection>
+              <AnimatedText
+                text="Nothing to hide."
+                textClassName="text-5xl font-normal"
+                underlineDuration={1.8}
+                underlinePath="M 0,10 Q 75,0 150,10 Q 225,20 300,10"
+                underlineHoverPath="M 0,10 Q 75,20 150,10 Q 225,0 300,10"
+                style={{ fontFamily: COURIER, color: "white" }}
+              />
+            </FadeSection>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 2 · HOW IT WORKS ─────────────────────────── */}
+        <PerspectiveCard i={2} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="how-it-works"
+            style={{ width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)" }}
+          >
+            <FadeSection style={{ textAlign: "center", marginBottom: 48 }}>
+              <SectionLabel>How It Works</SectionLabel>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 auto", lineHeight: 1.15, maxWidth: 560 }}>
+                Clarity in three simple steps
+              </h2>
+            </FadeSection>
+
+            <div
+              className="how-it-works-grid"
+              style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, maxWidth: 1060, width: "100%", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, overflow: "hidden" }}
+            >
+              {HOW_IT_WORKS.map((item, i) => (
+                <FadeSection
+                  key={item.step}
+                  style={{ padding: "clamp(24px, 3.5vw, 44px)", background: "#111", borderRight: i < HOW_IT_WORKS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none" }}
+                >
+                  <div style={{ fontFamily: COURIER, fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 400, color: "rgba(255,255,255,0.06)", lineHeight: 1, marginBottom: 20 }}>
+                    {item.step}
+                  </div>
+                  <h3 style={{ fontFamily: SANS, fontSize: "clamp(14px, 1.1vw, 17px)", fontWeight: 500, color: "white", margin: "0 0 12px" }}>
+                    {item.title}
+                  </h3>
+                  <p style={{ fontFamily: SANS, fontSize: "clamp(12.5px, 0.85vw, 14px)", color: "rgba(255,255,255,0.42)", lineHeight: 1.75, margin: 0 }}>
+                    {item.desc}
+                  </p>
+                  <div style={{ marginTop: 28 }}>
+                    <ChevronRight size={15} color="rgba(255,255,255,0.22)" />
+                  </div>
+                </FadeSection>
+              ))}
+            </div>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 3 · FEATURES (last — no scale transform) ─── */}
+        <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="features"
+            style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+          >
+            <FadeSection style={{ textAlign: "center", marginBottom: 40 }}>
+              <SectionLabel>Features</SectionLabel>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 auto 12px", lineHeight: 1.15, maxWidth: 560 }}>
+                Everything you need to build trust
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.42)", fontSize: 14, fontFamily: SANS, maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>
+                One platform, total transparency. From compliance to culture.
+              </p>
+            </FadeSection>
+
+            <div
+              className="features-grid"
+              style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, maxWidth: 1060, width: "100%", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16, overflow: "hidden" }}
+            >
+              {FEATURES.map((f, i) => {
+                const Icon = f.icon;
+                return (
+                  <FadeSection
+                    key={f.title}
+                    style={{
+                      padding: "clamp(18px, 2.4vw, 32px)",
+                      background: "#0f0f0f",
+                      borderRight: i % 3 < 2 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                      borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                    }}
+                  >
+                    <div style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
+                      <Icon size={16} color="rgba(255,255,255,0.65)" strokeWidth={1.5} />
+                    </div>
+                    <h3 style={{ fontFamily: SANS, fontSize: "clamp(13px, 1vw, 15px)", fontWeight: 500, color: "white", margin: "0 0 8px" }}>
+                      {f.title}
+                    </h3>
+                    <p style={{ fontFamily: SANS, fontSize: "clamp(12px, 0.8vw, 13px)", color: "rgba(255,255,255,0.42)", lineHeight: 1.7, margin: 0 }}>
+                      {f.desc}
+                    </p>
+                  </FadeSection>
+                );
+              })}
+            </div>
+          </section>
+        </PerspectiveCard>
+
+      </div>
+      {/* ── END PERSPECTIVE CONTAINER ─────────────────────────── */}
+
 
       {/* ══════════════════════════════════════════ */}
       {/* PRICING                                   */}
@@ -552,14 +655,7 @@ export default function App() {
           {PRICING.map((p) => (
             <FadeSection
               key={p.plan}
-              style={{
-                background: p.highlight ? "white" : "#0f0f0f",
-                border: p.highlight ? "none" : "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 16,
-                padding: "clamp(24px, 3vw, 40px)",
-                display: "flex",
-                flexDirection: "column",
-              }}
+              style={{ background: p.highlight ? "white" : "#0f0f0f", border: p.highlight ? "none" : "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "clamp(24px, 3vw, 40px)", display: "flex", flexDirection: "column" }}
             >
               <div style={{ marginBottom: 28 }}>
                 <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: p.highlight ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.4)", marginBottom: 14 }}>{p.plan}</div>
@@ -569,7 +665,6 @@ export default function App() {
                 </div>
                 <p style={{ fontFamily: SANS, fontSize: 13.5, color: p.highlight ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.42)", lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
               </div>
-
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 10 }}>
                 {p.features.map((feat) => (
                   <li key={feat} style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -578,7 +673,6 @@ export default function App() {
                   </li>
                 ))}
               </ul>
-
               <a
                 href="#"
                 style={{ marginTop: "auto", textAlign: "center", background: p.highlight ? "#080808" : "transparent", color: p.highlight ? "white" : "rgba(255,255,255,0.72)", border: p.highlight ? "none" : "1px solid rgba(255,255,255,0.15)", borderRadius: 9999, padding: "13px 24px", fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: SANS, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, transition: "opacity 0.15s" }}
@@ -623,7 +717,7 @@ export default function App() {
       </section>
 
       {/* ══════════════════════════════════════════ */}
-      {/* CTA SECTION                               */}
+      {/* CTA                                       */}
       {/* ══════════════════════════════════════════ */}
       <section style={{ width: "100%", padding: "clamp(80px, 14vh, 140px) clamp(24px, 6vw, 80px)", background: "#080808", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <FadeSection style={{ textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
@@ -635,13 +729,17 @@ export default function App() {
             Join 50,000+ teams that chose honesty as their default setting. No credit card required.
           </p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-            <a href="#" style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "16px 40px", fontSize: 15, fontWeight: 500, textDecoration: "none", fontFamily: SANS, display: "flex", alignItems: "center", gap: 8, transition: "opacity 0.15s" }}
+            <a
+              href="#"
+              style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "16px 40px", fontSize: 15, fontWeight: 500, textDecoration: "none", fontFamily: SANS, display: "flex", alignItems: "center", gap: 8, transition: "opacity 0.15s" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.88")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
             >
               Start for free <ArrowRight size={15} />
             </a>
-            <a href="#" style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, fontFamily: SANS, textDecoration: "none", display: "flex", alignItems: "center", gap: 6, transition: "color 0.15s" }}
+            <a
+              href="#"
+              style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, fontFamily: SANS, textDecoration: "none", display: "flex", alignItems: "center", gap: 6, transition: "color 0.15s" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.6)")}
             >
@@ -671,7 +769,10 @@ export default function App() {
               <div key={col.title}>
                 <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 16 }}>{col.title}</div>
                 {col.links.map((l) => (
-                  <a key={l} href="#" style={{ display: "block", fontFamily: SANS, fontSize: 13.5, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
+                  <a
+                    key={l}
+                    href="#"
+                    style={{ display: "block", fontFamily: SANS, fontSize: 13.5, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)")}
                     onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.45)")}
                   >{l}</a>
