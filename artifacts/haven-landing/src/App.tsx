@@ -364,13 +364,15 @@ export default function App() {
         </div>
       )}
 
-      {/* ══ HERO CONTENT — bottom-left anchored ══ */}
+      {/* ══ HERO CONTENT — vertically centered, left anchored ══ */}
       <div
         className="hero-content"
         style={{
           position: "absolute",
           left: "clamp(32px, 6vw, 90px)",
-          bottom: "clamp(36px, 5.5vh, 68px)",
+          top: "50%",
+          transform: "translateY(-50%)",
+          marginTop: "30px",
           zIndex: 10,
           maxWidth: "min(580px, calc(100vw - 64px))",
         }}
