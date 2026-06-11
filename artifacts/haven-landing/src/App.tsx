@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import type { Transition } from "framer-motion";
 import {
   Search,
   Menu,
@@ -20,16 +21,18 @@ import { AnimatedText } from "@/components/ui/animated-underline-text-one";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const CUSTOM_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 const FADE_UP = (delay: number) => ({
   initial: { opacity: 0, y: 28 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.72, ease: [0.16, 1, 0.3, 1], delay },
+  transition: { duration: 0.72, ease: CUSTOM_EASE, delay } as Transition,
 });
 
 const FADE_IN = (delay: number) => ({
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  transition: { duration: 0.8, ease: "easeOut", delay },
+  transition: { duration: 0.8, ease: "easeOut" as const, delay } as Transition,
 });
 
 const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
