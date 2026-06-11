@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Haven Landing Page"
+title = "NothingHide"
 version = "1.0.0"
 id = "artifacts/haven-landing"
 router = "path"
