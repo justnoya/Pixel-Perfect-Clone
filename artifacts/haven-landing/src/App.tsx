@@ -190,6 +190,33 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+/* ─── FLOATING PATHS BACKGROUND ─────────────────────────────── */
+function FloatingPaths({ position }: { position: number }) {
+  const paths = Array.from({ length: 36 }, (_, i) => ({
+    id: i,
+    d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${380 - i * 5 * position} -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${152 - i * 5 * position} ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${684 - i * 5 * position} ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
+    width: 0.5 + i * 0.03,
+  }));
+  return (
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+      <svg style={{ width: "100%", height: "100%" }} viewBox="0 0 696 316" fill="none" preserveAspectRatio="xMidYMid slice">
+        {paths.map((path) => (
+          <motion.path
+            key={path.id}
+            d={path.d}
+            stroke="white"
+            strokeWidth={path.width}
+            strokeOpacity={0.03 + path.id * 0.007}
+            initial={{ pathLength: 0.3, opacity: 0.6 }}
+            animate={{ pathLength: 1, opacity: [0.3, 0.6, 0.3], pathOffset: [0, 1, 0] }}
+            transition={{ duration: 20 + (path.id % 7) * 3, repeat: Infinity, ease: "linear" }}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 const PAIN_WORDS = [
   "Hoardings.", "Classifieds.", "Random", "broker", "calls.", "And", "still", "—", "unsold", "inventory.",
 ];
@@ -345,7 +372,27 @@ export default function App() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     } as ConstructorParameters<typeof Lenis>[0]);
 
-    lenis.on("scroll", () => ScrollTrigger.update());
+    /* Snap to nearest 100vh on scroll stop */
+    let snapTimer: ReturnType<typeof setTimeout>;
+    let isSnapping = false;
+    lenis.on("scroll", () => {
+      ScrollTrigger.update();
+      if (isSnapping) return;
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(() => {
+        const vh = window.innerHeight;
+        const current = window.scrollY;
+        const nearest = Math.round(current / vh) * vh;
+        if (Math.abs(current - nearest) > 4) {
+          isSnapping = true;
+          lenis.scrollTo(nearest, {
+            duration: 0.9,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            onComplete: () => { isSnapping = false; },
+          });
+        }
+      }, 120);
+    });
 
     function raf(time: number) {
       lenis.raf(time);
@@ -354,6 +401,7 @@ export default function App() {
     requestAnimationFrame(raf);
 
     return () => {
+      clearTimeout(snapTimer);
       lenis.destroy();
     };
   }, []);
@@ -591,8 +639,11 @@ export default function App() {
         <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
           <section
             id="pain"
-            style={{ width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)" }}
+            style={{ position: "relative", width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", overflow: "hidden" }}
           >
+            {/* Floating paths background */}
+            <FloatingPaths position={1} />
+            <FloatingPaths position={-1} />
             {/* Label + Headline */}
             <FadeSection style={{ textAlign: "center", marginBottom: "clamp(40px, 6vh, 72px)", maxWidth: 780 }}>
               <SectionLabel>Pain</SectionLabel>
