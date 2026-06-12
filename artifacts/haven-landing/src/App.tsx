@@ -20,6 +20,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedText } from "@/components/ui/animated-underline-text-one";
 import TeamShowcase from "@/components/ui/team-showcase";
+import VariableProximity from "@/components/ui/variable-proximity";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -218,39 +219,37 @@ function FloatingPaths({ position }: { position: number }) {
   );
 }
 
-const PAIN_WORDS = [
-  "Hoardings.", "Classifieds.", "Random", "broker", "calls.", "And", "still", "—", "unsold", "inventory.",
-];
-
 function PainHeadline() {
-  const ref = useRef<HTMLHeadingElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const containerRef = useRef<HTMLHeadingElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-60px" });
   return (
-    <h2
-      ref={ref}
+    <motion.h2
+      ref={containerRef}
+      initial={{ opacity: 0, y: 18 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
       style={{
-        fontFamily: COURIER,
+        fontFamily: SANS,
         fontSize: "clamp(22px, 2.8vw, 42px)",
-        fontWeight: 400,
+        fontWeight: 300,
         color: "white",
-        lineHeight: 1.25,
+        lineHeight: 1.35,
         margin: "0 auto",
         maxWidth: 720,
         letterSpacing: "-0.01em",
+        cursor: "default",
       }}
     >
-      {PAIN_WORDS.map((word, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 14 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.05 + i * 0.07 }}
-          style={{ display: "inline-block", marginRight: word === "—" ? "0.25em" : "0.28em" }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </h2>
+      <VariableProximity
+        label="Hoardings. Classifieds. Random broker calls. And still — unsold inventory."
+        fromFontVariationSettings='"wght" 300'
+        toFontVariationSettings='"wght" 900'
+        containerRef={containerRef}
+        radius={140}
+        falloff="gaussian"
+        style={{ display: "inline" }}
+      />
+    </motion.h2>
   );
 }
 
