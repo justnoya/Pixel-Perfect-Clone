@@ -19,6 +19,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedText } from "@/components/ui/animated-underline-text-one";
+import TeamShowcase from "@/components/ui/team-showcase";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -406,7 +407,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 5;
+  const N_CARDS = 6;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -694,8 +695,29 @@ export default function App() {
           </section>
         </PerspectiveCard>
 
-        {/* ── CARD 4 · FEATURES (last — no scale transform) ─── */}
+        {/* ── CARD 4 · TEAM ─────────────────────────────────── */}
         <PerspectiveCard i={4} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="team"
+            style={{ width: "100%", height: "100%", background: "#090909", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <FadeSection style={{ textAlign: "center", marginBottom: 40, maxWidth: 580 }}>
+              <SectionLabel>Team</SectionLabel>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 auto 14px", lineHeight: 1.15 }}>
+                The people behind the platform
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.38)", fontSize: 14, fontFamily: SANS, margin: "0 auto", lineHeight: 1.75 }}>
+                A focused team obsessed with transparency, trust, and real results.
+              </p>
+            </FadeSection>
+            <FadeSection style={{ width: "100%" }}>
+              <TeamShowcase />
+            </FadeSection>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 5 · FEATURES (last — no scale transform) ─── */}
+        <PerspectiveCard i={5} total={N_CARDS} progress={perspProgress}>
           <section
             id="features"
             style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.05)" }}
