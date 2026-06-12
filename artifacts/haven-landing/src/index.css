@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@keyframes pain-ping {
+  75%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; overflow-y: auto; }
 #root { width: 100%; min-height: 100%; }

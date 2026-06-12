@@ -123,6 +123,12 @@ const PRICING = [
   },
 ];
 
+const PAIN_POINTS = [
+  { stat: "Spending ₹10K–50K/month", sub: "with nothing to show" },
+  { stat: "Leads come in cold", sub: "no follow-up system" },
+  { stat: "Big builders get all the tech", sub: "you get left behind" },
+];
+
 const TESTIMONIALS = [
   {
     quote: "NothingHide transformed how our board interacts with company data. Full trust, finally.",
@@ -181,6 +187,42 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
         {children}
       </span>
     </div>
+  );
+}
+
+const PAIN_WORDS = [
+  "Hoardings.", "Classifieds.", "Random", "broker", "calls.", "And", "still", "—", "unsold", "inventory.",
+];
+
+function PainHeadline() {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <h2
+      ref={ref}
+      style={{
+        fontFamily: COURIER,
+        fontSize: "clamp(22px, 2.8vw, 42px)",
+        fontWeight: 400,
+        color: "white",
+        lineHeight: 1.25,
+        margin: "0 auto",
+        maxWidth: 720,
+        letterSpacing: "-0.01em",
+      }}
+    >
+      {PAIN_WORDS.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 14 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.05 + i * 0.07 }}
+          style={{ display: "inline-block", marginRight: word === "—" ? "0.25em" : "0.28em" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </h2>
   );
 }
 
@@ -545,39 +587,55 @@ export default function App() {
           </section>
         </PerspectiveCard>
 
-        {/* ── CARD 3 · HOW IT WORKS ─────────────────────────── */}
+        {/* ── CARD 3 · PAIN ─────────────────────────────────── */}
         <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
           <section
-            id="how-it-works"
+            id="pain"
             style={{ width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)" }}
           >
-            <FadeSection style={{ textAlign: "center", marginBottom: 48 }}>
-              <SectionLabel>How It Works</SectionLabel>
-              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 auto", lineHeight: 1.15, maxWidth: 560 }}>
-                Clarity in three simple steps
-              </h2>
+            {/* Label + Headline */}
+            <FadeSection style={{ textAlign: "center", marginBottom: "clamp(40px, 6vh, 72px)", maxWidth: 780 }}>
+              <SectionLabel>Pain</SectionLabel>
+              <PainHeadline />
             </FadeSection>
 
+            {/* Three pain-point columns */}
             <div
-              className="how-it-works-grid"
-              style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, maxWidth: 1060, width: "100%", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, overflow: "hidden" }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                maxWidth: 860,
+                width: "100%",
+                borderTop: "1px solid rgba(255,255,255,0.09)",
+                paddingTop: "clamp(28px, 4vh, 48px)",
+              }}
             >
-              {HOW_IT_WORKS.map((item, i) => (
+              {PAIN_POINTS.map((p, i) => (
                 <FadeSection
-                  key={item.step}
-                  style={{ padding: "clamp(24px, 3.5vw, 44px)", background: "#111", borderRight: i < HOW_IT_WORKS.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none" }}
+                  key={i}
+                  style={{
+                    padding: "0 clamp(16px, 2.5vw, 36px)",
+                    borderRight: i < PAIN_POINTS.length - 1 ? "1px solid rgba(255,255,255,0.09)" : "none",
+                    paddingLeft: i === 0 ? 0 : undefined,
+                    paddingRight: i === PAIN_POINTS.length - 1 ? 0 : undefined,
+                  }}
                 >
-                  <div style={{ fontFamily: COURIER, fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 400, color: "rgba(255,255,255,0.06)", lineHeight: 1, marginBottom: 20 }}>
-                    {item.step}
+                  {/* pulse dot */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+                    <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
+                      <span style={{
+                        position: "absolute", inset: 0, borderRadius: "50%",
+                        background: "rgba(239,68,68,0.5)",
+                        animation: "pain-ping 1.8s cubic-bezier(0,0,0.2,1) infinite",
+                      }} />
+                      <span style={{ position: "relative", width: 8, height: 8, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
+                    </span>
                   </div>
-                  <h3 style={{ fontFamily: SANS, fontSize: "clamp(14px, 1.1vw, 17px)", fontWeight: 500, color: "white", margin: "0 0 12px" }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ fontFamily: SANS, fontSize: "clamp(12.5px, 0.85vw, 14px)", color: "rgba(255,255,255,0.42)", lineHeight: 1.75, margin: 0 }}>
-                    {item.desc}
-                  </p>
-                  <div style={{ marginTop: 28 }}>
-                    <ChevronRight size={15} color="rgba(255,255,255,0.22)" />
+                  <div style={{ fontFamily: SANS, fontSize: "clamp(14px, 1.15vw, 17px)", fontWeight: 600, color: "white", lineHeight: 1.3, marginBottom: 8 }}>
+                    {p.stat}
+                  </div>
+                  <div style={{ fontFamily: SANS, fontSize: "clamp(12px, 0.85vw, 13.5px)", color: "rgba(255,255,255,0.38)", fontStyle: "italic", lineHeight: 1.6 }}>
+                    {p.sub}
                   </div>
                 </FadeSection>
               ))}
