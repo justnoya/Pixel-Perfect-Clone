@@ -479,26 +479,8 @@ export default function App() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     } as ConstructorParameters<typeof Lenis>[0]);
 
-    /* Snap to nearest 100vh on scroll stop */
-    let snapTimer: ReturnType<typeof setTimeout>;
-    let isSnapping = false;
     lenis.on("scroll", () => {
       ScrollTrigger.update();
-      if (isSnapping) return;
-      clearTimeout(snapTimer);
-      snapTimer = setTimeout(() => {
-        const vh = window.innerHeight;
-        const current = window.scrollY;
-        const nearest = Math.round(current / vh) * vh;
-        if (Math.abs(current - nearest) > 4) {
-          isSnapping = true;
-          lenis.scrollTo(nearest, {
-            duration: 0.9,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            onComplete: () => { isSnapping = false; },
-          });
-        }
-      }, 120);
     });
 
     let rafId: number;
@@ -509,7 +491,6 @@ export default function App() {
     rafId = requestAnimationFrame(raf);
 
     return () => {
-      clearTimeout(snapTimer);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
@@ -671,9 +652,9 @@ export default function App() {
                 willChange: "filter, transform",
               }}
             />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 22%, transparent 45%)", pointerEvents: "none", zIndex: 1 }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(4,4,4,0.96) 0%, rgba(4,4,4,0.7) 18%, rgba(4,4,4,0.1) 42%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.25) 0%, transparent 55%)", pointerEvents: "none", zIndex: 1 }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 22%, transparent 45%)", pointerEvents: "none", zIndex: 1 }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(4,4,4,0.75) 0%, rgba(4,4,4,0.45) 18%, rgba(4,4,4,0.05) 42%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.15) 0%, transparent 55%)", pointerEvents: "none", zIndex: 1 }} />
 
             {/* Trust badge */}
             <motion.div
