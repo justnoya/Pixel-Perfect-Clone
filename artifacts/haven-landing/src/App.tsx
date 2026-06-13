@@ -458,6 +458,19 @@ export default function App() {
     return () => clearTimeout(t);
   }, []);
 
+  /* Lenis ref for smooth scroll-to from nav clicks */
+  const lenisRef = useRef<InstanceType<typeof Lenis> | null>(null);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (lenisRef.current && target) {
+      lenisRef.current.scrollTo(target as HTMLElement, { duration: 1.2, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    } else if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   /* perspective container ref + scroll progress */
   const perspContainerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: perspProgress } = useScroll({
@@ -478,6 +491,7 @@ export default function App() {
       duration: 1.4,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     } as ConstructorParameters<typeof Lenis>[0]);
+    lenisRef.current = lenis;
 
     lenis.on("scroll", () => {
       ScrollTrigger.update();
@@ -551,6 +565,7 @@ export default function App() {
             <span key={link.name} style={{ display: "flex", alignItems: "center" }}>
               <a
                 href={link.href}
+                onClick={(e) => scrollToSection(e, link.href)}
                 style={{ color: "rgba(255,255,255,0.82)", fontSize: 13.5, fontWeight: 400, textDecoration: "none", whiteSpace: "nowrap", padding: "3px 20px", letterSpacing: "0.01em", transition: "color 0.15s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.82)")}
@@ -573,6 +588,7 @@ export default function App() {
           </button>
           <a
             href="#hero"
+            onClick={(e) => scrollToSection(e, "#hero")}
             style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "9px 22px", fontSize: 13, fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em", transition: "opacity 0.15s" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.88")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
@@ -604,14 +620,14 @@ export default function App() {
             <a
               key={link.name}
               href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => { scrollToSection(e, link.href); setMobileMenuOpen(false); }}
               style={{ color: "white", fontSize: 28, fontWeight: 300, textDecoration: "none", letterSpacing: "0.02em", padding: "10px 0", fontFamily: COURIER }}
             >
               {link.name}
             </a>
           ))}
           <div style={{ marginTop: 32 }}>
-            <a href="#hero" onClick={() => setMobileMenuOpen(false)} style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "12px 32px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>Book a Call</a>
+            <a href="#hero" onClick={(e) => { scrollToSection(e, "#hero"); setMobileMenuOpen(false); }} style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "12px 32px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>Book a Call</a>
           </div>
         </div>
       )}
