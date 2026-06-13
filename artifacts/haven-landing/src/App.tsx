@@ -732,14 +732,6 @@ export default function App() {
                 >
                   Book a Free Call <ArrowRight size={14} />
                 </button>
-                <button
-                  style={{ fontFamily: SANS, background: "transparent", color: "rgba(255,255,255,0.75)", border: "none", padding: "14px 0", fontSize: 14, fontWeight: 400, cursor: "pointer", display: "flex", alignItems: "center", gap: 9 }}
-                >
-                  <span style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Play size={12} fill="white" stroke="none" style={{ marginLeft: 2 }} />
-                  </span>
-                  See How It Works
-                </button>
               </motion.div>
             </div>
 
