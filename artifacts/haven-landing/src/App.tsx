@@ -11,7 +11,6 @@ import {
   BarChart3,
   Target,
 } from "lucide-react";
-import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedText } from "@/components/ui/animated-underline-text-one";
@@ -458,19 +457,12 @@ export default function App() {
     return () => clearTimeout(t);
   }, []);
 
-  /* Lenis ref for smooth scroll-to from nav clicks */
-  const lenisRef = useRef<InstanceType<typeof Lenis> | null>(null);
-
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const target = document.querySelector(href) as HTMLElement | null;
     if (!target) return;
     const top = target.getBoundingClientRect().top + window.scrollY;
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(top, { duration: 1.0, easing: (t: number) => 1 - Math.pow(1 - t, 3) });
-    } else {
-      window.scrollTo({ top, behavior: "smooth" });
-    }
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   /* perspective container ref + scroll progress */
@@ -480,36 +472,14 @@ export default function App() {
     offset: ["start start", "end end"],
   });
 
-  /* nav transparency on scroll */
+  /* nav transparency + ScrollTrigger sync on native scroll */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      ScrollTrigger.update();
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  /* Lenis smooth scroll — keeps Framer Motion useScroll in sync */
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 0.9,
-      easing: (t: number) => 1 - Math.pow(1 - t, 3),
-    } as ConstructorParameters<typeof Lenis>[0]);
-    lenisRef.current = lenis;
-
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
-    });
-
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
   }, []);
 
   const N_CARDS = 7;
@@ -674,41 +644,15 @@ export default function App() {
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(4,4,4,0.75) 0%, rgba(4,4,4,0.45) 18%, rgba(4,4,4,0.05) 42%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.15) 0%, transparent 55%)", pointerEvents: "none", zIndex: 1 }} />
 
-            {/* Trust badge */}
-            <motion.div
-              {...FADE_IN(0.5)}
-              style={{
-                position: "absolute",
-                top: "clamp(80px, 14vh, 110px)",
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 10,
-                background: "rgba(255,255,255,0.1)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.18)",
-                borderRadius: 9999,
-                padding: "7px 16px",
-                display: "flex",
-                alignItems: "center",
-                gap: 7,
-                whiteSpace: "nowrap",
-              }}
-            >
-              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: SANS, letterSpacing: "0.02em" }}>
-                Real estate lead gen · Mumbai &amp; Delhi · 2026
-              </span>
-              <span style={{ fontSize: 14 }}>🏗️</span>
-            </motion.div>
-
             {/* Hero content */}
             <div
               className="hero-content"
-              style={{ position: "absolute", left: "clamp(28px, 6vw, 90px)", top: "50%", transform: "translateY(-50%)", marginTop: "16px", zIndex: 10, maxWidth: "min(600px, calc(100vw - 56px))" }}
+              style={{ position: "absolute", left: "clamp(28px, 6vw, 90px)", top: "50%", transform: "translateY(-50%)", zIndex: 10, maxWidth: "min(520px, calc(100vw - 56px))" }}
             >
-              <motion.div {...FADE_UP(0.08)} style={{ width: 42, height: 1, background: "rgba(255,255,255,0.4)", marginBottom: 20 }} />
+              <motion.div {...FADE_UP(0.08)} style={{ width: 32, height: 1, background: "rgba(255,255,255,0.35)", marginBottom: 18 }} />
               <motion.h1
                 {...FADE_UP(0.2)}
-                style={{ fontFamily: COURIER, fontSize: "clamp(34px, 4.8vw, 64px)", fontWeight: 400, color: "white", lineHeight: 1.08, letterSpacing: "-0.01em", margin: "0 0 clamp(14px, 2vh, 24px)" }}
+                style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3.2vw, 48px)", fontWeight: 400, color: "white", lineHeight: 1.15, letterSpacing: "-0.01em", margin: "0 0 clamp(12px, 1.8vh, 20px)" }}
               >
                 Do what you do best.
                 <br />
@@ -716,9 +660,9 @@ export default function App() {
               </motion.h1>
               <motion.p
                 {...FADE_UP(0.38)}
-                style={{ fontFamily: SANS, fontSize: "clamp(13px, 1.1vw, 15.5px)", fontWeight: 300, color: "rgba(255,255,255,0.62)", lineHeight: 1.8, margin: "0 0 clamp(22px, 3vh, 36px)", maxWidth: "min(380px, 82vw)" }}
+                style={{ fontFamily: SANS, fontSize: "clamp(13px, 1vw, 15px)", fontWeight: 300, color: "rgba(255,255,255,0.58)", lineHeight: 1.75, margin: "0 0 clamp(20px, 3vh, 32px)", maxWidth: "min(360px, 82vw)" }}
               >
-                We run Meta ads, build your landing page, and automate follow-ups on WhatsApp — so independent builders in Mumbai stop losing leads to bigger names.
+                We handle everything it takes to grow your brand online — so you can stay focused on what you build.
               </motion.p>
               <motion.div
                 {...FADE_UP(0.54)}
