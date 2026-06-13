@@ -37,29 +37,17 @@ const FADE_IN = (delay: number) => ({
   transition: { duration: 0.8, ease: "easeOut" as const, delay } as Transition,
 });
 
-const NAV_LINKS = ["Who We Help", "The Offer", "Pricing", "Team", "Contact"];
+const NAV_LINKS = [
+  { name: "Who We Help", href: "#pain" },
+  { name: "The Offer",   href: "#offer" },
+  { name: "Pricing",     href: "#results" },
+  { name: "Team",        href: "#team" },
+  { name: "Contact",     href: "#hero" },
+];
 const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
 const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
 /* ─── data ───────────────────────────────────────────────────── */
-const HOW_IT_WORKS = [
-  {
-    step: "01",
-    title: "Discovery Call",
-    desc: "We learn your project, your budget, and your ideal buyer profile — 30 minutes, no fluff.",
-  },
-  {
-    step: "02",
-    title: "We Build the System",
-    desc: "Landing page, Meta ads, WhatsApp bot, and CRM — everything live within 7 days.",
-  },
-  {
-    step: "03",
-    title: "Qualified Leads Arrive",
-    desc: "20–30 buyer inquiries every month. You close. We handle everything else.",
-  },
-];
-
 const PAIN_POINTS = [
   { stat: "Spending ₹10K–50K/month", sub: "with nothing to show" },
   { stat: "Leads come in cold", sub: "no follow-up system" },
@@ -329,14 +317,16 @@ export default function App() {
       }, 120);
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
       clearTimeout(snapTimer);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);
@@ -370,36 +360,36 @@ export default function App() {
 
         <div style={{ background: "rgba(15,15,15,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: 9999, padding: "10px 4px", display: "flex", alignItems: "center", border: "1px solid rgba(255,255,255,0.07)" }}>
           {NAV_LINKS.map((link, i) => (
-            <span key={link} style={{ display: "flex", alignItems: "center" }}>
+            <span key={link.name} style={{ display: "flex", alignItems: "center" }}>
               <a
-                href="#"
+                href={link.href}
                 style={{ color: "rgba(255,255,255,0.82)", fontSize: 13.5, fontWeight: 400, textDecoration: "none", whiteSpace: "nowrap", padding: "3px 20px", letterSpacing: "0.01em", transition: "color 0.15s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.82)")}
               >
-                {link}
+                {link.name}
               </a>
               {i < NAV_LINKS.length - 1 && (
-                <span style={{ color: "rgba(255,255,255,0.25)", fontSize: 5, lineHeight: 1, flexShrink: 0 }}>●</span>
+                <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.25)", fontSize: 5, lineHeight: 1, flexShrink: 0 }}>●</span>
               )}
             </span>
           ))}
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
-          <button style={{ color: "rgba(255,255,255,0.8)", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontFamily: "inherit", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: 4 }}>
-            EN <span style={{ fontSize: 9, opacity: 0.7 }}>▾</span>
-          </button>
-          <button style={{ color: "rgba(255,255,255,0.8)", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center" }}>
+          <button
+            aria-label="Search"
+            style={{ color: "rgba(255,255,255,0.8)", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center" }}
+          >
             <Search size={17} strokeWidth={1.6} />
           </button>
           <a
-            href="#"
+            href="#hero"
             style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "9px 22px", fontSize: 13, fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em", transition: "opacity 0.15s" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.88")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
           >
-            Login
+            Book a Call
           </a>
         </div>
       </nav>
@@ -410,25 +400,30 @@ export default function App() {
         style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "none", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", background: scrolled ? "rgba(8,8,8,0.9)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", transition: "background 0.3s" }}
       >
         <span style={{ color: "white", fontSize: 14, fontWeight: 500, letterSpacing: "0.04em" }}>NothingHide</span>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <button style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}>
-            <Search size={18} strokeWidth={1.6} />
-          </button>
-          <button onClick={() => setMobileMenuOpen((v) => !v)} style={{ color: "white", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}>
-            {mobileMenuOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
-          </button>
-        </div>
+        <button
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((v) => !v)}
+          style={{ color: "white", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}
+        >
+          {mobileMenuOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
+        </button>
       </nav>
 
       {mobileMenuOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "rgba(5,5,5,0.97)", backdropFilter: "blur(20px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
           {NAV_LINKS.map((link) => (
-            <a key={link} href="#" onClick={() => setMobileMenuOpen(false)} style={{ color: "white", fontSize: 28, fontWeight: 300, textDecoration: "none", letterSpacing: "0.02em", padding: "10px 0", fontFamily: COURIER }}>
-              {link}
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ color: "white", fontSize: 28, fontWeight: 300, textDecoration: "none", letterSpacing: "0.02em", padding: "10px 0", fontFamily: COURIER }}
+            >
+              {link.name}
             </a>
           ))}
           <div style={{ marginTop: 32 }}>
-            <a href="#" style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "12px 32px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>Login</a>
+            <a href="#hero" onClick={() => setMobileMenuOpen(false)} style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "12px 32px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>Book a Call</a>
           </div>
         </div>
       )}
@@ -441,7 +436,7 @@ export default function App() {
       ══════════════════════════════════════════════════════════ */}
       <div
         ref={perspContainerRef}
-        style={{ position: "relative", height: `${N_CARDS * 100}vh` }}
+        style={{ position: "relative", height: `${N_CARDS * 100}vh`, willChange: "transform" }}
       >
 
         {/* ── CARD 0 · HERO ─────────────────────────────────── */}
@@ -556,7 +551,7 @@ export default function App() {
         {/* ── CARD 2 · OUR PROMISE ──────────────────────────── */}
         <PerspectiveCard i={1} total={N_CARDS} progress={perspProgress}>
           <section
-            id="section-02"
+            id="the-offer"
             style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 40px", borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
             <FadeSection style={{ textAlign: "center", marginBottom: 52, maxWidth: 640 }}>
