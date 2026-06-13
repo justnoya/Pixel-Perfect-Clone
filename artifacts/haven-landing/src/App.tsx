@@ -32,7 +32,7 @@ const FADE_IN = (delay: number) => ({
   transition: { duration: 0.8, ease: "easeOut" as const, delay } as Transition,
 });
 
-const NAV_LINKS = ["Home", "Features", "Solutions", "Pricing", "Resources"];
+const NAV_LINKS = ["Who We Help", "The Offer", "Pricing", "Team", "Contact"];
 const COURIER = "'Courier Prime', 'Courier New', Courier, monospace";
 const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
@@ -40,18 +40,18 @@ const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 const HOW_IT_WORKS = [
   {
     step: "01",
-    title: "Connect your data",
-    desc: "Plug in your existing tools and data sources. We handle the rest — zero friction, instant sync.",
+    title: "Discovery Call",
+    desc: "We learn your project, your budget, and your ideal buyer profile — 30 minutes, no fluff.",
   },
   {
     step: "02",
-    title: "Get full clarity",
-    desc: "Every decision, action, and outcome is logged, visible, and auditable — nothing hidden.",
+    title: "We Build the System",
+    desc: "Landing page, Meta ads, WhatsApp bot, and CRM — everything live within 7 days.",
   },
   {
     step: "03",
-    title: "Build real trust",
-    desc: "Share verified reports with your team, clients, and stakeholders with one click.",
+    title: "Qualified Leads Arrive",
+    desc: "20–30 buyer inquiries every month. You close. We handle everything else.",
   },
 ];
 
@@ -459,9 +459,9 @@ export default function App() {
               }}
             >
               <span style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: SANS, letterSpacing: "0.02em" }}>
-                Trusted by 50,000+ users worldwide
+                Real estate lead gen · Mumbai &amp; Delhi · 2026
               </span>
-              <span style={{ fontSize: 14 }}>❤️</span>
+              <span style={{ fontSize: 14 }}>🏗️</span>
             </motion.div>
 
             {/* Hero content */}
@@ -474,15 +474,15 @@ export default function App() {
                 {...FADE_UP(0.2)}
                 style={{ fontFamily: COURIER, fontSize: "clamp(34px, 4.8vw, 64px)", fontWeight: 400, color: "white", lineHeight: 1.08, letterSpacing: "-0.01em", margin: "0 0 clamp(14px, 2vh, 24px)" }}
               >
-                Nothing to hide.
+                20–30 qualified buyers.
                 <br />
-                Everything to trust.
+                Every single month.
               </motion.h1>
               <motion.p
                 {...FADE_UP(0.38)}
                 style={{ fontFamily: SANS, fontSize: "clamp(13px, 1.1vw, 15.5px)", fontWeight: 300, color: "rgba(255,255,255,0.62)", lineHeight: 1.8, margin: "0 0 clamp(22px, 3vh, 36px)", maxWidth: "min(380px, 82vw)" }}
               >
-                A transparent platform built for clarity, accountability, and real trust. We believe honesty is the foundation of every great product.
+                We run Meta ads, build your landing page, and automate follow-ups on WhatsApp — so independent builders in Mumbai stop losing leads to bigger names.
               </motion.p>
               <motion.div
                 {...FADE_UP(0.54)}
@@ -493,7 +493,7 @@ export default function App() {
                   onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.35)"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#0f0f0f"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.2)"; }}
                 >
-                  Get Started <ArrowRight size={14} />
+                  Book a Free Call <ArrowRight size={14} />
                 </button>
                 <button
                   style={{ fontFamily: SANS, background: "transparent", color: "rgba(255,255,255,0.75)", border: "none", padding: "14px 0", fontSize: 14, fontWeight: 400, cursor: "pointer", display: "flex", alignItems: "center", gap: 9 }}
@@ -501,7 +501,7 @@ export default function App() {
                   <span style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <Play size={12} fill="white" stroke="none" style={{ marginLeft: 2 }} />
                   </span>
-                  Watch Demo
+                  See How It Works
                 </button>
               </motion.div>
             </div>
@@ -525,14 +525,14 @@ export default function App() {
             style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 40px", borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
             <FadeSection style={{ textAlign: "center", marginBottom: 52, maxWidth: 640 }}>
-              <SectionLabel>Our Promise</SectionLabel>
+              <SectionLabel>The Offer</SectionLabel>
               <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 400, color: "white", margin: "0 0 20px", lineHeight: 1.2 }}>
-                Honesty isn't a feature.
+                You close deals.
                 <br />
-                It's the whole product.
+                We handle everything else.
               </h2>
               <p style={{ color: "rgba(255,255,255,0.48)", fontSize: 15, fontFamily: SANS, lineHeight: 1.8, margin: 0 }}>
-                We built NothingHide because we believe transparency shouldn't be optional — it should be the default.
+                Meta ads · dedicated landing page · WhatsApp automation · CRM setup. One system, 20–30 qualified buyer inquiries every month. Miss targets? We refund our fee.
               </p>
             </FadeSection>
             <FadeSection>
@@ -645,12 +645,12 @@ export default function App() {
             style={{ width: "100%", height: "100%", background: "#090909", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
             <FadeSection style={{ textAlign: "center", marginBottom: 40, maxWidth: 580 }}>
-              <SectionLabel>Team</SectionLabel>
+              <SectionLabel>The Team</SectionLabel>
               <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 auto 14px", lineHeight: 1.15 }}>
-                The people behind the platform
+                Three roles. One system.
               </h2>
               <p style={{ color: "rgba(255,255,255,0.38)", fontSize: 14, fontFamily: SANS, margin: "0 auto", lineHeight: 1.75 }}>
-                A focused team obsessed with transparency, trust, and real results.
+                Founder, tech, and lead gen — every piece working together so your pipeline never runs dry.
               </p>
             </FadeSection>
             <FadeSection style={{ width: "100%" }}>
