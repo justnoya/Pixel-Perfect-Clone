@@ -1300,29 +1300,7 @@ export default function App() {
       {/* ── END PERSPECTIVE CONTAINER ─────────────────────────── */}
 
       {/* ══ CTA · ContainerScroll ══ */}
-      <div id="cta" className="flex flex-col overflow-hidden" style={{ position: "relative" }}>
-        {/* Video background */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 0,
-            opacity: 0.3,
-          }}
-        >
-          <source src="/footer-bg.mp4" type="video/mp4" />
-        </video>
-        {/* Dark overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #080808 0%, rgba(8,8,8,0.4) 50%, #080808 100%)", zIndex: 1 }} />
-        {/* Content */}
-        <div style={{ position: "relative", zIndex: 2, display: "contents" }}>
+      <div id="cta" className="flex flex-col overflow-hidden">
         <ContainerScroll
           titleComponent={
             <>
@@ -1338,7 +1316,6 @@ export default function App() {
         >
           <CTACardInner />
         </ContainerScroll>
-        </div>{/* end CTA content wrapper */}
       </div>
 
       {/* ══ FOOTER · standalone ══ */}
