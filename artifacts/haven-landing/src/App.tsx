@@ -20,6 +20,7 @@ import VariableProximity from "@/components/ui/variable-proximity";
 import DisplayCards from "@/components/ui/display-cards";
 import { WavePath } from "@/components/ui/wave-path";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { HandWrittenTitle } from "@/components/ui/hand-writing-text";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -274,6 +275,13 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [heroBgLoaded, setHeroBgLoaded] = useState(false);
+  const [loadingDone, setLoadingDone] = useState(false);
+
+  /* dismiss loading screen after handwriting animation finishes */
+  useEffect(() => {
+    const t = setTimeout(() => setLoadingDone(true), 3600);
+    return () => clearTimeout(t);
+  }, []);
 
   /* perspective container ref + scroll progress */
   const perspContainerRef = useRef<HTMLDivElement>(null);
@@ -339,6 +347,29 @@ export default function App() {
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
+
+      {/* ══ LOADING SCREEN ══ */}
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: loadingDone ? 0 : 1 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+        onAnimationComplete={() => {}}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          background: "#080808",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: loadingDone ? "none" : "all",
+        }}
+      >
+        <HandWrittenTitle
+          title="NothingHide"
+          subtitle="Nothing to Hide. Everything to Trust."
+        />
+      </motion.div>
 
       {/* ══ DESKTOP NAV ══ */}
       <nav
