@@ -80,6 +80,36 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidde
   }
 }
 
+/* ── Results section responsive ── */
+.results-layout {
+  flex-direction: row !important;
+}
+.results-cards-wrapper {
+  transform: scale(0.92);
+  transform-origin: center center;
+}
+
+@media (max-width: 860px) {
+  .results-layout {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 36px !important;
+  }
+  .results-cards-wrapper {
+    transform: scale(0.78) !important;
+    transform-origin: center top !important;
+    margin-bottom: -40px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .results-cards-wrapper {
+    transform: scale(0.62) !important;
+    transform-origin: center top !important;
+    margin-bottom: -72px !important;
+  }
+}
+
 /* ── Mobile (≤ 767px) ── */
 @media (max-width: 767px) {
   .fair-buy-grid {

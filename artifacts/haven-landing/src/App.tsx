@@ -7,9 +7,9 @@ import {
   X,
   Play,
   ArrowRight,
-  TrendingUp,
-  Users,
-  ShieldCheck,
+  BadgeCheck,
+  BarChart3,
+  Target,
 } from "lucide-react";
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -67,7 +67,7 @@ const PAIN_POINTS = [
 
 const RESULTS_CARDS = [
   {
-    icon: <ShieldCheck size={13} color="#4ade80" />,
+    icon: <BadgeCheck size={14} color="#4ade80" strokeWidth={1.8} />,
     label: "The Guarantee",
     title: "Miss targets? Full fee refunded.",
     description: "If we don't hit agreed lead numbers, you pay nothing for our service.",
@@ -76,7 +76,7 @@ const RESULTS_CARDS = [
     className: "[grid-area:stack] hover:-translate-y-10 transition-all duration-700 grayscale hover:grayscale-0 before:absolute before:inset-0 before:rounded-2xl before:bg-black/40 before:transition-opacity before:duration-700 hover:before:opacity-0",
   },
   {
-    icon: <Users size={13} color="#60a5fa" />,
+    icon: <BarChart3 size={14} color="#60a5fa" strokeWidth={1.8} />,
     label: "Month 2+",
     title: "20–30 leads · WhatsApp running",
     description: "Pipeline fully active — bot auto-replies, follows up, qualifies buyers.",
@@ -85,7 +85,7 @@ const RESULTS_CARDS = [
     className: "[grid-area:stack] translate-x-12 translate-y-10 hover:-translate-y-1 transition-all duration-700 grayscale hover:grayscale-0 before:absolute before:inset-0 before:rounded-2xl before:bg-black/40 before:transition-opacity before:duration-700 hover:before:opacity-0",
   },
   {
-    icon: <TrendingUp size={13} color="#f59e0b" />,
+    icon: <Target size={14} color="#f59e0b" strokeWidth={1.8} />,
     label: "Month 1 Target",
     title: "18–25 qualified buyer leads",
     description: "First leads delivered within days of launch. System optimises weekly.",
@@ -805,7 +805,7 @@ export default function App() {
 
               {/* Cards side */}
               <FadeSection style={{ flex: "0 0 auto" }}>
-                <div style={{ transform: "scale(0.92)", transformOrigin: "center center" }}>
+                <div className="results-cards-wrapper">
                   <DisplayCards cards={RESULTS_CARDS} />
                 </div>
               </FadeSection>
