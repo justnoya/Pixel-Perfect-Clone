@@ -331,7 +331,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 6;
+  const N_CARDS = 9;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -990,6 +990,357 @@ export default function App() {
                 </div>
               </FadeSection>
             </div>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 6 · RULES ────────────────────────────────── */}
+        <PerspectiveCard i={6} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="rules"
+            style={{
+              width: "100%",
+              height: "100%",
+              background: "#0d0d0d",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "clamp(48px, 7vh, 80px) clamp(24px, 8vw, 120px)",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <FadeSection style={{ textAlign: "center", marginBottom: 52, maxWidth: 520 }}>
+              <SectionLabel>How It Works</SectionLabel>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 0 16px", lineHeight: 1.2 }}>
+                Three rules.<br />No exceptions.
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.38)", fontSize: 14, fontFamily: SANS, lineHeight: 1.75, margin: 0 }}>
+                We've run hundreds of real estate campaigns. These three principles determine whether a builder gets 20–30 buyers a month — or zero.
+              </p>
+            </FadeSection>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 40px)", width: "100%", maxWidth: 900 }}>
+              {[
+                {
+                  num: "01",
+                  rule: "Speed beats perfection.",
+                  body: "Leads are perishable. A WhatsApp reply within 5 minutes converts 8× better than a call the next morning. We automate this — you never lose a warm lead.",
+                },
+                {
+                  num: "02",
+                  rule: "One system, not ten vendors.",
+                  body: "Separate ad agencies, web designers, and CRM tools fight each other. We own the full stack — ads, page, bot, CRM — so nothing falls through the cracks.",
+                },
+                {
+                  num: "03",
+                  rule: "No results, no fee.",
+                  body: "If we miss the 20–30 qualified buyer target in a given month, we refund that month's retainer. Full stop. No fine print.",
+                },
+              ].map(({ num, rule, body }) => (
+                <FadeSection key={num}>
+                  <div
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: 12,
+                      padding: "clamp(24px, 3vw, 36px)",
+                      height: "100%",
+                      background: "rgba(255,255,255,0.02)",
+                    }}
+                  >
+                    <div style={{ fontFamily: COURIER, fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em", marginBottom: 16 }}>{num}</div>
+                    <h3 style={{ fontFamily: COURIER, fontSize: "clamp(15px, 1.4vw, 19px)", fontWeight: 400, color: "white", margin: "0 0 12px", lineHeight: 1.3 }}>{rule}</h3>
+                    <p style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.75, margin: 0 }}>{body}</p>
+                  </div>
+                </FadeSection>
+              ))}
+            </div>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 7 · CTA ──────────────────────────────────── */}
+        <PerspectiveCard i={7} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="hero"
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "clamp(48px, 7vh, 80px) clamp(24px, 8vw, 120px)",
+              overflow: "hidden",
+            }}
+          >
+            {/* Gradient background image */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: "url(/gradient-bg.jpg)",
+                backgroundSize: "cover",
+                backgroundPosition: "center bottom",
+                filter: "brightness(0.72) saturate(1.15)",
+                zIndex: 0,
+              }}
+            />
+            {/* Dark vignette overlay so text stays readable */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "radial-gradient(ellipse 70% 60% at 50% 10%, rgba(0,0,0,0.72) 0%, transparent 100%)",
+                zIndex: 1,
+              }}
+            />
+
+            <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: 660 }}>
+              <FadeSection>
+                <div
+                  style={{
+                    display: "inline-block",
+                    border: "1px solid rgba(255,255,255,0.22)",
+                    borderRadius: 9999,
+                    padding: "5px 18px",
+                    fontSize: 11,
+                    fontFamily: SANS,
+                    color: "rgba(255,255,255,0.7)",
+                    letterSpacing: "0.15em",
+                    textTransform: "uppercase",
+                    marginBottom: 28,
+                  }}
+                >
+                  Limited to 5 builders · Mumbai &amp; Delhi
+                </div>
+              </FadeSection>
+
+              <FadeSection>
+                <h2
+                  style={{
+                    fontFamily: COURIER,
+                    fontSize: "clamp(32px, 5vw, 68px)",
+                    fontWeight: 400,
+                    color: "white",
+                    margin: "0 0 20px",
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  Ready for 20–30<br />buyers a month?
+                </h2>
+              </FadeSection>
+
+              <FadeSection>
+                <p
+                  style={{
+                    fontFamily: SANS,
+                    fontSize: "clamp(14px, 1.2vw, 17px)",
+                    color: "rgba(255,255,255,0.62)",
+                    lineHeight: 1.75,
+                    margin: "0 0 44px",
+                  }}
+                >
+                  Book a free 30-minute strategy call. We'll map out your exact lead gen system — no pitch, no fluff. If it's not right for you, we'll tell you.
+                </p>
+              </FadeSection>
+
+              <FadeSection>
+                <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+                  <a
+                    href="https://wa.me/919999999999?text=Hi%20Swappy%2C%20I%20found%20NothingHide%20and%20want%20to%20book%20a%20free%20strategy%20call%20for%20my%20project."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      background: "white",
+                      color: "#080808",
+                      borderRadius: 9999,
+                      padding: "16px 36px",
+                      fontSize: 15,
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      letterSpacing: "0.01em",
+                      fontFamily: SANS,
+                      transition: "opacity 0.15s, transform 0.15s",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 10,
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.9"; (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1.02)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)"; }}
+                  >
+                    {/* WhatsApp icon */}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Book Free Call on WhatsApp
+                  </a>
+                  <a
+                    href="mailto:hello@nothinghide.in"
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.28)",
+                      color: "white",
+                      borderRadius: 9999,
+                      padding: "16px 32px",
+                      fontSize: 15,
+                      fontWeight: 400,
+                      textDecoration: "none",
+                      fontFamily: SANS,
+                      transition: "border-color 0.15s",
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.6)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.28)"; }}
+                  >
+                    Email us instead
+                  </a>
+                </div>
+              </FadeSection>
+
+              <FadeSection>
+                <p style={{ marginTop: 28, fontFamily: SANS, fontSize: 12, color: "rgba(255,255,255,0.3)", letterSpacing: "0.04em" }}>
+                  No commitment · 30 min · Free
+                </p>
+              </FadeSection>
+            </div>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 8 · FOOTER ───────────────────────────────── */}
+        <PerspectiveCard i={8} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="contact"
+            style={{
+              width: "100%",
+              height: "100%",
+              background: "#080808",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              padding: "clamp(48px, 7vh, 80px) clamp(28px, 8vw, 120px) clamp(32px, 5vh, 56px)",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            {/* Top row */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 48 }}>
+              {/* Brand */}
+              <div style={{ maxWidth: 320 }}>
+                <FadeSection>
+                  <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 400, letterSpacing: "0.22em", textTransform: "uppercase", color: "white", marginBottom: 16 }}>NothingHide</div>
+                  <p style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.8, margin: "0 0 28px" }}>
+                    Real estate lead generation for independent builders in Mumbai &amp; Delhi. Meta ads · landing pages · WhatsApp automation · CRM.
+                  </p>
+                  <div style={{ display: "flex", gap: 12 }}>
+                    <a
+                      href="https://wa.me/919999999999"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="WhatsApp"
+                      style={{ width: 36, height: 36, border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "border-color 0.15s, color 0.15s" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.35)"; (e.currentTarget as HTMLAnchorElement).style.color = "white"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)"; }}
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                    <a
+                      href="https://instagram.com/nothinghide"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      style={{ width: 36, height: 36, border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "border-color 0.15s, color 0.15s" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.35)"; (e.currentTarget as HTMLAnchorElement).style.color = "white"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)"; }}
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+                    </a>
+                    <a
+                      href="https://linkedin.com/company/nothinghide"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      style={{ width: 36, height: 36, border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "border-color 0.15s, color 0.15s" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.35)"; (e.currentTarget as HTMLAnchorElement).style.color = "white"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)"; }}
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                  </div>
+                </FadeSection>
+              </div>
+
+              {/* Links columns */}
+              <div style={{ display: "flex", gap: "clamp(40px, 8vw, 96px)", flexWrap: "wrap" }}>
+                <FadeSection>
+                  <div>
+                    <div style={{ fontFamily: SANS, fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 18 }}>Services</div>
+                    {["Meta Ads", "Landing Pages", "WhatsApp Automation", "CRM Setup"].map((s) => (
+                      <div key={s} style={{ marginBottom: 12 }}>
+                        <a href="#offer" style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", transition: "color 0.15s" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                        >{s}</a>
+                      </div>
+                    ))}
+                  </div>
+                </FadeSection>
+
+                <FadeSection>
+                  <div>
+                    <div style={{ fontFamily: SANS, fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 18 }}>Company</div>
+                    {[
+                      { label: "Team", href: "#team" },
+                      { label: "Results", href: "#results" },
+                      { label: "How It Works", href: "#rules" },
+                      { label: "Book a Call", href: "#hero" },
+                    ].map((l) => (
+                      <div key={l.label} style={{ marginBottom: 12 }}>
+                        <a href={l.href} style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", transition: "color 0.15s" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                        >{l.label}</a>
+                      </div>
+                    ))}
+                  </div>
+                </FadeSection>
+
+                <FadeSection>
+                  <div>
+                    <div style={{ fontFamily: SANS, fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 18 }}>Contact</div>
+                    <div style={{ marginBottom: 12 }}>
+                      <a href="mailto:hello@nothinghide.in" style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", transition: "color 0.15s" }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                      >hello@nothinghide.in</a>
+                    </div>
+                    <div style={{ marginBottom: 12 }}>
+                      <a href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer" style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", transition: "color 0.15s" }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                      >WhatsApp Swappy</a>
+                    </div>
+                    <div>
+                      <span style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.25)" }}>Mumbai · Delhi</span>
+                    </div>
+                  </div>
+                </FadeSection>
+              </div>
+            </div>
+
+            {/* Bottom row */}
+            <FadeSection>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: 48 }}>
+                <span style={{ fontFamily: SANS, fontSize: 12, color: "rgba(255,255,255,0.18)" }}>
+                  © 2026 NothingHide. All rights reserved.
+                </span>
+                <div style={{ display: "flex", gap: 24 }}>
+                  {["Privacy Policy", "Terms of Service", "Refund Policy"].map((l) => (
+                    <a key={l} href="#" style={{ fontFamily: SANS, fontSize: 12, color: "rgba(255,255,255,0.18)", textDecoration: "none", transition: "color 0.15s" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.18)")}
+                    >{l}</a>
+                  ))}
+                </div>
+              </div>
+            </FadeSection>
           </section>
         </PerspectiveCard>
 
