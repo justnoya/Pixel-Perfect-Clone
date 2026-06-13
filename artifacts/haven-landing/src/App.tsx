@@ -271,6 +271,181 @@ function PerspectiveCard({
 }
 
 /* ─── APP ─────────────────────────────────────────────────────── */
+/* ─── CTACardInner — loading-screen style animation ────────── */
+function CTACardInner() {
+  const draw = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        pathLength: { duration: 2.8, ease: [0.43, 0.13, 0.23, 0.96] as [number,number,number,number] },
+        opacity:    { duration: 0.4 },
+      },
+    },
+  };
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        background: "#0d0d0d",
+        borderRadius: 12,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "clamp(18px, 3vh, 32px)",
+        padding: "clamp(16px, 3vh, 32px) clamp(16px, 4vw, 48px)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* SVG oval path — same as loading screen */}
+      <motion.div
+        style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.5 }}
+      >
+        <motion.svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 1200 600"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        >
+          <title>NothingHide CTA</title>
+          <motion.path
+            d="M 950 90 
+               C 1250 300, 1050 480, 600 520
+               C 250 520, 150 480, 150 300
+               C 150 120, 350 80, 600 80
+               C 850 80, 950 180, 950 180"
+            fill="none"
+            strokeWidth="5"
+            stroke="rgba(255,255,255,0.15)"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            variants={draw}
+          />
+        </motion.svg>
+      </motion.div>
+
+      {/* Center text */}
+      <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+        <motion.p
+          style={{ fontFamily: SANS, fontSize: "clamp(9px, 0.7vw, 11px)", color: "rgba(255,255,255,0.3)", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "clamp(10px, 1.5vh, 18px)" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ delay: 0.6, duration: 0.7 }}
+        >
+          Limited to 5 builders · Mumbai &amp; Delhi
+        </motion.p>
+
+        <motion.h2
+          style={{ fontFamily: COURIER, fontSize: "clamp(22px, 3vw, 48px)", fontWeight: 400, color: "white", letterSpacing: "0.14em", textTransform: "uppercase", margin: "0 0 clamp(8px, 1.2vh, 14px)", lineHeight: 1.1 }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        >
+          NothingHide
+        </motion.h2>
+
+        <motion.p
+          style={{ fontFamily: SANS, fontSize: "clamp(11px, 0.9vw, 14px)", color: "rgba(255,255,255,0.38)", letterSpacing: "0.04em", margin: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ delay: 1.0, duration: 0.8 }}
+        >
+          Nothing to Hide. Everything to Trust.
+        </motion.p>
+      </div>
+
+      {/* Buttons */}
+      <motion.div
+        style={{ display: "flex", gap: "clamp(10px, 2vw, 16px)", flexWrap: "wrap", justifyContent: "center", position: "relative", zIndex: 1 }}
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ delay: 1.5, duration: 0.7 }}
+      >
+        <a
+          href="https://wa.me/919999999999?text=Hi%20Swappy%2C%20I%20found%20NothingHide%20and%20want%20to%20book%20a%20free%20strategy%20call."
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            background: "white",
+            color: "#080808",
+            borderRadius: 9999,
+            padding: "clamp(10px, 1.5vh, 14px) clamp(20px, 3vw, 32px)",
+            fontSize: "clamp(11px, 0.85vw, 13px)",
+            fontWeight: 700,
+            textDecoration: "none",
+            fontFamily: SANS,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            letterSpacing: "-0.01em",
+            transition: "transform 0.15s",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1.04)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)"; }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+          Book Free Call
+        </a>
+        <a
+          href="mailto:hello@nothinghide.in"
+          style={{
+            border: "1px solid rgba(255,255,255,0.18)",
+            color: "rgba(255,255,255,0.75)",
+            borderRadius: 9999,
+            padding: "clamp(10px, 1.5vh, 14px) clamp(18px, 2.5vw, 28px)",
+            fontSize: "clamp(11px, 0.85vw, 13px)",
+            fontWeight: 400,
+            textDecoration: "none",
+            fontFamily: SANS,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            transition: "border-color 0.15s, color 0.15s",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.45)";
+            (e.currentTarget as HTMLAnchorElement).style.color = "white";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.18)";
+            (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)";
+          }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          Email us
+        </a>
+      </motion.div>
+
+      <motion.p
+        style={{ fontFamily: SANS, fontSize: "clamp(9px, 0.65vw, 10px)", color: "rgba(255,255,255,0.18)", letterSpacing: "0.08em", margin: 0, position: "relative", zIndex: 1 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ delay: 1.8, duration: 0.6 }}
+      >
+        No commitment &nbsp;·&nbsp; 30 minutes &nbsp;·&nbsp; 100% free
+      </motion.p>
+    </div>
+  );
+}
+
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -340,7 +515,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 8;
+  const N_CARDS = 7;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -1032,78 +1207,137 @@ export default function App() {
             style={{
               width: "100%",
               height: "100%",
-              background: "#0d0d0d",
+              background: "#080808",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
               justifyContent: "center",
-              padding: "clamp(48px, 7vh, 80px) clamp(24px, 8vw, 120px)",
-              borderTop: "1px solid rgba(255,255,255,0.06)",
+              padding: "clamp(32px, 5vh, 60px) clamp(24px, 7vw, 100px)",
+              overflow: "hidden",
+              position: "relative",
             }}
           >
-            <FadeSection style={{ textAlign: "center", marginBottom: 52, maxWidth: 520 }}>
-              <SectionLabel>How It Works</SectionLabel>
-              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 0 16px", lineHeight: 1.2 }}>
-                Three rules.<br />No exceptions.
+            {/* Decorative large "x" watermark */}
+            <div style={{ position: "absolute", right: "-2vw", top: "50%", transform: "translateY(-50%)", fontFamily: COURIER, fontSize: "clamp(180px, 22vw, 320px)", color: "rgba(255,255,255,0.025)", lineHeight: 1, pointerEvents: "none", userSelect: "none", letterSpacing: "-0.05em" }}>
+              ×
+            </div>
+
+            {/* Header row */}
+            <FadeSection style={{ marginBottom: "clamp(24px, 4vh, 44px)" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "clamp(12px, 2vw, 24px)", flexWrap: "wrap" }}>
+                <SectionLabel>The Principles</SectionLabel>
+              </div>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 52px)", fontWeight: 400, color: "white", margin: "12px 0 0", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                Three rules.&nbsp;&nbsp;<em style={{ opacity: 0.45 }}>No exceptions.</em>
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.38)", fontSize: 14, fontFamily: SANS, lineHeight: 1.75, margin: 0 }}>
-                We've run hundreds of real estate campaigns. These three principles determine whether a builder gets 20–30 buyers a month — or zero.
-              </p>
             </FadeSection>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(20px, 3vw, 40px)", width: "100%", maxWidth: 900 }}>
+            {/* Rules — horizontal manifesto strips */}
+            <div style={{ width: "100%", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
               {[
                 {
                   num: "01",
                   rule: "Speed beats perfection.",
-                  body: "Leads are perishable. A WhatsApp reply within 5 minutes converts 8× better than a call the next morning. We automate this — you never lose a warm lead.",
+                  body: "Leads are perishable. A WhatsApp reply in 5 minutes converts 8× better than a call next morning. We automate this so you never lose a warm lead.",
+                  tag: "Response time",
                 },
                 {
                   num: "02",
                   rule: "One system, not ten vendors.",
-                  body: "Separate ad agencies, web designers, and CRM tools fight each other. We own the full stack — ads, page, bot, CRM — so nothing falls through the cracks.",
+                  body: "Separate agencies, designers, and CRM tools fight each other. We own ads → page → bot → CRM. Nothing falls through the cracks.",
+                  tag: "Full stack",
                 },
                 {
                   num: "03",
                   rule: "No results, no fee.",
-                  body: "If we miss the 20–30 qualified buyer target in a given month, we refund that month's retainer. Full stop. No fine print.",
+                  body: "Miss the 20–30 qualified buyer target in any month? We refund that month's retainer. Full stop. No fine print.",
+                  tag: "Guarantee",
                 },
-              ].map(({ num, rule, body }) => (
+              ].map(({ num, rule, body, tag }, idx) => (
                 <FadeSection key={num}>
                   <div
+                    className="group"
                     style={{
-                      border: "1px solid rgba(255,255,255,0.07)",
-                      borderRadius: 12,
-                      padding: "clamp(24px, 3vw, 36px)",
-                      height: "100%",
-                      background: "rgba(255,255,255,0.02)",
+                      display: "grid",
+                      gridTemplateColumns: "clamp(36px, 5vw, 64px) 1fr clamp(120px, 22%, 280px)",
+                      gap: "clamp(16px, 3vw, 40px)",
+                      alignItems: "center",
+                      padding: "clamp(16px, 2.5vh, 28px) 0",
+                      borderBottom: "1px solid rgba(255,255,255,0.06)",
+                      transition: "background 0.2s",
+                      cursor: "default",
                     }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = "rgba(255,255,255,0.015)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "transparent"; }}
                   >
-                    <div style={{ fontFamily: COURIER, fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em", marginBottom: 16 }}>{num}</div>
-                    <h3 style={{ fontFamily: COURIER, fontSize: "clamp(15px, 1.4vw, 19px)", fontWeight: 400, color: "white", margin: "0 0 12px", lineHeight: 1.3 }}>{rule}</h3>
-                    <p style={{ fontFamily: SANS, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.75, margin: 0 }}>{body}</p>
+                    {/* Big number */}
+                    <div style={{ fontFamily: COURIER, fontSize: "clamp(11px, 1.1vw, 15px)", color: "rgba(255,255,255,0.18)", letterSpacing: "0.12em" }}>
+                      {num}
+                    </div>
+
+                    {/* Rule title */}
+                    <h3 style={{ fontFamily: COURIER, fontSize: "clamp(14px, 1.6vw, 24px)", fontWeight: 400, color: "white", margin: 0, lineHeight: 1.2, letterSpacing: "-0.01em" }}>
+                      {rule}
+                    </h3>
+
+                    {/* Body — right column, only visible on wider layouts */}
+                    <div>
+                      <div style={{ fontFamily: SANS, fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: "0.16em", textTransform: "uppercase" as const, marginBottom: 6 }}>
+                        {tag}
+                      </div>
+                      <p style={{ fontFamily: SANS, fontSize: "clamp(10px, 0.75vw, 12px)", color: "rgba(255,255,255,0.35)", lineHeight: 1.7, margin: 0 }}>
+                        {body}
+                      </p>
+                    </div>
                   </div>
+
+                  {/* Mobile-only body (shown when grid collapses) */}
+                  {idx >= 0 && (
+                    <div className="md:hidden" style={{ padding: "0 0 clamp(12px, 2vh, 20px) clamp(36px, 5vw, 64px)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                      <p style={{ fontFamily: SANS, fontSize: 12, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, margin: 0 }}>
+                        {body}
+                      </p>
+                    </div>
+                  )}
                 </FadeSection>
               ))}
             </div>
           </section>
         </PerspectiveCard>
 
-        {/* ── CARD 7 · FOOTER ───────────────────────────────── */}
-        <PerspectiveCard i={7} total={N_CARDS} progress={perspProgress}>
-          <section
-            id="contact"
-            style={{
-              width: "100%",
-              height: "100%",
-              background: "#080808",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              padding: "clamp(48px, 7vh, 80px) clamp(28px, 8vw, 120px) clamp(32px, 5vh, 56px)",
-              borderTop: "1px solid rgba(255,255,255,0.06)",
-            }}
-          >
+      </div>
+      {/* ── END PERSPECTIVE CONTAINER ─────────────────────────── */}
+
+      {/* ══ CTA · ContainerScroll ══ */}
+      <div id="cta" className="flex flex-col overflow-hidden">
+        <ContainerScroll
+          titleComponent={
+            <>
+              <p style={{ fontFamily: SANS, fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 20 }}>
+                Limited to 5 builders · Mumbai &amp; Delhi
+              </p>
+              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(32px, 4.5vw, 64px)", fontWeight: 400, color: "white", margin: "0 0 0", lineHeight: 1.1, letterSpacing: "-0.02em" }}>
+                Ready for 20–30 <br />
+                <em style={{ opacity: 0.8 }}>qualified</em> buyers a month?
+              </h2>
+            </>
+          }
+        >
+          <CTACardInner />
+        </ContainerScroll>
+      </div>
+
+      {/* ══ FOOTER · standalone ══ */}
+      <section
+        id="contact"
+        style={{
+          background: "#080808",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "clamp(48px, 7vh, 80px) clamp(28px, 8vw, 120px) clamp(32px, 5vh, 56px)",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+        }}
+      >
             {/* Top row */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 48 }}>
               {/* Brand */}
@@ -1226,49 +1460,6 @@ export default function App() {
               </div>
             </FadeSection>
           </section>
-        </PerspectiveCard>
-
-      </div>
-      {/* ── END PERSPECTIVE CONTAINER ─────────────────────────── */}
-
-      {/* ══ CTA · ContainerScroll (exact Aceternity demo pattern) ══ */}
-      <div id="cta" className="flex flex-col overflow-hidden">
-        <ContainerScroll
-          titleComponent={
-            <>
-              <p
-                style={{
-                  fontFamily: SANS,
-                  fontSize: 11,
-                  color: "rgba(255,255,255,0.5)",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  marginBottom: 20,
-                }}
-              >
-                Limited to 5 builders · Mumbai &amp; Delhi
-              </p>
-              <h2
-                style={{
-                  fontFamily: COURIER,
-                  fontSize: "clamp(32px, 4.5vw, 64px)",
-                  fontWeight: 400,
-                  color: "white",
-                  margin: "0 0 0",
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                Ready for 20–30 <br />
-                <em style={{ opacity: 0.8 }}>qualified</em> buyers a month?
-              </h2>
-            </>
-          }
-        >
-          {/* ── Loading-screen style CTA inside the card ── */}
-          <CTACardInner />
-        </ContainerScroll>
-      </div>
 
     </main>
   );
