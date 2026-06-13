@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "artifacts/haven-landing/dist/public",
+  "installCommand": "pnpm install"
+}
