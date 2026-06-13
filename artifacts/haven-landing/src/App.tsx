@@ -1231,212 +1231,141 @@ export default function App() {
       </div>
       {/* ── END PERSPECTIVE CONTAINER ─────────────────────────── */}
 
-      {/* ══ CTA · STANDALONE (ContainerScroll owns its scroll space) ══ */}
-      <section
-        id="cta"
-        style={{ position: "relative", background: "#080808", overflow: "hidden" }}
-      >
-        {/* Gradient background */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "url(/gradient-bg.jpg)",
-            backgroundSize: "cover",
-            backgroundPosition: "center bottom",
-            filter: "brightness(0.65) saturate(1.2)",
-            zIndex: 0,
-          }}
-        />
-        {/* Top vignette — blends into #080808 above */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to bottom, #080808 0%, transparent 18%, transparent 82%, #080808 100%)",
-            zIndex: 1,
-          }}
-        />
+      {/* ══ CTA · ContainerScroll (exact Aceternity demo pattern) ══ */}
+      <div id="cta" className="flex flex-col overflow-hidden">
+        <ContainerScroll
+          titleComponent={
+            <>
+              <p
+                style={{
+                  fontFamily: SANS,
+                  fontSize: 11,
+                  color: "rgba(255,255,255,0.5)",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  marginBottom: 20,
+                }}
+              >
+                Limited to 5 builders · Mumbai &amp; Delhi
+              </p>
+              <h2
+                style={{
+                  fontFamily: COURIER,
+                  fontSize: "clamp(32px, 4.5vw, 64px)",
+                  fontWeight: 400,
+                  color: "white",
+                  margin: "0 0 0",
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Ready for 20–30 <br />
+                <em style={{ opacity: 0.8 }}>qualified</em> buyers a month?
+              </h2>
+            </>
+          }
+        >
+          {/* Image fills the card — exactly like the demo */}
+          <div style={{ position: "relative", width: "100%", height: "100%" }}>
+            <img
+              src="/gradient-bg.jpg"
+              alt="NothingHide CTA background"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center bottom",
+                borderRadius: 16,
+                display: "block",
+              }}
+              draggable={false}
+            />
 
-        <div style={{ position: "relative", zIndex: 2 }}>
-          <ContainerScroll
-            titleComponent={
-              <div>
-                {/* Scarcity badge */}
-                <div
-                  style={{
-                    display: "inline-block",
-                    border: "1px solid rgba(255,255,255,0.22)",
-                    borderRadius: 9999,
-                    padding: "5px 20px",
-                    fontSize: 11,
-                    fontFamily: SANS,
-                    color: "rgba(255,255,255,0.65)",
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase" as const,
-                    marginBottom: 24,
-                  }}
-                >
-                  Limited to 5 builders · Mumbai &amp; Delhi
-                </div>
-
-                <h2
-                  style={{
-                    fontFamily: COURIER,
-                    fontSize: "clamp(32px, 4.5vw, 72px)",
-                    fontWeight: 400,
-                    color: "white",
-                    margin: "0 0 16px",
-                    lineHeight: 1.08,
-                    letterSpacing: "-0.025em",
-                  }}
-                >
-                  Ready for 20–30
-                  <br />
-                  <em style={{ opacity: 0.82 }}>qualified</em> buyers a month?
-                </h2>
-
-                <p
-                  style={{
-                    fontFamily: SANS,
-                    fontSize: "clamp(14px, 1.15vw, 17px)",
-                    color: "rgba(255,255,255,0.5)",
-                    lineHeight: 1.75,
-                    margin: "0 auto",
-                    maxWidth: 500,
-                  }}
-                >
-                  Book a free 30-minute strategy call. We map out your exact lead gen system — no pitch, no fluff. If it's not right for you, we'll tell you.
-                </p>
-              </div>
-            }
-          >
-            {/* ── Inside the 3D card ── */}
+            {/* Dark scrim so buttons are readable */}
             <div
               style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)",
+                borderRadius: 16,
+              }}
+            />
+
+            {/* CTA content centred over the image */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
-                gap: "clamp(24px, 4vh, 40px)",
-                height: "100%",
-                padding: "clamp(24px, 5vh, 56px) clamp(20px, 5vw, 80px)",
+                justifyContent: "flex-end",
+                padding: "clamp(20px, 4vh, 48px) clamp(16px, 4vw, 60px)",
+                gap: 18,
               }}
             >
-              {/* Stats */}
-              <div style={{ display: "flex", gap: "clamp(28px, 7vw, 80px)", justifyContent: "center", flexWrap: "wrap" }}>
-                {[
-                  { n: "20–30", label: "Qualified buyers / month" },
-                  { n: "7 days", label: "System goes live" },
-                  { n: "100%", label: "Fee refund if we miss" },
-                ].map((s) => (
-                  <div key={s.n} style={{ textAlign: "center" }}>
-                    <div
-                      style={{
-                        fontFamily: COURIER,
-                        fontSize: "clamp(24px, 2.8vw, 42px)",
-                        fontWeight: 400,
-                        color: "white",
-                        lineHeight: 1,
-                        marginBottom: 8,
-                      }}
-                    >
-                      {s.n}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: SANS,
-                        fontSize: "clamp(9px, 0.75vw, 11px)",
-                        color: "rgba(255,255,255,0.3)",
-                        textTransform: "uppercase" as const,
-                        letterSpacing: "0.14em",
-                      }}
-                    >
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p
+                style={{
+                  fontFamily: SANS,
+                  fontSize: "clamp(13px, 1vw, 15px)",
+                  color: "rgba(255,255,255,0.6)",
+                  textAlign: "center",
+                  margin: 0,
+                  maxWidth: 420,
+                  lineHeight: 1.65,
+                }}
+              >
+                Book a free 30-minute call. We map your exact lead gen system — no pitch, no fluff.
+              </p>
 
-              <div style={{ width: "100%", maxWidth: 360, height: 1, background: "rgba(255,255,255,0.06)" }} />
-
-              {/* Buttons */}
-              <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
                 <a
-                  href="https://wa.me/919999999999?text=Hi%20Swappy%2C%20I%20found%20NothingHide%20and%20want%20to%20book%20a%20free%20strategy%20call%20for%20my%20project."
+                  href="https://wa.me/919999999999?text=Hi%20Swappy%2C%20I%20found%20NothingHide%20and%20want%20to%20book%20a%20free%20strategy%20call."
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
                     background: "white",
                     color: "#080808",
                     borderRadius: 9999,
-                    padding: "15px 34px",
-                    fontSize: 14,
+                    padding: "13px 28px",
+                    fontSize: 13,
                     fontWeight: 600,
                     textDecoration: "none",
                     fontFamily: SANS,
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 9,
-                    transition: "opacity 0.15s, transform 0.15s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.opacity = "0.88";
-                    (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1.025)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.opacity = "1";
-                    (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)";
+                    gap: 8,
                   }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                   </svg>
-                  Book Free Call on WhatsApp
+                  Book Free Call
                 </a>
-
                 <a
                   href="mailto:hello@nothinghide.in"
                   style={{
-                    border: "1px solid rgba(255,255,255,0.18)",
-                    color: "rgba(255,255,255,0.78)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "rgba(255,255,255,0.85)",
                     borderRadius: 9999,
-                    padding: "15px 30px",
-                    fontSize: 14,
+                    padding: "13px 24px",
+                    fontSize: 13,
                     fontWeight: 400,
                     textDecoration: "none",
                     fontFamily: SANS,
-                    transition: "border-color 0.15s, color 0.15s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.5)";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "white";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.18)";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.78)";
                   }}
                 >
-                  Email us instead
+                  Email us
                 </a>
               </div>
 
-              <p
-                style={{
-                  fontFamily: SANS,
-                  fontSize: 11,
-                  color: "rgba(255,255,255,0.2)",
-                  letterSpacing: "0.06em",
-                  margin: 0,
-                }}
-              >
+              <p style={{ fontFamily: SANS, fontSize: 10, color: "rgba(255,255,255,0.25)", margin: 0, letterSpacing: "0.06em" }}>
                 No commitment · 30 min · Free
               </p>
             </div>
-          </ContainerScroll>
-        </div>
-      </section>
+          </div>
+        </ContainerScroll>
+      </div>
 
     </main>
   );
