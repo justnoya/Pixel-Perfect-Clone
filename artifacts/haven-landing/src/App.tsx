@@ -463,11 +463,13 @@ export default function App() {
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const target = document.querySelector(href);
-    if (lenisRef.current && target) {
-      lenisRef.current.scrollTo(target as HTMLElement, { duration: 1.2, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    } else if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
+    const target = document.querySelector(href) as HTMLElement | null;
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY;
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(top, { duration: 1.0, easing: (t: number) => 1 - Math.pow(1 - t, 3) });
+    } else {
+      window.scrollTo({ top, behavior: "smooth" });
     }
   };
 
@@ -488,8 +490,8 @@ export default function App() {
   /* Lenis smooth scroll — keeps Framer Motion useScroll in sync */
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 0.9,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
     } as ConstructorParameters<typeof Lenis>[0]);
     lenisRef.current = lenis;
 
@@ -708,9 +710,9 @@ export default function App() {
                 {...FADE_UP(0.2)}
                 style={{ fontFamily: COURIER, fontSize: "clamp(34px, 4.8vw, 64px)", fontWeight: 400, color: "white", lineHeight: 1.08, letterSpacing: "-0.01em", margin: "0 0 clamp(14px, 2vh, 24px)" }}
               >
-                20–30 qualified buyers.
+                Do what you do best.
                 <br />
-                Every single month.
+                We'll make sure the world notices.
               </motion.h1>
               <motion.p
                 {...FADE_UP(0.38)}
