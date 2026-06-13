@@ -5,15 +5,8 @@ import {
   Search,
   Menu,
   X,
-  Eye,
-  Shield,
-  Sparkles,
-  Lock,
-  ChevronRight,
   Play,
   ArrowRight,
-  Check,
-  Star,
 } from "lucide-react";
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -62,107 +55,13 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const FEATURES = [
-  {
-    icon: Eye,
-    title: "Radical Transparency",
-    desc: "Every data point is visible. Every action is logged. Your organization runs with complete clarity.",
-  },
-  {
-    icon: Shield,
-    title: "Verified Platform",
-    desc: "Third-party audits, SOC 2 compliance, and open security reports. We prove trust, not just promise it.",
-  },
-  {
-    icon: Sparkles,
-    title: "Real-time Insights",
-    desc: "Live dashboards that surface what matters most — no lag, no delay, no surprises.",
-  },
-  {
-    icon: Lock,
-    title: "Enterprise-Grade Security",
-    desc: "End-to-end encryption, role-based access, and zero-trust architecture built in from day one.",
-  },
-  {
-    icon: Check,
-    title: "Accountability at Scale",
-    desc: "Set policies, track compliance, and get automatic alerts when something needs attention.",
-  },
-  {
-    icon: Star,
-    title: "Trusted by 50,000+",
-    desc: "From startups to Fortune 500s — teams that care about integrity choose NothingHide.",
-  },
-];
-
-const PRICING = [
-  {
-    plan: "Starter",
-    price: "$0",
-    period: "/ month",
-    desc: "For individuals and small teams getting started.",
-    features: ["Up to 3 users", "5 data sources", "Basic audit log", "Email support"],
-    cta: "Get started free",
-    highlight: false,
-  },
-  {
-    plan: "Pro",
-    price: "$49",
-    period: "/ month",
-    desc: "For growing teams that need full visibility.",
-    features: ["Up to 25 users", "Unlimited data sources", "Advanced analytics", "Priority support", "Custom reports"],
-    cta: "Start free trial",
-    highlight: true,
-  },
-  {
-    plan: "Enterprise",
-    price: "Custom",
-    period: "",
-    desc: "For organizations that need the full platform.",
-    features: ["Unlimited users", "Dedicated instance", "SSO & SAML", "SLA guarantee", "Onboarding support"],
-    cta: "Contact sales",
-    highlight: false,
-  },
-];
-
 const PAIN_POINTS = [
   { stat: "Spending ₹10K–50K/month", sub: "with nothing to show" },
   { stat: "Leads come in cold", sub: "no follow-up system" },
   { stat: "Big builders get all the tech", sub: "you get left behind" },
 ];
 
-const TESTIMONIALS = [
-  {
-    quote: "NothingHide transformed how our board interacts with company data. Full trust, finally.",
-    name: "Sophia Laurent",
-    role: "COO, Meridian Systems",
-    rating: 5,
-  },
-  {
-    quote: "We cut compliance prep from weeks to hours. The audit trail alone is worth every penny.",
-    name: "James Okafor",
-    role: "Head of Compliance, EchoLab",
-    rating: 5,
-  },
-  {
-    quote: "Our clients love the transparency reports. It's become a genuine competitive advantage.",
-    name: "Priya Nair",
-    role: "CEO, VisionFlow",
-    rating: 5,
-  },
-];
-
 /* ─── small components ───────────────────────────────────────── */
-function StarRating({ count = 5 }: { count?: number }) {
-  return (
-    <div style={{ display: "flex", gap: 3 }}>
-      {Array.from({ length: count }).map((_, i) => (
-        <Star key={i} size={14} fill="rgba(255,255,255,0.85)" stroke="none" />
-      ))}
-    </div>
-  );
-}
-
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div
@@ -407,7 +306,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 6;
+  const N_CARDS = 5;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -760,212 +659,9 @@ export default function App() {
           </section>
         </PerspectiveCard>
 
-        {/* ── CARD 5 · FEATURES (last — no scale transform) ─── */}
-        <PerspectiveCard i={5} total={N_CARDS} progress={perspProgress}>
-          <section
-            id="features"
-            style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.05)" }}
-          >
-            <FadeSection style={{ textAlign: "center", marginBottom: 40 }}>
-              <SectionLabel>Features</SectionLabel>
-              <h2 style={{ fontFamily: COURIER, fontSize: "clamp(26px, 3vw, 44px)", fontWeight: 400, color: "white", margin: "0 auto 12px", lineHeight: 1.15, maxWidth: 560 }}>
-                Everything you need to build trust
-              </h2>
-              <p style={{ color: "rgba(255,255,255,0.42)", fontSize: 14, fontFamily: SANS, maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>
-                One platform, total transparency. From compliance to culture.
-              </p>
-            </FadeSection>
-
-            <div
-              className="features-grid"
-              style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, maxWidth: 1060, width: "100%", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16, overflow: "hidden" }}
-            >
-              {FEATURES.map((f, i) => {
-                const Icon = f.icon;
-                return (
-                  <FadeSection
-                    key={f.title}
-                    style={{
-                      padding: "clamp(18px, 2.4vw, 32px)",
-                      background: "#0f0f0f",
-                      borderRight: i % 3 < 2 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                      borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                    }}
-                  >
-                    <div style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
-                      <Icon size={16} color="rgba(255,255,255,0.65)" strokeWidth={1.5} />
-                    </div>
-                    <h3 style={{ fontFamily: SANS, fontSize: "clamp(13px, 1vw, 15px)", fontWeight: 500, color: "white", margin: "0 0 8px" }}>
-                      {f.title}
-                    </h3>
-                    <p style={{ fontFamily: SANS, fontSize: "clamp(12px, 0.8vw, 13px)", color: "rgba(255,255,255,0.42)", lineHeight: 1.7, margin: 0 }}>
-                      {f.desc}
-                    </p>
-                  </FadeSection>
-                );
-              })}
-            </div>
-          </section>
-        </PerspectiveCard>
-
       </div>
       {/* ── END PERSPECTIVE CONTAINER ─────────────────────────── */}
 
-
-      {/* ══════════════════════════════════════════ */}
-      {/* PRICING                                   */}
-      {/* ══════════════════════════════════════════ */}
-      <section id="pricing" style={{ width: "100%", padding: "clamp(64px, 10vh, 120px) clamp(24px, 6vw, 80px)", background: "#080808", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <FadeSection style={{ textAlign: "center", marginBottom: 64 }}>
-          <SectionLabel>Pricing</SectionLabel>
-          <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 50px)", fontWeight: 400, color: "white", margin: "0 auto 16px", lineHeight: 1.15, maxWidth: 560 }}>
-            Simple, transparent pricing
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.42)", fontSize: 15, fontFamily: SANS, maxWidth: 440, margin: "0 auto", lineHeight: 1.75 }}>
-            No hidden fees. No surprises. Just the plan that fits your team.
-          </p>
-        </FadeSection>
-
-        <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, maxWidth: 1060, margin: "0 auto" }}>
-          {PRICING.map((p) => (
-            <FadeSection
-              key={p.plan}
-              style={{ background: p.highlight ? "white" : "#0f0f0f", border: p.highlight ? "none" : "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "clamp(24px, 3vw, 40px)", display: "flex", flexDirection: "column" }}
-            >
-              <div style={{ marginBottom: 28 }}>
-                <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: p.highlight ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.4)", marginBottom: 14 }}>{p.plan}</div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 10 }}>
-                  <span style={{ fontFamily: COURIER, fontSize: "clamp(32px, 3.5vw, 46px)", fontWeight: 400, color: p.highlight ? "#080808" : "white" }}>{p.price}</span>
-                  <span style={{ fontFamily: SANS, fontSize: 14, color: p.highlight ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.35)" }}>{p.period}</span>
-                </div>
-                <p style={{ fontFamily: SANS, fontSize: 13.5, color: p.highlight ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.42)", lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
-              </div>
-              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 10 }}>
-                {p.features.map((feat) => (
-                  <li key={feat} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Check size={14} color={p.highlight ? "#080808" : "rgba(255,255,255,0.55)"} strokeWidth={2.5} />
-                    <span style={{ fontFamily: SANS, fontSize: 13.5, color: p.highlight ? "rgba(0,0,0,0.72)" : "rgba(255,255,255,0.6)" }}>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#"
-                style={{ marginTop: "auto", textAlign: "center", background: p.highlight ? "#080808" : "transparent", color: p.highlight ? "white" : "rgba(255,255,255,0.72)", border: p.highlight ? "none" : "1px solid rgba(255,255,255,0.15)", borderRadius: 9999, padding: "13px 24px", fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: SANS, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, transition: "opacity 0.15s" }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.82")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
-              >
-                {p.cta} <ArrowRight size={13} />
-              </a>
-            </FadeSection>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════ */}
-      {/* TESTIMONIALS                              */}
-      {/* ══════════════════════════════════════════ */}
-      <section id="testimonials" style={{ width: "100%", padding: "clamp(64px, 10vh, 120px) clamp(24px, 6vw, 80px)", background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <FadeSection style={{ textAlign: "center", marginBottom: 64 }}>
-          <SectionLabel>Testimonials</SectionLabel>
-          <h2 style={{ fontFamily: COURIER, fontSize: "clamp(28px, 3.5vw, 50px)", fontWeight: 400, color: "white", margin: "0 auto", lineHeight: 1.15, maxWidth: 540 }}>
-            Trusted by teams who care
-          </h2>
-        </FadeSection>
-
-        <div className="testimonials-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, maxWidth: 1060, margin: "0 auto" }}>
-          {TESTIMONIALS.map((t) => (
-            <FadeSection
-              key={t.name}
-              style={{ background: "#0f0f0f", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16, padding: "clamp(24px, 3vw, 40px)" }}
-            >
-              <StarRating count={t.rating} />
-              <p style={{ fontFamily: SANS, fontSize: "clamp(13.5px, 1vw, 15.5px)", color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "20px 0 24px", fontStyle: "italic" }}>
-                "{t.quote}"
-              </p>
-              <div>
-                <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 500, color: "white" }}>{t.name}</div>
-                <div style={{ fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.38)", marginTop: 3 }}>{t.role}</div>
-              </div>
-            </FadeSection>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════ */}
-      {/* CTA                                       */}
-      {/* ══════════════════════════════════════════ */}
-      <section style={{ width: "100%", padding: "clamp(80px, 14vh, 140px) clamp(24px, 6vw, 80px)", background: "#080808", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <FadeSection style={{ textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
-          <SectionLabel>Get Started</SectionLabel>
-          <h2 style={{ fontFamily: COURIER, fontSize: "clamp(32px, 4.5vw, 62px)", fontWeight: 400, color: "white", margin: "0 0 20px", lineHeight: 1.1 }}>
-            Ready to build real trust?
-          </h2>
-          <p style={{ fontFamily: SANS, fontSize: 15, color: "rgba(255,255,255,0.48)", lineHeight: 1.8, marginBottom: 40 }}>
-            Join 50,000+ teams that chose honesty as their default setting. No credit card required.
-          </p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-            <a
-              href="#"
-              style={{ background: "white", color: "#080808", borderRadius: 9999, padding: "16px 40px", fontSize: 15, fontWeight: 500, textDecoration: "none", fontFamily: SANS, display: "flex", alignItems: "center", gap: 8, transition: "opacity 0.15s" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.88")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
-            >
-              Start for free <ArrowRight size={15} />
-            </a>
-            <a
-              href="#"
-              style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, fontFamily: SANS, textDecoration: "none", display: "flex", alignItems: "center", gap: 6, transition: "color 0.15s" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.9)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.6)")}
-            >
-              Talk to sales <ChevronRight size={14} />
-            </a>
-          </div>
-        </FadeSection>
-      </section>
-
-      {/* ══════════════════════════════════════════ */}
-      {/* FOOTER                                    */}
-      {/* ══════════════════════════════════════════ */}
-      <footer style={{ width: "100%", padding: "48px clamp(24px, 6vw, 80px) 40px", background: "#050505", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48, marginBottom: 56 }}>
-            <div>
-              <span style={{ color: "white", fontSize: 13, fontWeight: 400, letterSpacing: "0.22em", textTransform: "uppercase", display: "block", marginBottom: 16 }}>NothingHide</span>
-              <p style={{ fontFamily: SANS, fontSize: 13.5, color: "rgba(255,255,255,0.38)", lineHeight: 1.75, margin: "0 0 20px", maxWidth: 260 }}>
-                A transparent platform built for clarity, accountability, and real trust.
-              </p>
-            </div>
-            {[
-              { title: "Product", links: ["Features", "Pricing", "Security", "Changelog"] },
-              { title: "Company", links: ["About", "Blog", "Careers", "Press"] },
-              { title: "Legal", links: ["Privacy", "Terms", "Security", "Cookies"] },
-            ].map((col) => (
-              <div key={col.title}>
-                <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 16 }}>{col.title}</div>
-                {col.links.map((l) => (
-                  <a
-                    key={l}
-                    href="#"
-                    style={{ display: "block", fontFamily: SANS, fontSize: 13.5, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)")}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.45)")}
-                  >{l}</a>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.06)", flexWrap: "wrap", gap: 12 }}>
-            <span style={{ fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.25)" }}>
-              © 2026 NothingHide. All rights reserved.
-            </span>
-            <span style={{ fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.25)" }}>
-              Nothing to hide.
-            </span>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }
