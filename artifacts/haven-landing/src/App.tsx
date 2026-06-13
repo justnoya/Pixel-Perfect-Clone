@@ -350,6 +350,7 @@ function PerspectiveCard({
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [heroBgLoaded, setHeroBgLoaded] = useState(false);
 
   /* perspective container ref + scroll progress */
   const perspContainerRef = useRef<HTMLDivElement>(null);
@@ -515,11 +516,24 @@ export default function App() {
             id="hero"
             style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "#080808" }}
           >
+            {/* Blur placeholder shown while hero image loads */}
+            {!heroBgLoaded && (
+              <div style={{ position: "absolute", inset: 0, background: "#0a0a0a", zIndex: 0 }} />
+            )}
             <img
               src="/hero-bg.jpg"
               alt=""
               draggable={false}
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", pointerEvents: "none", userSelect: "none" }}
+              onLoad={() => setHeroBgLoaded(true)}
+              style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: "center 30%",
+                pointerEvents: "none", userSelect: "none",
+                filter: heroBgLoaded ? "blur(0px)" : "blur(28px)",
+                transform: heroBgLoaded ? "scale(1)" : "scale(1.08)",
+                transition: "filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                willChange: "filter, transform",
+              }}
             />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 22%, transparent 45%)", pointerEvents: "none", zIndex: 1 }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(4,4,4,0.96) 0%, rgba(4,4,4,0.7) 18%, rgba(4,4,4,0.1) 42%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />

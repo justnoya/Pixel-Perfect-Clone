@@ -63,6 +63,23 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidde
   }
 }
 
+/* ── Team grid responsive ── */
+.team-photo-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+.team-member-list {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 600px) {
+  .team-photo-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .team-member-list {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
 /* ── Mobile (≤ 767px) ── */
 @media (max-width: 767px) {
   .fair-buy-grid {

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaLinkedinIn, FaTwitter, FaBehance, FaInstagram } from "react-icons/fa";
-import { cn } from "@/lib/utils";
 
 export interface TeamMember {
   id: string;
@@ -20,45 +19,47 @@ const DEFAULT_MEMBERS: TeamMember[] = [
     id: "1",
     name: "Arjun Mehta",
     role: "Founder & CEO",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face",
     social: { twitter: "#", linkedin: "#" },
   },
   {
     id: "2",
     name: "Priya Sharma",
     role: "Head of Product",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop&crop=face",
     social: { twitter: "#", linkedin: "#" },
   },
   {
     id: "3",
     name: "Rohan Das",
     role: "Lead Engineer",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop&crop=face",
     social: { linkedin: "#", twitter: "#" },
   },
   {
     id: "4",
     name: "Sneha Kapoor",
     role: "Design Lead",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop&crop=face",
     social: { instagram: "#", linkedin: "#" },
   },
   {
     id: "5",
     name: "Vikram Nair",
     role: "Growth & Marketing",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
     social: { twitter: "#", linkedin: "#" },
   },
   {
     id: "6",
     name: "Ananya Rao",
     role: "Customer Success",
-    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&crop=face",
     social: { linkedin: "#" },
   },
 ];
+
+const SANS = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
 interface TeamShowcaseProps {
   members?: TeamMember[];
@@ -67,51 +68,40 @@ interface TeamShowcaseProps {
 export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcaseProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  const col1 = members.filter((_, i) => i % 3 === 0);
-  const col2 = members.filter((_, i) => i % 3 === 1);
-  const col3 = members.filter((_, i) => i % 3 === 2);
-
   return (
-    <div className="flex flex-col md:flex-row items-start gap-8 md:gap-10 lg:gap-14 select-none w-full max-w-5xl mx-auto py-8 px-4 md:px-6 font-sans">
-      {/* Photo grid */}
-      <div className="flex gap-2 md:gap-3 flex-shrink-0 overflow-x-auto pb-1 md:pb-0">
-        <div className="flex flex-col gap-2 md:gap-3">
-          {col1.map((member) => (
-            <PhotoCard
-              key={member.id}
-              member={member}
-              className="w-[110px] h-[120px] sm:w-[130px] sm:h-[140px] md:w-[155px] md:h-[165px]"
-              hoveredId={hoveredId}
-              onHover={setHoveredId}
-            />
-          ))}
-        </div>
-        <div className="flex flex-col gap-2 md:gap-3 mt-[48px] sm:mt-[56px] md:mt-[68px]">
-          {col2.map((member) => (
-            <PhotoCard
-              key={member.id}
-              member={member}
-              className="w-[122px] h-[132px] sm:w-[145px] sm:h-[155px] md:w-[172px] md:h-[182px]"
-              hoveredId={hoveredId}
-              onHover={setHoveredId}
-            />
-          ))}
-        </div>
-        <div className="flex flex-col gap-2 md:gap-3 mt-[22px] sm:mt-[26px] md:mt-[32px]">
-          {col3.map((member) => (
-            <PhotoCard
-              key={member.id}
-              member={member}
-              className="w-[115px] h-[125px] sm:w-[136px] sm:h-[146px] md:w-[162px] md:h-[172px]"
-              hoveredId={hoveredId}
-              onHover={setHoveredId}
-            />
-          ))}
-        </div>
+    <div style={{ width: "100%", maxWidth: 960, margin: "0 auto" }}>
+      {/* ── PHOTO GRID ── */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "clamp(8px, 1.2vw, 14px)",
+          marginBottom: "clamp(28px, 4vh, 44px)",
+        }}
+        className="team-photo-grid"
+      >
+        {members.map((member, i) => (
+          <MemberCard
+            key={member.id}
+            member={member}
+            index={i}
+            hoveredId={hoveredId}
+            onHover={setHoveredId}
+          />
+        ))}
       </div>
 
-      {/* Member list */}
-      <div className="flex flex-col sm:grid sm:grid-cols-2 md:flex md:flex-col gap-4 md:gap-5 pt-0 md:pt-2 flex-1 w-full">
+      {/* ── MEMBER LIST ── */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "clamp(12px, 2vw, 24px)",
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          paddingTop: "clamp(18px, 2.5vh, 28px)",
+        }}
+        className="team-member-list"
+      >
         {members.map((member) => (
           <MemberRow
             key={member.id}
@@ -125,38 +115,114 @@ export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcase
   );
 }
 
-function PhotoCard({
+function MemberCard({
   member,
-  className,
+  index,
   hoveredId,
   onHover,
 }: {
   member: TeamMember;
-  className: string;
+  index: number;
   hoveredId: string | null;
   onHover: (id: string | null) => void;
 }) {
   const isActive = hoveredId === member.id;
   const isDimmed = hoveredId !== null && !isActive;
 
+  /* Alternate card heights for a natural masonry feel */
+  const heights = ["clamp(140px,22vw,210px)", "clamp(160px,25vw,240px)", "clamp(150px,23vw,220px)",
+                   "clamp(155px,24vw,230px)", "clamp(145px,22.5vw,215px)", "clamp(160px,25vw,240px)"];
+  const height = heights[index % heights.length];
+
   return (
     <div
-      className={cn(
-        "overflow-hidden rounded-xl cursor-pointer flex-shrink-0 transition-opacity duration-400",
-        className,
-        isDimmed ? "opacity-60" : "opacity-100"
-      )}
       onMouseEnter={() => onHover(member.id)}
       onMouseLeave={() => onHover(null)}
+      onTouchStart={() => onHover(isActive ? null : member.id)}
+      style={{
+        position: "relative",
+        borderRadius: "clamp(10px, 1.4vw, 16px)",
+        overflow: "hidden",
+        height,
+        cursor: "pointer",
+        opacity: isDimmed ? 0.45 : 1,
+        transition: "opacity 0.35s ease, transform 0.35s ease",
+        transform: isActive ? "scale(1.02)" : "scale(1)",
+        flexShrink: 0,
+      }}
     >
+      {/* Photo — pixel blur effect on face */}
       <img
         src={member.image}
         alt={member.name}
-        className="w-full h-full object-cover transition-[filter] duration-500"
+        loading="lazy"
         style={{
-          filter: isActive ? "grayscale(0) brightness(1)" : "grayscale(1) brightness(0.6)",
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center top",
+          display: "block",
+          transition: "filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s ease",
+          filter: isActive
+            ? "blur(0px) grayscale(0) brightness(1.05)"
+            : "blur(5px) grayscale(1) brightness(0.55)",
+          transform: isActive ? "scale(1.06)" : "scale(1.0)",
+          willChange: "filter, transform",
         }}
       />
+
+      {/* Bottom gradient overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: isActive
+            ? "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)"
+            : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.06) 50%, transparent 100%)",
+          transition: "background 0.4s ease",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Name + role reveal on hover */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "clamp(8px, 1.2vw, 14px)",
+          transform: isActive ? "translateY(0)" : "translateY(6px)",
+          opacity: isActive ? 1 : 0,
+          transition: "transform 0.35s ease, opacity 0.35s ease",
+          pointerEvents: "none",
+        }}
+      >
+        <div style={{ fontFamily: SANS, fontSize: "clamp(11px, 1vw, 13px)", fontWeight: 600, color: "white", letterSpacing: "0.01em", lineHeight: 1.2 }}>
+          {member.name}
+        </div>
+        <div style={{ fontFamily: SANS, fontSize: "clamp(9px, 0.75vw, 10.5px)", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 3 }}>
+          {member.role}
+        </div>
+      </div>
+
+      {/* Corner index badge */}
+      <div
+        style={{
+          position: "absolute",
+          top: "clamp(6px, 0.9vw, 10px)",
+          right: "clamp(6px, 0.9vw, 10px)",
+          fontFamily: "'Courier Prime', monospace",
+          fontSize: "clamp(8px, 0.7vw, 10px)",
+          color: "rgba(255,255,255,0.3)",
+          lineHeight: 1,
+          userSelect: "none",
+          transition: "opacity 0.3s ease",
+          opacity: isDimmed ? 0 : 1,
+        }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </div>
     </div>
   );
 }
@@ -172,77 +238,106 @@ function MemberRow({
 }) {
   const isActive = hoveredId === member.id;
   const isDimmed = hoveredId !== null && !isActive;
-  const hasSocial =
-    member.social?.twitter ??
-    member.social?.linkedin ??
-    member.social?.instagram ??
-    member.social?.behance;
+
+  const socials = [
+    member.social?.twitter && { icon: <FaTwitter size={9} />, href: member.social.twitter },
+    member.social?.linkedin && { icon: <FaLinkedinIn size={9} />, href: member.social.linkedin },
+    member.social?.instagram && { icon: <FaInstagram size={9} />, href: member.social.instagram },
+    member.social?.behance && { icon: <FaBehance size={9} />, href: member.social.behance },
+  ].filter(Boolean) as { icon: React.ReactNode; href: string }[];
 
   return (
     <div
-      className={cn(
-        "cursor-pointer transition-opacity duration-300",
-        isDimmed ? "opacity-40" : "opacity-100"
-      )}
       onMouseEnter={() => onHover(member.id)}
       onMouseLeave={() => onHover(null)}
+      style={{
+        cursor: "pointer",
+        opacity: isDimmed ? 0.35 : 1,
+        transition: "opacity 0.3s ease",
+      }}
     >
-      <div className="flex items-center gap-2.5">
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
         <span
-          className={cn(
-            "h-3 rounded-[5px] flex-shrink-0 transition-all duration-300",
-            isActive ? "bg-white w-5" : "bg-white/25 w-4"
-          )}
+          style={{
+            display: "inline-block",
+            width: isActive ? 18 : 12,
+            height: 3,
+            borderRadius: 9999,
+            background: isActive ? "white" : "rgba(255,255,255,0.22)",
+            transition: "width 0.3s ease, background 0.3s ease",
+            flexShrink: 0,
+          }}
         />
         <span
-          className={cn(
-            "text-base md:text-[18px] font-semibold leading-none tracking-tight transition-colors duration-300",
-            isActive ? "text-white" : "text-white/70"
-          )}
+          style={{
+            fontFamily: SANS,
+            fontSize: "clamp(12px, 1.1vw, 15px)",
+            fontWeight: 600,
+            color: isActive ? "white" : "rgba(255,255,255,0.65)",
+            transition: "color 0.3s ease",
+            lineHeight: 1.2,
+          }}
         >
           {member.name}
         </span>
-        {hasSocial && (
+      </div>
+      <div style={{ paddingLeft: 20 }}>
+        <div
+          style={{
+            fontFamily: SANS,
+            fontSize: "clamp(8px, 0.7vw, 9.5px)",
+            textTransform: "uppercase",
+            letterSpacing: "0.18em",
+            color: "rgba(255,255,255,0.3)",
+            marginBottom: 6,
+          }}
+        >
+          {member.role}
+        </div>
+        {socials.length > 0 && (
           <div
-            className={cn(
-              "flex items-center gap-1.5 ml-0.5 transition-all duration-200",
-              isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none"
-            )}
+            style={{
+              display: "flex",
+              gap: 4,
+              opacity: isActive ? 1 : 0,
+              transform: isActive ? "translateY(0)" : "translateY(4px)",
+              transition: "opacity 0.25s ease, transform 0.25s ease",
+            }}
           >
-            {member.social?.twitter && (
-              <a href={member.social.twitter} target="_blank" rel="noopener noreferrer"
+            {socials.map((s, i) => (
+              <a
+                key={i}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-white/50 hover:text-white hover:bg-white/10 transition-all duration-150 hover:scale-110">
-                <FaTwitter size={10} />
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 22,
+                  height: 22,
+                  borderRadius: 6,
+                  background: "rgba(255,255,255,0.08)",
+                  color: "rgba(255,255,255,0.5)",
+                  textDecoration: "none",
+                  transition: "background 0.15s ease, color 0.15s ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.15)";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
+                }}
+              >
+                {s.icon}
               </a>
-            )}
-            {member.social?.linkedin && (
-              <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-white/50 hover:text-white hover:bg-white/10 transition-all duration-150 hover:scale-110">
-                <FaLinkedinIn size={10} />
-              </a>
-            )}
-            {member.social?.instagram && (
-              <a href={member.social.instagram} target="_blank" rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-white/50 hover:text-white hover:bg-white/10 transition-all duration-150 hover:scale-110">
-                <FaInstagram size={10} />
-              </a>
-            )}
-            {member.social?.behance && (
-              <a href={member.social.behance} target="_blank" rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-white/50 hover:text-white hover:bg-white/10 transition-all duration-150 hover:scale-110">
-                <FaBehance size={10} />
-              </a>
-            )}
+            ))}
           </div>
         )}
       </div>
-      <p className="mt-1.5 pl-[27px] text-[7px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-white/35">
-        {member.role}
-      </p>
     </div>
   );
 }
