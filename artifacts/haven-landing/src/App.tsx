@@ -340,7 +340,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 6;
+  const N_CARDS = 5;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -553,7 +553,7 @@ export default function App() {
         </PerspectiveCard>
 
         {/* ── CARD 2 · OUR PROMISE ──────────────────────────── */}
-        <PerspectiveCard i={2} total={N_CARDS} progress={perspProgress}>
+        <PerspectiveCard i={1} total={N_CARDS} progress={perspProgress}>
           <section
             id="section-02"
             style={{ width: "100%", height: "100%", background: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 40px", borderTop: "1px solid rgba(255,255,255,0.06)" }}
@@ -583,7 +583,7 @@ export default function App() {
         </PerspectiveCard>
 
         {/* ── CARD 3 · PAIN ─────────────────────────────────── */}
-        <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
+        <PerspectiveCard i={2} total={N_CARDS} progress={perspProgress}>
           <section
             id="pain"
             style={{ position: "relative", width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(64px, 9vh, 96px) clamp(28px, 7vw, 100px)", overflow: "hidden" }}
@@ -673,7 +673,7 @@ export default function App() {
         </PerspectiveCard>
 
         {/* ── CARD 4 · TEAM ─────────────────────────────────── */}
-        <PerspectiveCard i={4} total={N_CARDS} progress={perspProgress}>
+        <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
           <section
             id="team"
             style={{ width: "100%", height: "100%", background: "#090909", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
@@ -694,7 +694,7 @@ export default function App() {
         </PerspectiveCard>
 
         {/* ── CARD 5 · RESULTS ──────────────────────────────── */}
-        <PerspectiveCard i={5} total={N_CARDS} progress={perspProgress}>
+        <PerspectiveCard i={4} total={N_CARDS} progress={perspProgress}>
           <section
             id="results"
             style={{
