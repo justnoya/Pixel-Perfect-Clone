@@ -7,6 +7,9 @@ import {
   X,
   Play,
   ArrowRight,
+  TrendingUp,
+  Users,
+  ShieldCheck,
 } from "lucide-react";
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -14,6 +17,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedText } from "@/components/ui/animated-underline-text-one";
 import TeamShowcase from "@/components/ui/team-showcase";
 import VariableProximity from "@/components/ui/variable-proximity";
+import DisplayCards from "@/components/ui/display-cards";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,6 +63,36 @@ const PAIN_POINTS = [
   { stat: "Spending ₹10K–50K/month", sub: "with nothing to show" },
   { stat: "Leads come in cold", sub: "no follow-up system" },
   { stat: "Big builders get all the tech", sub: "you get left behind" },
+];
+
+const RESULTS_CARDS = [
+  {
+    icon: <ShieldCheck size={13} color="#4ade80" />,
+    label: "The Guarantee",
+    title: "Miss targets? Full fee refunded.",
+    description: "If we don't hit agreed lead numbers, you pay nothing for our service.",
+    meta: "No fine print · ad spend excluded",
+    accentColor: "#4ade80",
+    className: "[grid-area:stack] hover:-translate-y-10 transition-all duration-700 grayscale hover:grayscale-0 before:absolute before:inset-0 before:rounded-2xl before:bg-black/40 before:transition-opacity before:duration-700 hover:before:opacity-0",
+  },
+  {
+    icon: <Users size={13} color="#60a5fa" />,
+    label: "Month 2+",
+    title: "20–30 leads · WhatsApp running",
+    description: "Pipeline fully active — bot auto-replies, follows up, qualifies buyers.",
+    meta: "Mumbai · ongoing campaigns",
+    accentColor: "#60a5fa",
+    className: "[grid-area:stack] translate-x-12 translate-y-10 hover:-translate-y-1 transition-all duration-700 grayscale hover:grayscale-0 before:absolute before:inset-0 before:rounded-2xl before:bg-black/40 before:transition-opacity before:duration-700 hover:before:opacity-0",
+  },
+  {
+    icon: <TrendingUp size={13} color="#f59e0b" />,
+    label: "Month 1 Target",
+    title: "18–25 qualified buyer leads",
+    description: "First leads delivered within days of launch. System optimises weekly.",
+    meta: "Independent builder · 5–100 units",
+    accentColor: "#f59e0b",
+    className: "[grid-area:stack] translate-x-24 translate-y-20 hover:translate-y-10 transition-all duration-700",
+  },
 ];
 
 /* ─── small components ───────────────────────────────────────── */
@@ -306,7 +340,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 5;
+  const N_CARDS = 6;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -656,6 +690,126 @@ export default function App() {
             <FadeSection style={{ width: "100%" }}>
               <TeamShowcase />
             </FadeSection>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 5 · RESULTS ──────────────────────────────── */}
+        <PerspectiveCard i={5} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="results"
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              background: "#080808",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "clamp(48px, 7vh, 80px) clamp(24px, 6vw, 80px)",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              overflow: "hidden",
+            }}
+          >
+            {/* Floating paths background */}
+            <FloatingPaths position={0.6} />
+
+            {/* Left column — copy */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "clamp(40px, 8vw, 100px)",
+                width: "100%",
+                maxWidth: 1000,
+                position: "relative",
+                zIndex: 1,
+              }}
+              className="results-layout"
+            >
+              {/* Text side */}
+              <div style={{ flex: "0 0 auto", maxWidth: 380 }}>
+                <FadeSection style={{ marginBottom: "clamp(14px, 2vh, 20px)" }}>
+                  <SectionLabel>Results</SectionLabel>
+                </FadeSection>
+                <FadeSection style={{ marginBottom: "clamp(12px, 1.8vh, 18px)" }}>
+                  <h2
+                    style={{
+                      fontFamily: COURIER,
+                      fontSize: "clamp(26px, 3vw, 44px)",
+                      fontWeight: 400,
+                      color: "white",
+                      lineHeight: 1.15,
+                      margin: 0,
+                    }}
+                  >
+                    What to expect,
+                    <br />
+                    every month.
+                  </h2>
+                </FadeSection>
+                <FadeSection style={{ marginBottom: "clamp(24px, 3.5vh, 36px)" }}>
+                  <p
+                    style={{
+                      fontFamily: SANS,
+                      fontSize: "clamp(13px, 1vw, 15px)",
+                      color: "rgba(255,255,255,0.42)",
+                      lineHeight: 1.8,
+                      margin: 0,
+                      maxWidth: 320,
+                    }}
+                  >
+                    From day one, the system runs. Leads come in, WhatsApp handles follow-ups, and you get weekly reports. Miss targets — we refund.
+                  </p>
+                </FadeSection>
+
+                {/* Stats row */}
+                <FadeSection>
+                  <div style={{ display: "flex", gap: "clamp(20px, 4vw, 40px)" }}>
+                    {[
+                      { n: "20–30", label: "buyer leads/month" },
+                      { n: "7 days", label: "system goes live" },
+                      { n: "100%", label: "fee refund guarantee" },
+                    ].map((s) => (
+                      <div key={s.n}>
+                        <div
+                          style={{
+                            fontFamily: COURIER,
+                            fontSize: "clamp(18px, 2vw, 28px)",
+                            fontWeight: 400,
+                            color: "white",
+                            lineHeight: 1,
+                            marginBottom: 5,
+                          }}
+                        >
+                          {s.n}
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: SANS,
+                            fontSize: "clamp(9px, 0.7vw, 10.5px)",
+                            color: "rgba(255,255,255,0.3)",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.12em",
+                          }}
+                        >
+                          {s.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </FadeSection>
+              </div>
+
+              {/* Cards side */}
+              <FadeSection style={{ flex: "0 0 auto" }}>
+                <div style={{ transform: "scale(0.92)", transformOrigin: "center center" }}>
+                  <DisplayCards cards={RESULTS_CARDS} />
+                </div>
+              </FadeSection>
+            </div>
           </section>
         </PerspectiveCard>
 
