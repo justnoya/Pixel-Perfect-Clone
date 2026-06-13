@@ -18,6 +18,7 @@ import { AnimatedText } from "@/components/ui/animated-underline-text-one";
 import TeamShowcase from "@/components/ui/team-showcase";
 import VariableProximity from "@/components/ui/variable-proximity";
 import DisplayCards from "@/components/ui/display-cards";
+import { WavePath } from "@/components/ui/wave-path";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -340,7 +341,7 @@ export default function App() {
     };
   }, []);
 
-  const N_CARDS = 5;
+  const N_CARDS = 6;
 
   return (
     <main style={{ background: "#080808", fontFamily: SANS }}>
@@ -672,8 +673,192 @@ export default function App() {
           </section>
         </PerspectiveCard>
 
-        {/* ── CARD 4 · TEAM ─────────────────────────────────── */}
+        {/* ── CARD 3 · OFFER / THE SYSTEM ──────────────────── */}
         <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
+          <section
+            id="offer"
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              background: "#0b0b0b",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "clamp(56px, 8vh, 88px) clamp(28px, 8vw, 120px)",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              overflow: "hidden",
+            }}
+          >
+            {/* Top label + headline */}
+            <div style={{ width: "100%", maxWidth: 860 }}>
+              <FadeSection style={{ marginBottom: "clamp(12px, 1.8vh, 20px)" }}>
+                <SectionLabel>What You Get</SectionLabel>
+              </FadeSection>
+
+              <FadeSection>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "flex-end",
+                    justifyContent: "space-between",
+                    gap: 24,
+                    marginBottom: "clamp(36px, 5vh, 56px)",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <h2
+                    style={{
+                      fontFamily: COURIER,
+                      fontSize: "clamp(24px, 3.2vw, 48px)",
+                      fontWeight: 400,
+                      color: "white",
+                      lineHeight: 1.12,
+                      margin: 0,
+                      maxWidth: 520,
+                    }}
+                  >
+                    One complete system.
+                    <br />
+                    Zero guesswork.
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: SANS,
+                      fontSize: "clamp(12px, 0.9vw, 14px)",
+                      color: "rgba(255,255,255,0.35)",
+                      lineHeight: 1.8,
+                      margin: 0,
+                      maxWidth: 260,
+                      flexShrink: 0,
+                    }}
+                  >
+                    Four pieces, built and managed for you. Client pays Meta directly — we handle everything else.
+                  </p>
+                </div>
+              </FadeSection>
+
+              {/* Wave-separated service rows */}
+              {[
+                {
+                  num: "01",
+                  name: "Meta Ads",
+                  detail: "Facebook & Instagram campaigns targeting home buyers by location, income, and intent.",
+                  tag: "Awareness → Leads",
+                },
+                {
+                  num: "02",
+                  name: "Landing Page",
+                  detail: "A dedicated project page built to capture leads — fast, mobile-first, and conversion-tested.",
+                  tag: "First impression",
+                },
+                {
+                  num: "03",
+                  name: "WhatsApp Bot",
+                  detail: "Instant auto-reply the second a lead submits. Follows up at 24 h, 48 h, and 7 days automatically.",
+                  tag: "Zero cold leads",
+                },
+                {
+                  num: "04",
+                  name: "CRM Setup",
+                  detail: "A simple live dashboard — every lead, every status, every next action visible at a glance.",
+                  tag: "Full visibility",
+                },
+              ].map((item, idx, arr) => (
+                <FadeSection key={item.num}>
+                  <WavePath
+                    style={{ color: "rgba(255,255,255,0.12)", width: "100%" }}
+                    className="mb-0"
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "clamp(16px, 3vw, 48px)",
+                      padding: "clamp(16px, 2.4vh, 26px) 0",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {/* Index */}
+                    <span
+                      style={{
+                        fontFamily: COURIER,
+                        fontSize: "clamp(10px, 0.8vw, 12px)",
+                        color: "rgba(255,255,255,0.18)",
+                        letterSpacing: "0.12em",
+                        flexShrink: 0,
+                        userSelect: "none",
+                        minWidth: 28,
+                      }}
+                    >
+                      {item.num}
+                    </span>
+
+                    {/* Name */}
+                    <span
+                      style={{
+                        fontFamily: COURIER,
+                        fontSize: "clamp(18px, 2vw, 30px)",
+                        fontWeight: 400,
+                        color: "white",
+                        letterSpacing: "-0.01em",
+                        lineHeight: 1,
+                        minWidth: "clamp(120px, 16vw, 200px)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {item.name}
+                    </span>
+
+                    {/* Detail */}
+                    <span
+                      style={{
+                        fontFamily: SANS,
+                        fontSize: "clamp(11px, 0.85vw, 13.5px)",
+                        color: "rgba(255,255,255,0.38)",
+                        lineHeight: 1.65,
+                        flex: 1,
+                        minWidth: 180,
+                      }}
+                    >
+                      {item.detail}
+                    </span>
+
+                    {/* Tag pill */}
+                    <span
+                      style={{
+                        fontFamily: SANS,
+                        fontSize: "clamp(9px, 0.68vw, 10.5px)",
+                        color: "rgba(255,255,255,0.35)",
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: 9999,
+                        padding: "4px 12px",
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        flexShrink: 0,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.tag}
+                    </span>
+                  </div>
+                  {idx === arr.length - 1 && (
+                    <WavePath
+                      style={{ color: "rgba(255,255,255,0.12)", width: "100%" }}
+                      className="mb-0"
+                    />
+                  )}
+                </FadeSection>
+              ))}
+            </div>
+          </section>
+        </PerspectiveCard>
+
+        {/* ── CARD 4 · TEAM ─────────────────────────────────── */}
+        <PerspectiveCard i={4} total={N_CARDS} progress={perspProgress}>
           <section
             id="team"
             style={{ width: "100%", height: "100%", background: "#090909", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
@@ -694,7 +879,7 @@ export default function App() {
         </PerspectiveCard>
 
         {/* ── CARD 5 · RESULTS ──────────────────────────────── */}
-        <PerspectiveCard i={4} total={N_CARDS} progress={perspProgress}>
+        <PerspectiveCard i={5} total={N_CARDS} progress={perspProgress}>
           <section
             id="results"
             style={{
