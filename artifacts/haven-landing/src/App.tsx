@@ -639,57 +639,88 @@ export default function App() {
         <PerspectiveCard i={3} total={N_CARDS} progress={perspProgress}>
           <section
             id="pain"
-            style={{ position: "relative", width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px clamp(24px, 6vw, 80px)", overflow: "hidden" }}
+            style={{ position: "relative", width: "100%", height: "100%", background: "#0d0d0d", display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(64px, 9vh, 96px) clamp(28px, 7vw, 100px)", overflow: "hidden" }}
           >
             {/* Floating paths background */}
             <FloatingPaths position={1} />
             <FloatingPaths position={-1} />
-            {/* Label + Headline */}
-            <FadeSection style={{ textAlign: "center", marginBottom: "clamp(40px, 6vh, 72px)", maxWidth: 780 }}>
+
+            {/* Label */}
+            <FadeSection style={{ marginBottom: "clamp(18px, 2.5vh, 28px)" }}>
               <SectionLabel>Pain</SectionLabel>
-              <PainHeadline />
             </FadeSection>
 
-            {/* Three pain-point columns */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                maxWidth: 860,
-                width: "100%",
-                borderTop: "1px solid rgba(255,255,255,0.09)",
-                paddingTop: "clamp(28px, 4vh, 48px)",
-              }}
-            >
+            {/* Headline — left-aligned, editorial */}
+            <FadeSection style={{ marginBottom: "clamp(44px, 6.5vh, 72px)", maxWidth: 600 }}>
+              <h2
+                style={{
+                  fontFamily: SANS,
+                  fontSize: "clamp(20px, 2.6vw, 38px)",
+                  fontWeight: 300,
+                  color: "white",
+                  lineHeight: 1.38,
+                  margin: 0,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                Hoardings. Classifieds. Random broker calls.
+                <br />
+                And still —{" "}
+                <span style={{ color: "rgba(255,255,255,0.4)", fontStyle: "italic" }}>unsold inventory.</span>
+              </h2>
+            </FadeSection>
+
+            {/* Pain points — staggered diagonal rows echoing the path lines */}
+            <div style={{ width: "100%", maxWidth: 760, position: "relative", zIndex: 1 }}>
               {PAIN_POINTS.map((p, i) => (
-                <FadeSection
-                  key={i}
-                  style={{
-                    padding: "0 clamp(16px, 2.5vw, 36px)",
-                    borderRight: i < PAIN_POINTS.length - 1 ? "1px solid rgba(255,255,255,0.09)" : "none",
-                    paddingLeft: i === 0 ? 0 : undefined,
-                    paddingRight: i === PAIN_POINTS.length - 1 ? 0 : undefined,
-                  }}
-                >
-                  {/* pulse dot */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-                    <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
-                      <span style={{
-                        position: "absolute", inset: 0, borderRadius: "50%",
-                        background: "rgba(239,68,68,0.5)",
-                        animation: "pain-ping 1.8s cubic-bezier(0,0,0.2,1) infinite",
-                      }} />
-                      <span style={{ position: "relative", width: 8, height: 8, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
+                <FadeSection key={i}>
+                  <div style={{ height: 1, background: "rgba(255,255,255,0.07)" }} />
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "clamp(16px, 4vw, 48px)",
+                      padding: "clamp(18px, 2.8vh, 30px) 0",
+                      paddingLeft: i === 0 ? 0 : i === 1 ? "clamp(24px, 5vw, 64px)" : "clamp(48px, 10vw, 128px)",
+                      transition: "padding 0.4s ease",
+                    }}
+                  >
+                    {/* Large ghost index */}
+                    <span
+                      style={{
+                        fontFamily: COURIER,
+                        fontSize: "clamp(36px, 4.5vw, 64px)",
+                        fontWeight: 400,
+                        color: "rgba(255,255,255,0.055)",
+                        lineHeight: 1,
+                        flexShrink: 0,
+                        userSelect: "none",
+                        letterSpacing: "-0.02em",
+                        marginTop: 2,
+                      }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
                     </span>
-                  </div>
-                  <div style={{ fontFamily: SANS, fontSize: "clamp(14px, 1.15vw, 17px)", fontWeight: 600, color: "white", lineHeight: 1.3, marginBottom: 8 }}>
-                    {p.stat}
-                  </div>
-                  <div style={{ fontFamily: SANS, fontSize: "clamp(12px, 0.85vw, 13.5px)", color: "rgba(255,255,255,0.38)", fontStyle: "italic", lineHeight: 1.6 }}>
-                    {p.sub}
+
+                    {/* Content */}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 9 }}>
+                        <span style={{ position: "relative", display: "inline-flex", width: 7, height: 7, flexShrink: 0 }}>
+                          <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(239,68,68,0.45)", animation: "pain-ping 1.8s cubic-bezier(0,0,0.2,1) infinite" }} />
+                          <span style={{ position: "relative", width: 7, height: 7, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
+                        </span>
+                        <span style={{ fontFamily: SANS, fontSize: "clamp(15px, 1.3vw, 20px)", fontWeight: 600, color: "white", lineHeight: 1.25 }}>
+                          {p.stat}
+                        </span>
+                      </div>
+                      <p style={{ fontFamily: SANS, fontSize: "clamp(11px, 0.85vw, 13.5px)", color: "rgba(255,255,255,0.32)", fontStyle: "italic", lineHeight: 1.65, margin: 0 }}>
+                        {p.sub}
+                      </p>
+                    </div>
                   </div>
                 </FadeSection>
               ))}
+              <div style={{ height: 1, background: "rgba(255,255,255,0.07)" }} />
             </div>
           </section>
         </PerspectiveCard>
